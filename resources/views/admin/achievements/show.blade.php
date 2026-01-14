@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Review Prestasi: ') }} {{ $achievement->judul_prestasi }}
+            {{ __('Review Legacy: ') }} {{ $achievement->judul_prestasi }}
         </h2>
     </x-slot>
 
@@ -11,12 +11,12 @@
 
                 <div class="space-y-4">
                     <div>
-                        <h3 class="text-lg font-medium text-gray-900">Judul Prestasi</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Judul Legacy</h3>
                         <p class="mt-1 text-sm text-gray-600">{{ $achievement->judul_prestasi }}</p>
                     </div>
                     <hr>
                     <div>
-                        <h3 class="text-lg font-medium text-gray-900">Detail Pengaju</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Detail Pengusul</h3>
                         <p class="mt-1 text-sm text-gray-600">Nama: {{ $achievement->user->name }}</p>
                         <p class="mt-1 text-sm text-gray-600">Email: {{ $achievement->user->email }}</p>
                         <p class="mt-1 text-sm text-gray-600">Tanggal Pengajuan: {{ $achievement->created_at->format('d M Y') }}</p>
@@ -24,16 +24,12 @@
                     <hr>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900">Status Prestasi</h3>
+                            <h3 class="text-lg font-medium text-gray-900">Status Legacy</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->status_prestasi }}</p>
                         </div>
                         <div>
                             <h3 class="text-lg font-medium text-gray-900">Validitas</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->validitas }}</p>
-                        </div>
-                        <div class="md:col-span-2">
-                            <h3 class="text-lg font-medium text-gray-900">Pemberi Rekomendasi</h3>
-                            <p class="mt-1 text-sm text-gray-600">{{ $achievement->pemberi_rekomendasi ?? '-' }}</p>
                         </div>
                         <div class="md:col-span-2">
                             <h3 class="text-lg font-medium text-gray-900">Foto Sertifikat</h3>
@@ -50,6 +46,10 @@
                         <div>
                             <h3 class="text-lg font-medium text-gray-900">Rekomendasi</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->rekomendasi ? 'Ya' : 'Tidak' }}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">Pemberi Rekomendasi</h3>
+                            <p class="mt-1 text-sm text-gray-600">{{ $achievement->pemberi_rekomendasi ?? '-' }}</p>
                         </div>
                         <div>
                             <h3 class="text-lg font-medium text-gray-900">Badge</h3>

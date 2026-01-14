@@ -21,7 +21,7 @@
                 
                 <div x-data="{ open: false }" @click.away="open = false" class="relative">
                     <button @click="open = !open" class="inline-flex items-center text-gray-600 hover:text-indigo-600">
-                        <span>Prestasi</span>
+                        <span>Legacy</span>
                         <svg class="ms-1 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
@@ -85,8 +85,8 @@
                 
                 <div class="border-t border-gray-200"></div>
 
-                <a href="{{ route('customer.prestasi.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Tampilkan Prestasi</a>
-                <a href="{{ route('customer.prestasi.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Prestasi</a>
+                <a href="{{ route('customer.prestasi.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Tampilkan Legacy</a>
+                <a href="{{ route('customer.prestasi.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Legacy</a>
                 
                 <div class="border-t border-gray-200"></div>
 

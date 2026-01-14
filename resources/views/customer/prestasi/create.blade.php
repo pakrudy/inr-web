@@ -1,7 +1,7 @@
 <x-customer-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Ajukan Prestasi Baru') }}
+            {{ __('Ajukan Legacy Baru') }}
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
                     @csrf
                     
                     <div class="mb-4">
-                        <x-input-label for="judul_prestasi" :value="__('Judul Prestasi')" />
+                        <x-input-label for="judul_prestasi" :value="__('Judul Legacy')" />
                         <x-text-input id="judul_prestasi" class="block mt-1 w-full" type="text" name="judul_prestasi" :value="old('judul_prestasi')" required autofocus />
                     </div>
 

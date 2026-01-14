@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Records - Website Organisasi</title>
+    <title>Records - Indonesian Legacy Records</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased bg-gray-50">
@@ -23,7 +23,7 @@
                             <!-- Photo (Thumbnail) -->
                             <div class="mb-4">
                                 @if ($record->foto_sertifikat)
-                                    <a href="{{ asset('storage/' . $record->foto_sertifikat) }}" target="_blank">
+                                    <a href="{{ asset('storage/' . $record->foto_sertifikat) }}" data-fslightbox>
                                         <img src="{{ asset('storage/' . $record->foto_sertifikat) }}" alt="Foto Sertifikat" class="h-32 w-32 object-cover rounded-md shadow-sm hover:opacity-80 transition-opacity">
                                     </a>
                                 @else
@@ -63,6 +63,6 @@
     <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
         <p>&copy; 2026 INR Team. All rights reserved.</p>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/fslightbox@latest/index.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <x-customer-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Detail Prestasi') }}
+            {{ __('Detail Legacy') }}
         </h2>
     </x-slot>
 
@@ -11,7 +11,7 @@
 
                 <div class="space-y-4">
                     <div>
-                        <h3 class="text-lg font-medium text-gray-900">Judul Prestasi</h3>
+                        <h3 class="text-lg font-medium text-gray-900">Judul Legacy</h3>
                         <p class="mt-1 text-sm text-gray-600">{{ $prestasi->judul_prestasi }}</p>
                     </div>
                     <hr>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="mt-6 flex items-center justify-end gap-4">
-                    <a href="{{ route('customer.prestasi.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Kembali ke Daftar Prestasi</a>
+                    <a href="{{ route('customer.prestasi.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Kembali ke Daftar Legacy</a>
                 </div>
 
             </div>

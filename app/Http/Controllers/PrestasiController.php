@@ -54,6 +54,6 @@ class PrestasiController extends Controller
             // status, validitas, etc. will use database defaults
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Prestasi berhasil diajukan dan sedang menunggu validasi.');
+        return redirect()->route('dashboard')->with('success', 'Legacy berhasil diajukan dan sedang menunggu validasi.');
     }
 }

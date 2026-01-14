@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Prestasi: ') }} {{ $achievement->judul_prestasi }}
+            {{ __('Edit Legacy: ') }} {{ $achievement->judul_prestasi }}
         </h2>
     </x-slot>
 
@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
 
                 <div class="mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">Detail Pengaju</h3>
+                    <h3 class="text-lg font-medium text-gray-900">Detail Pengusul</h3>
                     <p class="mt-1 text-sm text-gray-600">Nama: {{ $achievement->user->name }}</p>
                     <p class="mt-1 text-sm text-gray-600">Email: {{ $achievement->user->email }}</p>
                     <p class="mt-1 text-sm text-gray-600">Tanggal Pengajuan: {{ $achievement->created_at->format('d M Y') }}</p>
@@ -21,9 +21,9 @@
                     @method('PUT')
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t pt-6">
-                        <!-- Status Prestasi -->
+                        <!-- Status Legacy -->
                         <div class="mb-4">
-                            <x-input-label for="status_prestasi" :value="__('Status Prestasi')" />
+                            <x-input-label for="status_prestasi" :value="__('Status Legacy')" />
                             <select id="status_prestasi" name="status_prestasi" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                 <option value="aktif" {{ old('status_prestasi', $achievement->status_prestasi) == 'aktif' ? 'selected' : '' }}>Aktif</option>
                                 <option value="tidak aktif" {{ old('status_prestasi', $achievement->status_prestasi) == 'tidak aktif' ? 'selected' : '' }}>Tidak Aktif</option>
@@ -43,12 +43,6 @@
                         <div class="mb-4 col-span-2">
                             <x-input-label for="nomor_sertifikat_prestasi" :value="__('Nomor Sertifikat')" />
                             <x-text-input id="nomor_sertifikat_prestasi" class="block mt-1 w-full" type="text" name="nomor_sertifikat_prestasi" :value="old('nomor_sertifikat_prestasi', $achievement->nomor_sertifikat_prestasi)" />
-                        </div>
-                        
-                        <!-- Pemberi Rekomendasi -->
-                        <div class="mb-4 col-span-2">
-                            <x-input-label for="pemberi_rekomendasi" :value="__('Pemberi Rekomendasi')" />
-                            <x-text-input id="pemberi_rekomendasi" class="block mt-1 w-full" type="text" name="pemberi_rekomendasi" :value="old('pemberi_rekomendasi', $achievement->pemberi_rekomendasi)" />
                         </div>
 
                         <!-- Foto Sertifikat -->
@@ -84,6 +78,12 @@
                             </select>
                         </div>
                     </div>
+                        
+                        <!-- Pemberi Rekomendasi -->
+                        <div class="mb-4 col-span-2">
+                            <x-input-label for="pemberi_rekomendasi" :value="__('Pemberi Rekomendasi')" />
+                            <x-text-input id="pemberi_rekomendasi" class="block mt-1 w-full" type="text" name="pemberi_rekomendasi" :value="old('pemberi_rekomendasi', $achievement->pemberi_rekomendasi)" />
+                        </div>
 
                     <div class="mt-6 flex items-center justify-end gap-4">
                         <a href="{{ route('admin.achievements.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Batal</a>

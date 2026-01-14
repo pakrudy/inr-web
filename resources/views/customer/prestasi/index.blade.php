@@ -1,7 +1,7 @@
 <x-customer-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Data Prestasi Anda') }}
+            {{ __('Data Legacy Anda') }}
         </h2>
     </x-slot>
 
@@ -10,9 +10,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if($prestasi->isEmpty())
-                        <p>Anda belum memiliki data prestasi yang diajukan.</p>
+                        <p>Anda belum memiliki data Legacy yang diajukan.</p>
                         <a href="{{ route('customer.prestasi.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 mt-4">
-                            {{ __('Ajukan Prestasi Baru') }}
+                            {{ __('Ajukan Legacy Baru') }}
                         </a>
                     @else
                         <div class="overflow-x-auto">
@@ -20,7 +20,7 @@
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Judul Prestasi
+                                            Judul Legacy
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Status
