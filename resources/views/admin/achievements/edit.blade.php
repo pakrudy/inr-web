@@ -10,10 +10,22 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
 
                 <div class="mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">Detail Pengusul</h3>
-                    <p class="mt-1 text-sm text-gray-600">Nama: {{ $achievement->user->name }}</p>
-                    <p class="mt-1 text-sm text-gray-600">Email: {{ $achievement->user->email }}</p>
-                    <p class="mt-1 text-sm text-gray-600">Tanggal Pengajuan: {{ $achievement->created_at->format('d M Y') }}</p>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Detail Pengusul</h3>
+                    <div class="flex items-center space-x-4">
+                        <!-- User Photo -->
+                        @if ($achievement->user->foto_pelanggan)
+                            <img src="{{ asset('storage/' . $achievement->user->foto_pelanggan) }}" alt="Foto Pelanggan" class="w-16 h-16 rounded-full object-cover shadow-sm">
+                        @else
+                            <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.993A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                            </div>
+                        @endif
+                        <div>
+                            <p class="mt-1 text-base font-semibold text-gray-900">{{ $achievement->user->nama_lengkap ?? $achievement->user->name }}</p>
+                            <p class="mt-1 text-sm text-gray-600">Email: {{ $achievement->user->email }}</p>
+                            <p class="mt-1 text-sm text-gray-600">Tanggal Pengajuan: {{ $achievement->created_at->format('d M Y') }}</p>
+                        </div>
+                    </div>
                 </div>
 
                 <form action="{{ route('admin.achievements.update', $achievement) }}" method="POST" enctype="multipart/form-data">

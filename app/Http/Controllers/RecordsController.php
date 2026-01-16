@@ -7,12 +7,22 @@ use Illuminate\Http\Request;
 
 class RecordsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $records = Prestasi::with('user')
-            ->where('status_prestasi', 'aktif') // Re-adding the status filter
-            ->latest()
-            ->paginate(12);
+        $query = Prestasi::with('user')
+            ->where('status_prestasi', 'aktif');
+
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('judul_prestasi', 'like', $searchTerm)
+                    ->orWhereHas('user', function ($userQuery) use ($searchTerm) {
+                        $userQuery->where('nama_lengkap', 'like', $searchTerm);
+                    });
+            });
+        }
+
+        $records = $query->latest()->paginate(12)->appends($request->only('search'));
 
         return view('records.index', compact('records'));
     }

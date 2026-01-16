@@ -12,7 +12,24 @@
 
     <main class="py-16">
         <div class="container mx-auto px-4">
-            <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-10">Public Records</h1>
+            <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-4">Public Records</h1>
+            <p class="text-center text-gray-600 mb-10">Browse and verify achievements that have been officially recorded.</p>
+
+            <!-- Search Form -->
+            <div class="mb-10 max-w-lg mx-auto">
+                <form action="{{ route('records.index') }}" method="GET" class="flex items-center">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        placeholder="Search by name or title..." 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
+                        value="{{ request('search') }}"
+                    >
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Search
+                    </button>
+                </form>
+            </div>
             
             @if($records->isEmpty())
                 <p class="text-center text-gray-500">Tidak ada record yang tersedia untuk ditampilkan.</p>

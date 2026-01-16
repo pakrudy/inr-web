@@ -80,15 +80,22 @@
                         <div class="border-t border-gray-100 pt-8 mt-4">
                             <h3 class="text-lg font-bold text-gray-900 mb-4">Penerima</h3>
                             <div class="flex items-start space-x-4">
-                                <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 text-indigo-600 font-bold text-2xl">
-                                    {{ substr($record->user->nama_lengkap ?? $record->user->name, 0, 1) }}
+                                <!-- Customer Photo -->
+                                <div class="flex-shrink-0">
+                                    @if ($record->user->foto_pelanggan)
+                                        <img src="{{ asset('storage/' . $record->user->foto_pelanggan) }}" alt="Foto {{ $record->user->nama_lengkap }}" class="w-20 h-20 rounded-full object-cover shadow-md">
+                                    @else
+                                        <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.993A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div>
                                     <h4 class="text-xl font-bold text-gray-800">{{ $record->user->nama_lengkap ?? $record->user->name }}</h4>
                                     <p class="text-orange-800 font-medium mb-2">{{ $record->user->jabatan_terkini ?? '-' }}</p>
                                     @if($record->user->biodata)
                                         <p class="text-gray-600 text-sm leading-relaxed mt-2">
-                                            {{ $record->user->biodata }}
+                                            {{ Str::limit($record->user->biodata, 150) }}
                                         </p>
                                     @endif
                                 </div>

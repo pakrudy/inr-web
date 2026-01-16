@@ -10,35 +10,49 @@
             <!-- Customer Details Section -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Personal</h3>
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Nama Lengkap</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $customer->nama_lengkap ?? '-' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Nama Pengguna</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $customer->name }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Email</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $customer->email }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Jenis Kelamin</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $customer->jenis_kelamin ?? '-' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Nomor Whatsapp</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $customer->nomor_whatsapp ?? '-' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Jabatan Terkini</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $customer->jabatan_terkini ?? '-' }}</p>
-                        </div>
-                        <div class="md:col-span-3">
-                            <p class="text-sm font-medium text-gray-500">Biodata</p>
-                            <p class="mt-1 text-sm text-gray-900">{{ $customer->biodata ?? '-' }}</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Customer Photo -->
+                    <div class="md:col-span-1 flex flex-col items-center">
+                        @if ($customer->foto_pelanggan)
+                            <img src="{{ asset('storage/' . $customer->foto_pelanggan) }}" alt="Foto Pelanggan" class="h-48 w-48 rounded-full object-cover shadow-md">
+                        @else
+                            <div class="h-48 w-48 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                <svg class="w-20 h-20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.993A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                            </div>
+                        @endif
+                        <p class="mt-4 text-sm font-semibold text-gray-700">{{ $customer->name }}</p>
+                        <p class="text-xs text-gray-500">{{ $customer->role }}</p>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="md:col-span-3">
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Nama Lengkap</p>
+                                    <p class="mt-1 text-sm text-gray-900">{{ $customer->nama_lengkap ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Email</p>
+                                    <p class="mt-1 text-sm text-gray-900">{{ $customer->email }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Jenis Kelamin</p>
+                                    <p class="mt-1 text-sm text-gray-900">{{ $customer->jenis_kelamin ?? '-' }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Nomor Whatsapp</p>
+                                    <p class="mt-1 text-sm text-gray-900">{{ $customer->nomor_whatsapp ?? '-' }}</p>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <p class="text-sm font-medium text-gray-500">Jabatan Terkini</p>
+                                    <p class="mt-1 text-sm text-gray-900">{{ $customer->jabatan_terkini ?? '-' }}</p>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <p class="text-sm font-medium text-gray-500">Biodata</p>
+                                    <p class="mt-1 text-sm text-gray-900 prose prose-sm max-w-none">{{ $customer->biodata ?? '-' }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

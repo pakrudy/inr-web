@@ -23,6 +23,7 @@ class User extends Authenticatable
         'biodata',
         'nomor_whatsapp',
         'jabatan_terkini',
+        'foto_pelanggan',
         'email',
         'password',
         'role',
