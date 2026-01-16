@@ -10,13 +10,21 @@
 
     <x-public-nav />
 
-    <header id="about" class="py-16 bg-orange-100">
-        <div class="container mx-auto px-4 text-center">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Selamat Datang di</h3>
-            <h1 class="text-4xl font-extrabold text-gray-900 mb-4">Indonesia Legacy Records</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+    <header id="about" class="relative py-24 bg-gray-800 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1920&auto=format&fit=crop');">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/60"></div>
+        
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h3 class="text-xl font-bold text-yellow-500 mb-4 uppercase tracking-widest">Selamat Datang di</h3>
+            <h1 class="text-4xl font-extrabold text-white mb-6 shadow-sm">Indonesia Legacy Records</h1>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
                 Kesuksesan dalam hidup, prestasi, kinerja, dan performa adalah fondasi dari legacy yang kita bangun. Legacy ini tidak hanya penting dalam konteks pribadi, tetapi juga bagi lembaga. Jejak yang kita tinggalkan memberikan dampak yang bertahan lama dan bisa diingat serta dilanjutkan oleh generasi berikutnya.
             </p>
+            <div class="mt-10">
+                <a href="/records" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 inline-block">
+                    Lihat Database
+                </a>
+            </div>
         </div>
     </header>
 

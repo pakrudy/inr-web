@@ -17,36 +17,41 @@
             @if($records->isEmpty())
                 <p class="text-center text-gray-500">Tidak ada record yang tersedia untuk ditampilkan.</p>
             @else
-                <div class="grid grid-cols-1 gap-8"> {{-- Changed to single column --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach ($records as $record)
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 p-6 flex flex-col items-center">
+                        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 flex p-5 space-x-6 items-center">
                             <!-- Photo (Thumbnail) -->
-                            <div class="mb-4">
+                            <div class="flex-shrink-0">
                                 @if ($record->foto_sertifikat)
                                     <a href="{{ asset('storage/' . $record->foto_sertifikat) }}" data-fslightbox>
-                                        <img src="{{ asset('storage/' . $record->foto_sertifikat) }}" alt="Foto Sertifikat" class="h-32 w-32 object-cover rounded-md shadow-sm hover:opacity-80 transition-opacity">
+                                        <img src="{{ asset('storage/' . $record->foto_sertifikat) }}" alt="Foto Sertifikat" class="h-32 w-24 object-cover rounded-lg shadow-sm hover:opacity-90 transition-opacity">
                                     </a>
                                 @else
-                                    <div class="h-32 w-32 flex items-center justify-center text-gray-400 bg-gray-100 rounded-md shadow-sm">
-                                        <span>No Image</span>
+                                    <div class="h-32 w-24 flex items-center justify-center text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                        <svg class="w-8 h-8 opacity-20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
                                     </div>
                                 @endif
                             </div>
+
                             <!-- Details -->
-                            <div class="text-center"> {{-- Centered text for single column --}}
-                                <div class="flex items-center justify-center mb-2">
-                                    <h3 class="text-xl font-semibold {{ $record->validitas === 'valid' ? 'text-gray-900' : 'text-gray-500' }}">{{ $record->judul_prestasi }}</h3>
-                                    {{-- Blue checkmark for valid records --}}
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center mb-1">
+                                    <h3 class="text-lg font-bold truncate {{ $record->validitas === 'valid' ? 'text-gray-900' : 'text-gray-500' }}" title="{{ $record->judul_prestasi }}">
+                                        {{ $record->judul_prestasi }}
+                                    </h3>
                                     @if ($record->validitas === 'valid')
-                                    <svg class="ml-2 w-6 h-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#3B82F6">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                    </svg>
+                                        <svg class="ml-1 w-5 h-5 flex-shrink-0 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
                                     @endif
                                 </div>
-                                <p class="text-gray-700 font-medium">{{ $record->user->nama_lengkap ?? $record->user->name }}</p>
-                                <p class="text-gray-500 text-sm mb-3">{{ $record->user->jabatan_terkini ?? 'Jabatan tidak tersedia' }}</p>
+                                <p class="text-orange-900 font-semibold text-md truncate">{{ $record->user->nama_lengkap ?? $record->user->name }}</p>
+                                <p class="text-gray-700 text-sm mb-3 italic">{{ $record->user->jabatan_terkini ?? 'Jabatan tidak tersedia' }}</p>
+                                
                                 @if($record->nomor_sertifikat_prestasi)
-                                <p class="text-xs text-gray-400">No: {{ $record->nomor_sertifikat_prestasi }}</p>
+                                    <div class="inline-block px-2 py-1 bg-gray-100 rounded text-[13px] text-gray-500 font-mono">
+                                        No: {{ $record->nomor_sertifikat_prestasi }}
+                                    </div>
                                 @endif
                             </div>
                         </div>

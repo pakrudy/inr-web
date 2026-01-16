@@ -1,4 +1,66 @@
-<nav x-data="{ open: false }" class="bg-white shadow-sm">
+<div class="relative z-50">
+    <!-- Top Navigation Bar -->
+    <div class="bg-gray-900 text-gray-300 text-sm py-2 hidden sm:block relative z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <!-- Left Side: Date & Time -->
+            <div x-data="{ 
+                date: new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+                time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+                init() {
+                    setInterval(() => {
+                        this.time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                    }, 1000); // Update every minute is enough usually, but seconds are nice
+                }
+            }" x-init="init()" class="flex items-center space-x-4">
+                <span x-text="date"></span>
+                <span class="text-gray-600">|</span>
+                <span x-text="time"></span>
+            </div>
+
+            <!-- Right Side: Hot Links -->
+            <div class="flex items-center space-x-6">
+                <a href="#" class="hover:text-white transition-colors">Tentang Kami</a>
+                <a href="#" class="hover:text-white transition-colors">Hubungi Kami</a>
+                <a href="#" class="hover:text-white transition-colors">Bantuan</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav x-data="{ 
+        open: false,
+        showNavbar: true,
+        isFixed: false,
+        lastScrollY: 0,
+        init() {
+            this.lastScrollY = window.scrollY;
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                // Only trigger if scroll difference is significant (prevent jitter)
+                if (Math.abs(currentScrollY - this.lastScrollY) < 10) return;
+
+                // Determine if we should be fixed
+                this.isFixed = currentScrollY > 80;
+
+                // Scroll Logic
+                if (currentScrollY > this.lastScrollY && currentScrollY > 80) {
+                    this.showNavbar = false; // Scroll Down -> Hide
+                } else {
+                    this.showNavbar = true;  // Scroll Up -> Show
+                }
+                
+                this.lastScrollY = currentScrollY;
+            }, { passive: true });
+        }
+    }" 
+    x-init="init()"
+    :class="{ 
+        'fixed top-0 left-0 w-full shadow-md': isFixed,
+        'relative w-full': !isFixed,
+        '-translate-y-full': isFixed && !showNavbar
+    }"
+    class="bg-white z-50 transition-transform duration-300 transform will-change-transform">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
@@ -64,3 +126,4 @@
         </div>
     </div>
 </nav>
+</div>
