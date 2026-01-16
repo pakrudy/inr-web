@@ -52,6 +52,91 @@
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-gray-900 text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Apa Kata Mereka</h2>
+            <div class="w-24 h-1 bg-yellow-500 mx-auto mb-8"></div>
+            <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+                Pendapat mereka yang telah menjadi bagian dari sejarah dan prestasi bersama kami.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial Item 1 -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 relative">
+                    <div class="text-6xl text-gray-600 absolute top-4 left-4 opacity-20">"</div>
+                    <div class="flex items-center mb-6 mt-2">
+                        <div class="text-yellow-400 flex">
+                            @for($i=0; $i<5; $i++)
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            @endfor
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic relative z-10">
+                        "Layanan yang luar biasa dan sangat profesional. Indonesia Legacy Records memberikan apresiasi yang sesungguhnya bagi para berprestasi."
+                    </p>
+                    <div class="flex items-center mt-auto">
+                        <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mr-4 text-xl font-bold border-2 border-yellow-500">
+                            A
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg">Ahmad Fauzi</h4>
+                            <p class="text-xs text-yellow-500 uppercase tracking-wider">Professional Atlet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial Item 2 -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 relative">
+                    <div class="text-6xl text-gray-600 absolute top-4 left-4 opacity-20">"</div>
+                    <div class="flex items-center mb-6 mt-2">
+                        <div class="text-yellow-400 flex">
+                            @for($i=0; $i<5; $i++)
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            @endfor
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic relative z-10">
+                        "Validasi rekor yang transparan dan kredibel. Menjadi kebanggaan tersendiri bisa tercatat di sini sebagai bagian dari sejarah."
+                    </p>
+                    <div class="flex items-center mt-auto">
+                        <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mr-4 text-xl font-bold border-2 border-yellow-500">
+                            S
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg">Sarah Wijaya</h4>
+                            <p class="text-xs text-yellow-500 uppercase tracking-wider">Entrepreneur</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial Item 3 -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 relative">
+                    <div class="text-6xl text-gray-600 absolute top-4 left-4 opacity-20">"</div>
+                    <div class="flex items-center mb-6 mt-2">
+                        <div class="text-yellow-400 flex">
+                            @for($i=0; $i<5; $i++)
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            @endfor
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic relative z-10">
+                        "Terima kasih atas apresiasinya. Semoga terus menginspirasi generasi muda untuk terus berkarya dan berprestasi."
+                    </p>
+                    <div class="flex items-center mt-auto">
+                        <div class="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center mr-4 text-xl font-bold border-2 border-yellow-500">
+                            B
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg">Budi Santoso</h4>
+                            <p class="text-xs text-yellow-500 uppercase tracking-wider">Seniman</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
         <p>&copy; 2026 INR Team. All rights reserved.</p>
     </footer>
