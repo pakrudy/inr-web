@@ -22,6 +22,7 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
 // Route untuk halaman Records
 Route::get('/records', [App\Http\Controllers\RecordsController::class, 'index'])->name('records.index');
+Route::get('/records/{id}', [App\Http\Controllers\RecordsController::class, 'show'])->name('records.show');
 
 // Customer Routes
 Route::middleware(['auth', 'verified'])->prefix('customer')->name('customer.')->group(function () {

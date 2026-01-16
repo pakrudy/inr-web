@@ -1,7 +1,7 @@
 <div class="relative z-50">
     <!-- Top Navigation Bar -->
     <div class="bg-gray-900 text-gray-300 text-sm py-2 hidden sm:block relative z-50">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center pb-1">
             <!-- Left Side: Date & Time -->
             <div x-data="{ 
                 date: new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),

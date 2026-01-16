@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img src="https://inr.or.id/storage/icons/logo-inr-web-130.png" alt="Logo Organisasi" class="block h-10 w-auto fill-current text-gray-800" />
+                        <img src="https://inr.or.id/storage/icons/logo-inr-web-130.png" alt="Indonesian Legacy Records" class="block h-10 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 

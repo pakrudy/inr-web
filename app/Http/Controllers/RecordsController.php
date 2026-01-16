@@ -16,4 +16,13 @@ class RecordsController extends Controller
 
         return view('records.index', compact('records'));
     }
+
+    public function show($id)
+    {
+        $record = Prestasi::with('user')
+            ->where('status_prestasi', 'aktif')
+            ->findOrFail($id);
+
+        return view('records.show', compact('record'));
+    }
 }

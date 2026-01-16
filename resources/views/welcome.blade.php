@@ -91,16 +91,16 @@
                     <div class="flex flex-wrap items-center gap-8">
                         <!-- CEO Signature Area -->
                         <div class="flex items-center space-x-4">
-                            <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-[10px] text-gray-400 font-bold">230 x 230</div>
+                            <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-[11px] text-gray-400 font-bold">230 x 230</div>
                             <div>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch%27s_Signature.png" alt="Signature" class="h-8 mb-1 grayscale opacity-70">
-                                <p class="text-blue-900 font-bold text-sm">Khoirul, <span class="text-gray-400 font-normal">CEO</span></p>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch%27s_Signature.png" alt="Signature" class="h-16 mb-3 grayscale opacity-90">
+                                <p class="text-indigo-900 font-bold text-md">Khoirul Anwar, <span class="text-gray-400 font-bold">CEO</span></p>
                             </div>
                         </div>
 
                         <!-- Read More Button -->
-                        <a href="#" class="bg-red-800 hover:bg-red-900 text-white font-bold py-4 px-8 rounded-xl flex items-center transition duration-300 shadow-lg group">
-                            READ MORE
+                        <a href="/p/about-us" class="bg-red-800 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl flex items-center transition duration-300 shadow-lg group">
+                            Read More
                             <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                             </svg>
@@ -111,7 +111,7 @@
         </div>
     </section>
 
-    <section id="news" class="py-7">
+    <section id="news" class="py-7 mb-12">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-10">Berita Terbaru</h2>
             
@@ -126,13 +126,14 @@
                             @endif
                         </div>
                         <div class="p-6">
+                            <a href="{{ route('posts.show.public', $post->slug) }}" class="hover:text-orange-600">
                             <h3 class="text-xl font-semibold mb-2">{{ $post->title }}</h3>
+                            </a>
                             <p class="text-gray-600 text-sm mb-4">
                                 {!! Str::limit(strip_tags($post->content), 100) !!}
                             </p>
                             <div class="flex justify-between items-center">
-                                <span class="text-xs text-gray-400">{{ $post->created_at->format('d M Y') }}</span>
-                                <a href="{{ route('posts.show.public', $post->slug) }}" class="text-indigo-600 font-medium hover:underline text-sm">Baca Selengkapnya</a>
+                                <span class="text-sm text-gray-500">{{ $post->created_at->format('d M Y') }}</span>
                             </div>
                         </div>
                     </div>
@@ -227,8 +228,30 @@
             </div>
         </div>
     </section>
+    
+    <!-- Partners / Brands Section -->
+    <section class="py-6 bg-gray-50 border-y border-gray-100 mb-0">
+        <div class="container mx-auto px-8">
+            <p class="text-center text-gray-400 font-semibold text-sm uppercase tracking-[0.3em] mb-4">Media & Strategic Partners</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+                <div class="flex justify-center group">
+                    <img src="https://inr.or.id/storage/brands/partner-tin-120.png" alt="Times Indonesia Network" class="h-14 w-auto grayscale group-hover:grayscale-0 transition duration-300 opacity-70 group-hover:opacity-100">
+                </div>
+                <div class="flex justify-center group">
+                    <img src="https://inr.or.id/storage/brands/partner-titv-120.png" alt="Times TV" class="h-13 w-auto grayscale group-hover:grayscale-0 transition duration-300 opacity-70 group-hover:opacity-100">
+                </div>
+                <div class="flex justify-center group">
+                    <img src="https://inr.or.id/storage/brands/partner-lti-120.png" alt="Litbank TIMES Indonesia" class="h-8 w-auto grayscale group-hover:grayscale-0 transition duration-300 opacity-70 group-hover:opacity-100">
+                </div>
+                <div class="flex justify-center group">
+                    <img src="https://inr.or.id/storage/brands/partner-ti-akademi-120.png" alt="TI Akademi AI" class="h-8 w-auto grayscale group-hover:grayscale-0 transition duration-300 opacity-70 group-hover:opacity-100">
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
+
+    <footer class="bg-gray-800 text-white py-6 mt-2 text-center">
         <p>&copy; 2026 INR Team. All rights reserved.</p>
     </footer>
 

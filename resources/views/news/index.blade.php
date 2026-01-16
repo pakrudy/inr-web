@@ -53,7 +53,7 @@
         </div>
     </section>
 
-    <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
+    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
         <p>&copy; 2026 INR Team. All rights reserved.</p>
     </footer>
 

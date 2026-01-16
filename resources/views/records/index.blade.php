@@ -37,7 +37,9 @@
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center mb-1">
                                     <h3 class="text-lg font-bold truncate {{ $record->validitas === 'valid' ? 'text-gray-900' : 'text-gray-500' }}" title="{{ $record->judul_prestasi }}">
-                                        {{ $record->judul_prestasi }}
+                                        <a href="{{ route('records.show', $record->prestasi_id) }}" class="hover:text-indigo-600 transition-colors">
+                                            {{ $record->judul_prestasi }}
+                                        </a>
                                     </h3>
                                     @if ($record->validitas === 'valid')
                                         <svg class="ml-1 w-5 h-5 flex-shrink-0 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
@@ -49,7 +51,7 @@
                                 <p class="text-gray-700 text-sm mb-3 italic">{{ $record->user->jabatan_terkini ?? 'Jabatan tidak tersedia' }}</p>
                                 
                                 @if($record->nomor_sertifikat_prestasi)
-                                    <div class="inline-block px-2 py-1 bg-gray-100 rounded text-[13px] text-gray-500 font-mono">
+                                    <div class="inline-block px-2 py-1 bg-gray-100 rounded text-[15px] text-gray-500 font-mono">
                                         No: {{ $record->nomor_sertifikat_prestasi }}
                                     </div>
                                 @endif
@@ -65,7 +67,7 @@
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
+    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
         <p>&copy; 2026 INR Team. All rights reserved.</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/fslightbox@latest/index.js"></script>
