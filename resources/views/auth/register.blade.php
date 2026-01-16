@@ -16,6 +16,16 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Kategori User -->
+        <div class="mt-4">
+            <x-input-label for="kategori" :value="__('Kategori User')" />
+            <select name="kategori" id="kategori" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <option value="individu" @selected(old('kategori') == 'individu')>Individu</option>
+                <option value="lembaga" @selected(old('kategori') == 'lembaga')>Lembaga</option>
+            </select>
+            <x-input-error :messages="$errors->get('kategori')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />

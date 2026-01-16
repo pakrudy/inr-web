@@ -12,7 +12,7 @@
                 <div class="space-y-4">
                     <div>
                         <h3 class="text-lg font-medium text-gray-900">Judul Legacy</h3>
-                        <p class="mt-1 text-sm text-gray-600">{{ $prestasi->judul_prestasi }}</p>
+                        <p class="mt-1 text-lg text-orange-800">{{ $prestasi->judul_prestasi }}</p>
                     </div>
                     <hr>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

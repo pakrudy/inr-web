@@ -38,12 +38,13 @@
                     
                     <!-- Nama Panggilan (dari tabel users) -->
                     <div class="mb-4">
-                        <x-input-label for="name" :value="__('Nama Panggilan')" />
+                        <x-input-label for="name" :value="__('Nama Singkat')" />
                         <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', auth()->user()->name)" required />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <!-- Jenis Kelamin -->
+                    @if (auth()->user()->kategori !== 'Lembaga')
                     <div class="mb-4">
                         <x-input-label for="jenis_kelamin" :value="__('Jenis Kelamin')" />
                         <select name="jenis_kelamin" id="jenis_kelamin" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
@@ -52,6 +53,9 @@
                         </select>
                         <x-input-error :messages="$errors->get('jenis_kelamin')" class="mt-2" />
                     </div>
+                    @else
+                        <input type="hidden" name="jenis_kelamin" value="Laki-laki">
+                    @endif
 
                     <!-- Biodata -->
                     <div class="mb-4">
@@ -68,11 +72,15 @@
                     </div>
                     
                     <!-- Jabatan Terkini -->
+                    @if (auth()->user()->kategori !== 'Lembaga')
                     <div class="mb-4">
                         <x-input-label for="jabatan_terkini" :value="__('Jabatan Terkini')" />
                         <x-text-input id="jabatan_terkini" class="block mt-1 w-full" type="text" name="jabatan_terkini" :value="old('jabatan_terkini', auth()->user()->jabatan_terkini)" />
                         <x-input-error :messages="$errors->get('jabatan_terkini')" class="mt-2" />
                     </div>
+                    @else
+                        <input type="hidden" name="jabatan_terkini" value="-">
+                    @endif
 
                     <!-- Foto Pelanggan -->
                     <div class="mb-6">

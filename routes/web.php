@@ -32,6 +32,8 @@ Route::middleware(['auth', 'verified'])->prefix('customer')->name('customer.')->
     Route::post('/prestasi', [PrestasiController::class, 'store'])->name('prestasi.store');
     Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
     Route::get('/prestasi/{prestasi}', [PrestasiController::class, 'show'])->name('prestasi.show');
+    Route::get('/prestasi/rekomendasi/create', [PrestasiController::class, 'createRekomendasi'])->name('prestasi.rekomendasi.create');
+    Route::post('/prestasi/rekomendasi', [PrestasiController::class, 'storeRekomendasi'])->name('prestasi.rekomendasi.store');
     // todo: add more routes for prestasi management later (index, edit, update, destroy)
 });
 

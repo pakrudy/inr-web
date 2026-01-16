@@ -27,6 +27,7 @@ class Prestasi extends Model
         'nomor_sertifikat_prestasi',
         'rekomendasi',
         'badge',
+        'status_rekomendasi',
     ];
 
     /**

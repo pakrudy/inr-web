@@ -11,12 +11,12 @@
 
                 <div class="space-y-4">
                     <div>
-                        <h3 class="text-lg font-medium text-gray-900">Judul Legacy</h3>
-                        <p class="mt-1 text-sm text-gray-600">{{ $achievement->judul_prestasi }}</p>
+                        <h3 class="text-md font-medium text-gray-900">Judul Legacy</h3>
+                        <p class="mt-1 text-lg text-orange-700">{{ $achievement->judul_prestasi }}</p>
                     </div>
                     <hr>
                     <div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Detail Pengusul</h3>
+                        <h3 class="text-md font-medium text-gray-900 mb-2">Detail Pengusul</h3>
                         <div class="flex items-center space-x-4">
                             <!-- User Photo -->
                             @if ($achievement->user->foto_pelanggan)
@@ -36,15 +36,15 @@
                     <hr>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900">Status Legacy</h3>
+                            <h3 class="text-md font-medium text-gray-900">Status Legacy</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->status_prestasi }}</p>
                         </div>
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900">Validitas</h3>
+                            <h3 class="text-md font-medium text-gray-900">Validitas</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->validitas }}</p>
                         </div>
                         <div class="md:col-span-2">
-                            <h3 class="text-lg font-medium text-gray-900">Foto Sertifikat</h3>
+                            <h3 class="text-md font-medium text-gray-900">Foto Sertifikat</h3>
                             @if($achievement->foto_sertifikat)
                                 <img src="{{ asset('storage/' . $achievement->foto_sertifikat) }}" alt="Foto Sertifikat" class="mt-2 rounded-md shadow-md max-w-sm">
                             @else
@@ -52,19 +52,19 @@
                             @endif
                         </div>
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900">Nomor Sertifikat</h3>
+                            <h3 class="text-md font-medium text-gray-900">Nomor Sertifikat</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->nomor_sertifikat_prestasi ?? '-' }}</p>
                         </div>
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900">Rekomendasi</h3>
+                            <h3 class="text-md font-medium text-gray-900">Rekomendasi</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->rekomendasi ? 'Ya' : 'Tidak' }}</p>
                         </div>
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900">Pemberi Rekomendasi</h3>
+                            <h3 class="text-md font-medium text-gray-900">Pemberi Rekomendasi</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->pemberi_rekomendasi ?? '-' }}</p>
                         </div>
                         <div>
-                            <h3 class="text-lg font-medium text-gray-900">Badge</h3>
+                            <h3 class="text-md font-medium text-gray-900">Badge</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->badge ? 'Ya' : 'Tidak' }}</p>
                         </div>
                     </div>

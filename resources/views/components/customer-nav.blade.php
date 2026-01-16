@@ -39,6 +39,7 @@
                         <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
                             <a href="{{ route('customer.prestasi.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Tampilkan</a>
                             <a href="{{ route('customer.prestasi.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ajukan</a>
+                            <a href="{{ route('customer.prestasi.rekomendasi.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ajukan Rekomendasi</a>
                         </div>
                     </div>
                 </div>
@@ -87,6 +88,7 @@
 
                 <a href="{{ route('customer.prestasi.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Tampilkan Legacy</a>
                 <a href="{{ route('customer.prestasi.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Legacy</a>
+                <a href="{{ route('customer.prestasi.rekomendasi.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Rekomendasi</a>
                 
                 <div class="border-t border-gray-200"></div>
 
