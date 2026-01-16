@@ -28,7 +28,90 @@
         </div>
     </header>
 
-    <section id="news" class="py-16">
+    <!-- Section: Siapa Layak Punya Legacy -->
+    <section class="py-24 bg-white overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <!-- Image Side (Left) -->
+                <div class="w-full lg:w-1/2 relative">
+                    <div class="relative rounded-[3rem] overflow-hidden shadow-2xl">
+                        <img src="https://inr.or.id/storage/general/about-1.jpg" alt="Legacy" class="w-full h-[500px] object-cover">
+                        
+                        <!-- Circular Logo Overlay -->
+                        <div class="absolute bottom-8 left-8 bg-red-600 rounded-full w-32 h-32 flex items-center justify-center p-2 border-4 border-white shadow-lg">
+                            <div class="text-center text-white">
+                                <svg class="w-10 h-10 mx-auto mb-1 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                                <span class="text-[8px] font-bold leading-tight block uppercase">Legacy Records Indonesia</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Text Side (Right) -->
+                <div class="w-full lg:w-1/2">
+                    <h4 class="text-orange-500 font-bold tracking-widest mb-3 uppercase text-md">SIAPA LAYAK PUNYA LEGACY?</h4>
+                    <h2 class="text-3xl font-bold text-indigo-900 mb-6 leading-tight">
+                        Dalam membangun legacy, terdapat dua fokus utama
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+                        <!-- Box 1 -->
+                        <div class="bg-orange-50 p-6 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-orange-500 text-white p-3 rounded-xl shadow-sm">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h5 class="text-indigo-900 font-bold text-lg">Legacy from</h5>
+                                <p class="text-gray-600 text-md leading-relaxed">Berfokus pada institusi, organisasi, komunitas, atau lembaga.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Box 2 -->
+                        <div class="bg-orange-50 p-6 rounded-2xl flex items-start space-x-4">
+                            <div class="bg-orange-500 text-white p-3 rounded-xl shadow-sm">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h5 class="text-indigo-900 font-bold text-lg">Legacy for</h5>
+                                <p class="text-gray-600 text-md leading-relaxed">Berfokus pada seseorang secara pribadi atau individu.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Kedua pendekatan ini menunjukkan bahwa setiap orang dan setiap institusi memiliki potensi untuk meninggalkan warisan yang berharga, asalkan mereka berkomitmen untuk memberikan dampak positif.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-8">
+                        <!-- CEO Signature Area -->
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-[10px] text-gray-400 font-bold">230 x 230</div>
+                            <div>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Jon_Kirsch%27s_Signature.png" alt="Signature" class="h-8 mb-1 grayscale opacity-70">
+                                <p class="text-blue-900 font-bold text-sm">Khoirul, <span class="text-gray-400 font-normal">CEO</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Read More Button -->
+                        <a href="#" class="bg-red-800 hover:bg-red-900 text-white font-bold py-4 px-8 rounded-xl flex items-center transition duration-300 shadow-lg group">
+                            READ MORE
+                            <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="news" class="py-7">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-10">Berita Terbaru</h2>
             
