@@ -32,6 +32,9 @@
                     <x-nav-link :href="route('admin.achievements.index')" :active="request()->routeIs('admin.achievements.*')">
                         {{ __('Daftar Legacy') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
+                        {{ __('Konfirmasi Pembayaran') }}
+                    </x-nav-link>
                     @endif
 
                     @if(auth()->user()->role == 'pelanggan')
@@ -138,6 +141,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.achievements.index')" :active="request()->routeIs('admin.achievements.*')">
                 {{ __('Daftar Legacy') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
+                {{ __('Konfirmasi Pembayaran') }}
             </x-responsive-nav-link>
             @endif
 

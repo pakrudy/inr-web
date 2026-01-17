@@ -10,6 +10,8 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\AchievementController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Models\Post;
 
 Route::get('/', function () {
@@ -35,6 +37,10 @@ Route::middleware(['auth', 'verified'])->prefix('customer')->name('customer.')->
     Route::get('/prestasi/rekomendasi/create', [PrestasiController::class, 'createRekomendasi'])->name('prestasi.rekomendasi.create');
     Route::post('/prestasi/rekomendasi', [PrestasiController::class, 'storeRekomendasi'])->name('prestasi.rekomendasi.store');
     // todo: add more routes for prestasi management later (index, edit, update, destroy)
+    
+    // Payment Routes
+    Route::get('/prestasi/{prestasi}/payment', [TransactionController::class, 'create'])->name('prestasi.payment.create');
+    Route::post('/prestasi/{prestasi}/payment', [TransactionController::class, 'store'])->name('prestasi.payment.store');
 });
 
 
@@ -47,6 +53,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::resource('/admin/customers', CustomerController::class)->only(['index', 'show'])->names('admin.customers');
         Route::resource('/admin/achievements', AchievementController::class)->only(['index', 'show', 'edit', 'update'])->names('admin.achievements');
+        
+        // Transaction Management
+        Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');
+        Route::patch('/admin/transactions/{transaction}', [AdminTransactionController::class, 'confirm'])->name('admin.transactions.confirm');
     });
 
     // Editor & Admin bisa mengelola Berita dan Halaman

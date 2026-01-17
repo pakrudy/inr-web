@@ -10,7 +10,9 @@ class RecordsController extends Controller
     public function index(Request $request)
     {
         $query = Prestasi::with('user')
-            ->where('status_prestasi', 'aktif');
+            ->where('status_prestasi', 'aktif')
+            ->where('payment_status', 'paid') // New condition
+            ->where('expired_at', '>', now()); // New condition
 
         if ($request->has('search') && $request->search != '') {
             $searchTerm = '%' . $request->search . '%';
@@ -31,6 +33,8 @@ class RecordsController extends Controller
     {
         $record = Prestasi::with('user')
             ->where('status_prestasi', 'aktif')
+            ->where('payment_status', 'paid') // New condition
+            ->where('expired_at', '>', now()) // New condition
             ->findOrFail($id);
 
         return view('records.show', compact('record'));

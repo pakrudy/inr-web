@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Prestasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AchievementController extends Controller
 {
@@ -36,8 +37,6 @@ class AchievementController extends Controller
      */
     public function show(Prestasi $achievement)
     {
-        // Note: The primary key is 'prestasi_id', but route model binding works on the default 'id' or the getRouteKeyName() override.
-        // We will assume the binding works correctly or adjust if needed.
         return view('admin.achievements.show', compact('achievement'));
     }
 
@@ -54,15 +53,30 @@ class AchievementController extends Controller
      */
     public function update(Request $request, Prestasi $achievement)
     {
+        $is_validitas_valid = $request->input('validitas') === 'valid';
+
         $validated = $request->validate([
             'status_prestasi' => ['required', 'in:aktif,tidak aktif'],
             'validitas' => ['required', 'in:valid,belum valid'],
-            'status_rekomendasi' => ['required', 'in:Belum diterima,Diterima'],
+            
+            // These fields are only required if validitas is 'valid'
+//            'rekomendasi' => [Rule::requiredIf($is_validitas_valid), 'boolean'],
+//            'badge' => [Rule::requiredIf($is_validitas_valid), 'boolean'],
+            
+            // Status rekomendasi is only required if 'rekomendasi' is true AND validitas is 'valid'
+            'status_rekomendasi' => [
+                Rule::requiredIf(function () use ($request, $is_validitas_valid) {
+                    return $request->input('rekomendasi') == '1' && $is_validitas_valid;
+                }),
+                'in:Belum diterima,Diterima'
+            ],
+
+            // These can remain nullable as they are not strictly required even if valid
             'nomor_sertifikat_prestasi' => ['nullable', 'string', 'max:255'],
             'pemberi_rekomendasi' => ['nullable', 'string', 'max:255'],
             'foto_sertifikat' => ['nullable', 'image', 'max:2048'],
-            'rekomendasi' => ['required', 'boolean'],
-            'badge' => ['required', 'boolean'],
+            'rekomendasi' => ['nullable', 'string', 'max:255'],
+            'badge' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($request->hasFile('foto_sertifikat')) {
@@ -72,7 +86,7 @@ class AchievementController extends Controller
             }
             $validated['foto_sertifikat'] = $request->file('foto_sertifikat')->store('sertifikat', 'public');
         }
-
+        
         $achievement->update($validated);
 
         return redirect()->route('admin.achievements.index')->with('success', 'Data prestasi berhasil diperbarui.');

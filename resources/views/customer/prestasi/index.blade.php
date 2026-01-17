@@ -26,6 +26,9 @@
                                             Status
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                                            Status Pembayaran
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                                             Validitas
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
@@ -46,8 +49,31 @@
                                                 {{ $item->judul_prestasi }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full {{ $item->status_prestasi === 'aktif' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                @php
+                                                    $statusColor = 'bg-red-100 text-red-800'; // Default to 'tidak aktif'
+                                                    if ($item->status_prestasi === 'aktif') {
+                                                        $statusColor = 'bg-green-100 text-green-800';
+                                                    } elseif ($item->status_prestasi === 'expired') {
+                                                        $statusColor = 'bg-gray-200 text-gray-800';
+                                                    }
+                                                @endphp
+                                                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full {{ $statusColor }}">
                                                     {{ $item->status_prestasi }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                @php
+                                                    $paymentColor = 'bg-yellow-100 text-yellow-800';
+                                                    if ($item->payment_status === 'paid') {
+                                                        $paymentColor = 'bg-green-100 text-green-800';
+                                                    } elseif ($item->payment_status === 'failed') {
+                                                        $paymentColor = 'bg-red-100 text-red-800';
+                                                    } elseif ($item->payment_status === 'expired') {
+                                                        $paymentColor = 'bg-gray-200 text-gray-800';
+                                                    }
+                                                @endphp
+                                                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full {{ $paymentColor }}">
+                                                    {{ $item->payment_status }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -71,6 +97,11 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('customer.prestasi.show', $item) }}" class="px-3 py-1 text-indigo-600 hover:text-orange-700 rounded-full bg-gray-100 inline-flex">Detail</a>
+                                                @if($item->payment_status === 'pending')
+                                                    <a href="{{ route('customer.prestasi.payment.create', $item) }}" class="px-3 py-1 ml-2 text-green-600 hover:text-orange-700 rounded-full bg-gray-100 inline-flex">Bayar</a>
+                                                @elseif($item->status_prestasi === 'expired')
+                                                    <a href="{{ route('customer.prestasi.payment.create', $item) }}" class="px-3 py-1 ml-2 text-blue-600 hover:text-orange-700 rounded-full bg-gray-100 inline-flex">Perpanjang</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

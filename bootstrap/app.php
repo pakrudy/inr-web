@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);
+    })
+    ->withSchedule(function ($schedule) {
+        $schedule->command('achievements:expire')->daily();
     })    
     ->withExceptions(function (Exceptions $exceptions) {
         //

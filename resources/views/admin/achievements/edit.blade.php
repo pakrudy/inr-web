@@ -40,6 +40,7 @@
                                 <option value="aktif" {{ old('status_prestasi', $achievement->status_prestasi) == 'aktif' ? 'selected' : '' }}>Aktif</option>
                                 <option value="tidak aktif" {{ old('status_prestasi', $achievement->status_prestasi) == 'tidak aktif' ? 'selected' : '' }}>Tidak Aktif</option>
                             </select>
+                            <x-input-error :messages="$errors->get('status_prestasi')" class="mt-2" />
                         </div>
 
                         <!-- Validitas -->
@@ -49,12 +50,14 @@
                                 <option value="valid" {{ old('validitas', $achievement->validitas) == 'valid' ? 'selected' : '' }}>Valid</option>
                                 <option value="belum valid" {{ old('validitas', $achievement->validitas) == 'belum valid' ? 'selected' : '' }}>Belum Valid</option>
                             </select>
+                            <x-input-error :messages="$errors->get('validitas')" class="mt-2" />
                         </div>
 
                         <!-- Foto Sertifikat -->
                         <div class="mb-4">
                             <x-input-label for="foto_sertifikat" :value="__('Ganti Foto Sertifikat (Opsional, maks: 2MB)')" />
                             <input id="foto_sertifikat" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" type="file" name="foto_sertifikat" accept="image/*">
+                            <x-input-error :messages="$errors->get('foto_sertifikat')" class="mt-2" />
                             @if ($achievement->foto_sertifikat)
                                 <div class="mt-4">
                                     <p class="text-sm font-medium text-gray-700">Foto Saat Ini:</p>
@@ -69,6 +72,7 @@
                         <div class="mb-4">
                             <x-input-label for="nomor_sertifikat_prestasi" :value="__('Nomor Sertifikat')" />
                             <x-text-input id="nomor_sertifikat_prestasi" class="block mt-1 w-full" type="text" name="nomor_sertifikat_prestasi" :value="old('nomor_sertifikat_prestasi', $achievement->nomor_sertifikat_prestasi)" />
+                            <x-input-error :messages="$errors->get('nomor_sertifikat_prestasi')" class="mt-2" />
                         </div>
 
 
@@ -79,6 +83,7 @@
                                 <option value="1" {{ old('rekomendasi', $achievement->rekomendasi) == 1 ? 'selected' : '' }}>Ya</option>
                                 <option value="0" {{ old('rekomendasi', $achievement->rekomendasi) == 0 ? 'selected' : '' }}>Tidak</option>
                             </select>
+                            <x-input-error :messages="$errors->get('rekomendasi')" class="mt-2" />
                         </div>
 
                         <!-- Status Rekomendasi -->
@@ -88,6 +93,7 @@
                                 <option value="Belum diterima" {{ old('status_rekomendasi', $achievement->status_rekomendasi) == 'Belum diterima' ? 'selected' : '' }}>Belum diterima</option>
                                 <option value="Diterima" {{ old('status_rekomendasi', $achievement->status_rekomendasi) == 'Diterima' ? 'selected' : '' }}>Diterima</option>
                             </select>
+                            <x-input-error :messages="$errors->get('status_rekomendasi')" class="mt-2" />
                         </div>
 
                         <!-- Badge -->
@@ -97,6 +103,7 @@
                                 <option value="1" {{ old('badge', $achievement->badge) == 1 ? 'selected' : '' }}>Ya</option>
                                 <option value="0" {{ old('badge', $achievement->badge) == 0 ? 'selected' : '' }}>Tidak</option>
                             </select>
+                            <x-input-error :messages="$errors->get('badge')" class="mt-2" />
                         </div>
                     </div>
 

@@ -43,8 +43,17 @@ class Prestasi extends Model
      *
      * @return string
      */
-    public function getRouteKeyName()
-    {
-        return 'prestasi_id';
+        public function getRouteKeyName()
+        {
+            return 'prestasi_id';
+        }
+    
+        /**
+         * Get all of the prestasi's transactions.
+         */
+        public function transactions()
+        {
+            return $this->morphMany(Transaction::class, 'transactionable');
+        }
     }
-}
+    
