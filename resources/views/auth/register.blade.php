@@ -19,7 +19,7 @@
         <!-- Kategori User -->
         <div class="mt-4">
             <x-input-label for="kategori" :value="__('Kategori User')" />
-            <select name="kategori" id="kategori" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+            <select name="kategori" id="kategori" class="block mt-1 w-full border-gray-300 text-md focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                 <option value="individu" @selected(old('kategori') == 'individu')>Individu</option>
                 <option value="lembaga" @selected(old('kategori') == 'lembaga')>Lembaga</option>
             </select>

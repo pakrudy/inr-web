@@ -110,4 +110,59 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusPrestasi = document.getElementById('status_prestasi');
+            const validitas = document.getElementById('validitas');
+            const fotoSertifikat = document.getElementById('foto_sertifikat');
+            const nomorSertifikat = document.getElementById('nomor_sertifikat_prestasi');
+            const rekomendasi = document.getElementById('rekomendasi');
+            const statusRekomendasi = document.getElementById('status_rekomendasi');
+            const badge = document.getElementById('badge');
+
+            const allInputs = [validitas, fotoSertifikat, nomorSertifikat, rekomendasi, statusRekomendasi, badge];
+
+            function updateFormState() {
+                // Reset all fields to enabled first
+                allInputs.forEach(input => input.disabled = false);
+
+                const statusPrestasiValue = statusPrestasi.value;
+                const validitasValue = validitas.value;
+                const rekomendasiValue = rekomendasi.value;
+
+                // Rule 1: If status_prestasi is 'tidak aktif', disable everything else.
+                if (statusPrestasiValue === 'tidak aktif') {
+                    allInputs.forEach(input => input.disabled = true);
+                    return; // Stop further checks
+                }
+
+                // Rule 2: If validitas is 'belum valid', disable specific fields.
+                if (validitasValue === 'belum valid') {
+                    fotoSertifikat.disabled = true;
+                    nomorSertifikat.disabled = true;
+                    rekomendasi.disabled = true;
+                    statusRekomendasi.disabled = true;
+                    badge.disabled = true;
+                }
+
+                // Rule 3: If rekomendasi is '0', disable status_rekomendasi and badge.
+                // This rule can apply even if validitas is 'valid'.
+                if (rekomendasiValue === '0') {
+                    statusRekomendasi.disabled = true;
+                    badge.disabled = true;
+                }
+            }
+
+            // Add event listeners to the controlling dropdowns
+            statusPrestasi.addEventListener('change', updateFormState);
+            validitas.addEventListener('change', updateFormState);
+            rekomendasi.addEventListener('change', updateFormState);
+
+            // Set the initial state of the form on page load
+            updateFormState();
+        });
+    </script>
+    @endpush
 </x-app-layout>
