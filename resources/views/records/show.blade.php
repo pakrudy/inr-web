@@ -69,6 +69,9 @@
                             <h1 class="text-3xl md:text-3xl font-extrabold text-gray-900 mb-4 leading-tight">
                                 {{ $record->judul_prestasi }}
                             </h1>
+                            @if ($record->status_rekomendasi === 'Diterima')
+                                <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-18 mb-4">
+                            @endif
                             
                             @if($record->nomor_sertifikat_prestasi)
                                 <p class="text-gray-500 font-mono text-md bg-gray-50 inline-block px-2 py-1 rounded">
@@ -77,8 +80,8 @@
                             @endif
                         </div>
 
-                        <div class="border-t border-gray-100 pt-8 mt-4">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Penerima</h3>
+                        <div class="border-t border-gray-100 pt-8 mt-4 mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4"><i>Penerima</i></h3>
                             <div class="flex items-start space-x-4">
                                 <!-- Customer Photo -->
                                 <div class="flex-shrink-0">
@@ -91,8 +94,12 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <h4 class="text-xl font-bold text-gray-800">{{ $record->user->nama_lengkap ?? $record->user->name }}</h4>
-                                    <p class="text-orange-800 font-medium mb-2">{{ $record->user->jabatan_terkini ?? '-' }}</p>
+                                    <h4 class="text-xl font-bold text-orange-800">{{ $record->user->nama_lengkap ?? $record->user->name }}</h4>
+                                    @if ($record->user->kategori == 'Lembaga')
+                                        <p class="mb-2 mt-1"><span class="px-2 py-1 bg-orange-400 text-[12px] text-white uppercase tracking-wider">{{ $record->user->kategori }}</span></p>
+                                    @else
+                                        <p class="text-gray-800 font-medium mb-2">{{ $record->user->jabatan_terkini ?? '-' }}</p>
+                                    @endif
                                     @if($record->user->biodata)
                                         <p class="text-gray-600 text-sm leading-relaxed mt-2">
                                             {{ Str::limit($record->user->biodata, 150) }}
@@ -102,21 +109,13 @@
                             </div>
                         </div>
 
-                        @if($record->rekomendasi)
-                        <div class="border-t border-gray-100 pt-8 mt-8">
-                            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Rekomendasi / Deskripsi Tambahan</h3>
-                            <p class="text-gray-700 italic">
-                                "{{ $record->rekomendasi }}"
-                            </p>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
+    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
         <p>&copy; 2026 INR Team. All rights reserved.</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/fslightbox@latest/index.js"></script>

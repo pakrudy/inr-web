@@ -1,7 +1,7 @@
 <x-customer-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Ajukan Rekomendasi Prestasi') }}
+            {{ __('Ajukan Rekomendasi Legacy') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-1">Formulir Pengajuan Rekomendasi</h3>
-                <p class="text-sm text-gray-600 mb-6">Pilih salah satu prestasi Anda yang sudah divalidasi untuk diajukan agar mendapatkan rekomendasi.</p>
+                <p class="text-sm text-gray-600 mb-6">Pilih salah satu legacy Anda yang sudah divalidasi untuk diajukan agar mendapatkan rekomendasi.</p>
 
                 @if($eligiblePrestasi->isEmpty())
                     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
@@ -21,7 +21,7 @@
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm text-yellow-700">
-                                    Anda tidak memiliki prestasi yang memenuhi syarat (sudah valid dan belum pernah diajukan) untuk pengajuan rekomendasi saat ini.
+                                    Anda tidak memiliki legacy yang memenuhi syarat (sudah valid dan belum pernah diajukan) untuk pengajuan rekomendasi saat ini.
                                 </p>
                             </div>
                         </div>
@@ -32,9 +32,9 @@
 
                         <!-- Pilihan Prestasi -->
                         <div class="mb-4">
-                            <x-input-label for="prestasi_id" :value="__('Pilih Prestasi')" />
+                            <x-input-label for="prestasi_id" :value="__('Pilih Legacy')" />
                             <select name="prestasi_id" id="prestasi_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                <option value="" disabled selected>-- Pilih salah satu prestasi --</option>
+                                <option value="" disabled selected>-- Pilih salah satu legacy --</option>
                                 @foreach ($eligiblePrestasi as $prestasi)
                                     <option value="{{ $prestasi->prestasi_id }}" {{ old('prestasi_id') == $prestasi->prestasi_id ? 'selected' : '' }}>
                                         {{ $prestasi->judul_prestasi }} (No: {{ $prestasi->nomor_sertifikat_prestasi ?? 'N/A' }})

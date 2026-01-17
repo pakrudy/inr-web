@@ -29,10 +29,10 @@
                                             Validitas
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                            Ajukan Rekomendasi?
+                                            Ajukan<br/>Rekomendasi?
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                            Tanggal Pengajuan
+                                            Tanggal<br/>Pengajuan
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
                                             Aksi
@@ -46,22 +46,22 @@
                                                 {{ $item->judul_prestasi }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $item->status_prestasi === 'aktif' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full {{ $item->status_prestasi === 'aktif' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                                     {{ $item->status_prestasi }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $item->validitas === 'valid' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full {{ $item->validitas === 'valid' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800' }}">
                                                     {{ $item->validitas }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 @if ($item->rekomendasi)
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                    <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                                         Ya
                                                     </span>
                                                 @else
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                    <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-600">
                                                         Tidak
                                                     </span>
                                                 @endif
@@ -70,7 +70,7 @@
                                                 {{ $item->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('customer.prestasi.show', $item) }}" class="text-indigo-600 hover:text-indigo-900">Detail</a>
+                                                <a href="{{ route('customer.prestasi.show', $item) }}" class="px-3 py-1 text-indigo-600 hover:text-orange-700 rounded-full bg-gray-100 inline-flex">Detail</a>
                                             </td>
                                         </tr>
                                     @endforeach

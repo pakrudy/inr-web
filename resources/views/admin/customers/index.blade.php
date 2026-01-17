@@ -16,7 +16,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lengkap</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jabatan</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bergabung pada</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
@@ -25,8 +25,8 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $customer->nama_lengkap ?? $customer->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $customer->email }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $customer->jabatan_terkini ?? '-' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $customer->created_at->format('d M Y') }}</td>
+                                        <td class="px-6 py-4 max-w-xs truncate">{{ $customer->jabatan_terkini ?? '-' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $customer->kategori }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <a href="{{ route('admin.customers.show', $customer) }}" class="text-indigo-600 hover:text-indigo-900">Detail</a>
                                         </td>

@@ -51,14 +51,8 @@
                             </select>
                         </div>
 
-                        <!-- Nomor Sertifikat -->
-                        <div class="mb-4 col-span-2">
-                            <x-input-label for="nomor_sertifikat_prestasi" :value="__('Nomor Sertifikat')" />
-                            <x-text-input id="nomor_sertifikat_prestasi" class="block mt-1 w-full" type="text" name="nomor_sertifikat_prestasi" :value="old('nomor_sertifikat_prestasi', $achievement->nomor_sertifikat_prestasi)" />
-                        </div>
-
                         <!-- Foto Sertifikat -->
-                        <div class="mb-4 col-span-2">
+                        <div class="mb-4">
                             <x-input-label for="foto_sertifikat" :value="__('Ganti Foto Sertifikat (Opsional, maks: 2MB)')" />
                             <input id="foto_sertifikat" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" type="file" name="foto_sertifikat" accept="image/*">
                             @if ($achievement->foto_sertifikat)
@@ -71,13 +65,28 @@
                             @endif
                         </div>
 
+                        <!-- Nomor Sertifikat -->
+                        <div class="mb-4">
+                            <x-input-label for="nomor_sertifikat_prestasi" :value="__('Nomor Sertifikat')" />
+                            <x-text-input id="nomor_sertifikat_prestasi" class="block mt-1 w-full" type="text" name="nomor_sertifikat_prestasi" :value="old('nomor_sertifikat_prestasi', $achievement->nomor_sertifikat_prestasi)" />
+                        </div>
+
 
                         <!-- Rekomendasi -->
                         <div class="mb-4">
-                            <x-input-label for="rekomendasi" :value="__('Rekomendasi')" />
+                            <x-input-label for="rekomendasi" :value="__('Ajukan Rekomendasi?')" />
                             <select id="rekomendasi" name="rekomendasi" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                 <option value="1" {{ old('rekomendasi', $achievement->rekomendasi) == 1 ? 'selected' : '' }}>Ya</option>
                                 <option value="0" {{ old('rekomendasi', $achievement->rekomendasi) == 0 ? 'selected' : '' }}>Tidak</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Rekomendasi -->
+                        <div class="mb-4">
+                            <x-input-label for="status_rekomendasi" :value="__('Status Rekomendasi')" />
+                            <select id="status_rekomendasi" name="status_rekomendasi" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                <option value="Belum diterima" {{ old('status_rekomendasi', $achievement->status_rekomendasi) == 'Belum diterima' ? 'selected' : '' }}>Belum diterima</option>
+                                <option value="Diterima" {{ old('status_rekomendasi', $achievement->status_rekomendasi) == 'Diterima' ? 'selected' : '' }}>Diterima</option>
                             </select>
                         </div>
 
@@ -90,12 +99,6 @@
                             </select>
                         </div>
                     </div>
-                        
-                        <!-- Pemberi Rekomendasi -->
-                        <div class="mb-4 col-span-2">
-                            <x-input-label for="pemberi_rekomendasi" :value="__('Pemberi Rekomendasi')" />
-                            <x-text-input id="pemberi_rekomendasi" class="block mt-1 w-full" type="text" name="pemberi_rekomendasi" :value="old('pemberi_rekomendasi', $achievement->pemberi_rekomendasi)" />
-                        </div>
 
                     <div class="mt-6 flex items-center justify-end gap-4">
                         <a href="{{ route('admin.achievements.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Batal</a>

@@ -28,13 +28,13 @@
                             <h3 class="text-lg font-medium text-gray-900">Nomor Sertifikat</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $prestasi->nomor_sertifikat_prestasi ?? 'Belum ada' }}</p>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900">Pemberi Rekomendasi</h3>
-                            <p class="mt-1 text-sm text-gray-600">{{ $prestasi->pemberi_rekomendasi ?? 'Belum ada' }}</p>
-                        </div>
                          <div>
-                            <h3 class="text-lg font-medium text-gray-900">Rekomendasi dari Admin</h3>
+                            <h3 class="text-lg font-medium text-gray-900">Diajukan Rekomendasi?</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $prestasi->rekomendasi ? 'Ya' : 'Tidak' }}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">Mendapat Rekomendasi?</h3>
+                            <p class="mt-1 text-sm text-gray-600">{{ $prestasi->status_rekomendasi }}</p>
                         </div>
                         <div>
                             <h3 class="text-lg font-medium text-gray-900">Badge dari Admin</h3>

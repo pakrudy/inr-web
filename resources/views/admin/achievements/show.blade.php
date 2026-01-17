@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-            {{ __('Review Legacy: ') }} {{ $achievement->judul_prestasi }}
+            {{ __('Review Legacy: ') }} <span class="text-orange-700">{{ $achievement->judul_prestasi }}</span>
         </h2>
     </x-slot>
 
@@ -43,7 +43,7 @@
                             <h3 class="text-md font-medium text-gray-900">Validitas</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->validitas }}</p>
                         </div>
-                        <div class="md:col-span-2">
+                        <div>
                             <h3 class="text-md font-medium text-gray-900">Foto Sertifikat</h3>
                             @if($achievement->foto_sertifikat)
                                 <img src="{{ asset('storage/' . $achievement->foto_sertifikat) }}" alt="Foto Sertifikat" class="mt-2 rounded-md shadow-md max-w-sm">
@@ -56,12 +56,12 @@
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->nomor_sertifikat_prestasi ?? '-' }}</p>
                         </div>
                         <div>
-                            <h3 class="text-md font-medium text-gray-900">Rekomendasi</h3>
+                            <h3 class="text-md font-medium text-gray-900">Mengajukan Rekomendasi?</h3>
                             <p class="mt-1 text-sm text-gray-600">{{ $achievement->rekomendasi ? 'Ya' : 'Tidak' }}</p>
                         </div>
                         <div>
-                            <h3 class="text-md font-medium text-gray-900">Pemberi Rekomendasi</h3>
-                            <p class="mt-1 text-sm text-gray-600">{{ $achievement->pemberi_rekomendasi ?? '-' }}</p>
+                            <h3 class="text-md font-medium text-gray-900">Status Rekomendasi</h3>
+                            <p class="mt-1 text-sm text-gray-600">{{ $achievement->status_rekomendasi }}</p>
                         </div>
                         <div>
                             <h3 class="text-md font-medium text-gray-900">Badge</h3>

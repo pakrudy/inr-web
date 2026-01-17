@@ -12,9 +12,22 @@ class AchievementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $achievements = Prestasi::with('user')->latest()->paginate(15);
+        $query = Prestasi::with('user')->latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('judul_prestasi', 'like', $searchTerm)
+                    ->orWhereHas('user', function ($userQuery) use ($searchTerm) {
+                        $userQuery->where('nama_lengkap', 'like', $searchTerm);
+                    });
+            });
+        }
+
+        $achievements = $query->paginate(15)->appends($request->only('search'));
+        
         return view('admin.achievements.index', compact('achievements'));
     }
 
@@ -44,6 +57,7 @@ class AchievementController extends Controller
         $validated = $request->validate([
             'status_prestasi' => ['required', 'in:aktif,tidak aktif'],
             'validitas' => ['required', 'in:valid,belum valid'],
+            'status_rekomendasi' => ['required', 'in:Belum diterima,Diterima'],
             'nomor_sertifikat_prestasi' => ['nullable', 'string', 'max:255'],
             'pemberi_rekomendasi' => ['nullable', 'string', 'max:255'],
             'foto_sertifikat' => ['nullable', 'image', 'max:2048'],
