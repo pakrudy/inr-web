@@ -96,11 +96,11 @@
                                                 {{ $item->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('customer.prestasi.show', $item) }}" class="px-3 py-1 text-indigo-600 hover:text-orange-700 rounded-full bg-gray-100 inline-flex">Detail</a>
+                                                <a href="{{ route('customer.prestasi.show', $item) }}" class="px-3 py-1 text-gray-200 hover:text-white rounded-full bg-indigo-500 inline-flex">Detail</a>
                                                 @if($item->payment_status === 'pending')
-                                                    <a href="{{ route('customer.prestasi.payment.create', $item) }}" class="px-3 py-1 ml-2 text-green-600 hover:text-orange-700 rounded-full bg-gray-100 inline-flex">Bayar</a>
+                                                    <a href="{{ route('customer.prestasi.payment.create', $item) }}" class="px-3 py-1 ml-2 text-gray-200 hover:text-white rounded-full bg-orange-400 inline-flex">Bayar</a>
                                                 @elseif($item->status_prestasi === 'expired')
-                                                    <a href="{{ route('customer.prestasi.payment.create', $item) }}" class="px-3 py-1 ml-2 text-blue-600 hover:text-orange-700 rounded-full bg-gray-100 inline-flex">Perpanjang</a>
+                                                    <a href="{{ route('customer.prestasi.payment.create', $item) }}" class="px-3 py-1 ml-2 text-gray-200 hover:text-white rounded-full bg-gray-100 inline-flex">Perpanjang</a>
                                                 @endif
                                             </td>
                                         </tr>
