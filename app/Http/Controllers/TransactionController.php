@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prestasi;
-use App\Models\Transaction;
+use App\Models\Legacy;
+use App\Models\Recommendation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,52 +12,136 @@ class TransactionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Prestasi $prestasi)
+    public function create(Request $request)
     {
-        // Ensure the user is authorized to pay for this prestasi
-        if (Auth::id() !== $prestasi->user_id) {
+        $model = $this->getTransactionable($request);
+        $paymentType = $this->determinePaymentType($model);
+
+        // Ensure the user is authorized to pay for this item
+        if (Auth::id() !== $model->user_id) {
             abort(403);
         }
 
-        // Forbid creating a new payment if it's already active and not expiring soon
-        if ($prestasi->status_prestasi === 'aktif' && $prestasi->expired_at > now()->addDays(7)) {
-             return redirect()->route('customer.prestasi.index')->with('error', 'This achievement is already active.');
+        // Business logic for when payments are allowed or not
+        if ($model instanceof Legacy && $model->status === 'active' && $model->is_indexed) {
+            return redirect()->route('customer.legacies.index')->with('error', 'This legacy is already active and indexed.');
+        }
+        if ($model instanceof Recommendation && $model->status === 'active' && !$model->is_indexed && $model->expires_at > now()->addDays(7)) {
+             return redirect()->route('customer.recommendations.index')->with('error', 'This recommendation is already active and not yet eligible for renewal.');
         }
 
-        return view('customer.prestasi.payment.create', compact('prestasi'));
+        // Check if a payment for the determined type is already pending
+        $hasPendingPayment = $model->transactions()
+            ->where('status', 'pending')
+            ->where('transaction_type', $paymentType)
+            ->exists();
+        
+        $view = ($model instanceof Legacy) ? 'customer.legacies.payment.create' : 'customer.recommendations.payment.create';
+
+        return view($view, [
+            'model' => $model,
+            'hasPendingPayment' => $hasPendingPayment,
+            'paymentType' => $paymentType,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Prestasi $prestasi)
+    public function store(Request $request)
     {
-        if (Auth::id() !== $prestasi->user_id) {
+        $model = $this->getTransactionable($request);
+        $paymentType = $request->input('payment_type');
+
+        if (Auth::id() !== $model->user_id) {
             abort(403);
         }
 
-        $transactionType = ($prestasi->status_prestasi === 'expired') 
-            ? 'achievement_renewal' 
-            : 'achievement_registration';
-
         // Check if there is already a PENDING transaction to prevent duplicates
-        $pendingTransactionExists = $prestasi->transactions()
+        $pendingTransactionExists = $model->transactions()
             ->where('status', 'pending')
+            ->where('transaction_type', $paymentType)
             ->exists();
 
         if ($pendingTransactionExists) {
-            return back()->with('status', 'transaction-exists')->with('error', 'You already have a pending payment for this item.');
+            return back()->with('error', 'You already have a pending payment for this item.');
         }
+        
+        // Determine amount and notes
+        list($amount, $notes) = $this->getPaymentDetails($model, $paymentType);
 
         // Create the transaction
-        $prestasi->transactions()->create([
+        $model->transactions()->create([
             'user_id' => Auth::id(),
-            'amount' => ($transactionType === 'achievement_renewal' ? 25000.00 : 50000.00), // Different price for renewal
+            'amount' => $amount,
             'status' => 'pending',
-            'type' => $transactionType,
-            'notes' => ucfirst(str_replace('_', ' ', $transactionType)) . ' for: ' . $prestasi->judul_prestasi,
+            'transaction_type' => $paymentType,
+            'notes' => $notes,
         ]);
 
-        return back()->with('status', 'transaction-created');
+        $routeName = ($model instanceof Legacy) ? 'customer.legacies.show' : 'customer.recommendations.show';
+
+        return redirect()->route($routeName, $model)->with('success', 'Permintaan pembayaran Anda telah dibuat dan sedang menunggu konfirmasi admin.');
+    }
+
+    /**
+     * Get the transactionable model from the request.
+     */
+    private function getTransactionable(Request $request)
+    {
+        if ($request->route('legacy')) {
+            return Legacy::findOrFail($request->route('legacy'));
+        }
+
+        if ($request->route('recommendation')) {
+            return Recommendation::findOrFail($request->route('recommendation'));
+        }
+
+        abort(404, 'Transactionable item not found.');
+    }
+
+    /**
+     * Get payment details based on model and payment type.
+     */
+    private function getPaymentDetails($model, string $paymentType): array
+    {
+        $modelName = $model instanceof Legacy ? 'Legacy' : 'Recommendation';
+        $title = $model instanceof Legacy ? $model->title : $model->place_name;
+
+        if ($paymentType === 'upgrade') {
+            $amount = $model instanceof Legacy ? 50000.00 : 25000.00;
+            $notes = "Upgrade payment for {$modelName}: {$title}";
+        } else { // 'initial' or 'renewal'
+            if ($model instanceof Recommendation && $model->status === 'expired') {
+                $amount = 25000.00; // Renewal price
+                $notes = "Renewal payment for {$modelName}: {$title}";
+            } else {
+                $amount = $model instanceof Legacy ? 100000.00 : 50000.00; // Initial price
+                $notes = "Initial payment for {$modelName}: {$title}";
+            }
+        }
+
+        return [$amount, $notes];
+    }
+
+    /**
+     * Determine the type of payment based on the model's state.
+     */
+    private function determinePaymentType($model): string
+    {
+        if ($model->status === 'pending') {
+            return 'initial';
+        }
+
+        if ($model->status === 'active' && !$model->is_indexed) {
+            return 'upgrade';
+        }
+
+        if ($model instanceof Recommendation && $model->status === 'expired') {
+            return 'renewal';
+        }
+
+        // Default or fallback case
+        return 'initial';
     }
 }

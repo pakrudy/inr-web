@@ -54,11 +54,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the prestasi for the user.
+     * Get the legacies for the user.
      */
-    public function prestasi()
+    public function legacies()
     {
-        return $this->hasMany(Prestasi::class, 'user_id', 'id');
+        return $this->hasMany(Legacy::class);
+    }
+
+    /**
+     * Get the recommendations for the user.
+     */
+    public function recommendations()
+    {
+        return $this->hasMany(Recommendation::class);
     }
 
     /**

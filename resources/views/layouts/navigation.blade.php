@@ -29,8 +29,11 @@
                     <x-nav-link :href="route('admin.customers.index')" :active="request()->routeIs('admin.customers.*')">
                         {{ __('Daftar Pelanggan') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.achievements.index')" :active="request()->routeIs('admin.achievements.*')">
-                        {{ __('Daftar Legacy') }}
+                    <x-nav-link :href="route('admin.legacies.index')" :active="request()->routeIs('admin.legacies.*')">
+                        {{ __('Legacies') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
+                        {{ __('Rekomendasi') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
                         {{ __('Konfirmasi Pembayaran') }}
@@ -38,26 +41,33 @@
                     @endif
 
                     @if(auth()->user()->role == 'pelanggan')
-                    <!-- Prestasi Dropdown -->
+                    <!-- Legacy Dropdown -->
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="left" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('customer.prestasi.*') ? 'border-indigo-400' : 'border-transparent' }} text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('customer.legacies.*') ? 'border-indigo-400' : 'border-transparent' }} text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>Legacy</div>
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
+                                    <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('customer.prestasi.index')">
-                                    {{ __('Tampilkan Legacy') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('customer.prestasi.create')">
-                                    {{ __('Ajukan Legacy') }}
-                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('customer.legacies.index')">{{ __('Lihat Legacy') }}</x-dropdown-link>
+                                <x-dropdown-link :href="route('customer.legacies.create')">{{ __('Ajukan Legacy') }}</x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+                    <!-- Recommendation Dropdown -->
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('customer.recommendations.*') ? 'border-indigo-400' : 'border-transparent' }} text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    <div>Rekomendasi</div>
+                                    <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('customer.recommendations.index')">{{ __('Lihat Rekomendasi') }}</x-dropdown-link>
+                                <x-dropdown-link :href="route('customer.recommendations.create')">{{ __('Ajukan Rekomendasi') }}</x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -139,8 +149,11 @@
             <x-responsive-nav-link :href="route('admin.customers.index')" :active="request()->routeIs('admin.customers.*')">
                 {{ __('Daftar Pelanggan') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.achievements.index')" :active="request()->routeIs('admin.achievements.*')">
-                {{ __('Daftar Legacy') }}
+            <x-responsive-nav-link :href="route('admin.legacies.index')" :active="request()->routeIs('admin.legacies.*')">
+                {{ __('Legacies') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
+                {{ __('Rekomendasi') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
                 {{ __('Konfirmasi Pembayaran') }}
@@ -150,13 +163,24 @@
             @if(auth()->user()->role == 'pelanggan')
                 <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
                     <div class="px-4">
-                        <div class="font-medium text-base text-gray-800">Prestasi</div>
+                        <div class="font-medium text-base text-gray-800">Legacy</div>
                     </div>
-                    <x-responsive-nav-link :href="route('customer.prestasi.index')" :active="request()->routeIs('customer.prestasi.index')">
-                        {{ __('Tampilkan Prestasi') }}
+                    <x-responsive-nav-link :href="route('customer.legacies.index')" :active="request()->routeIs('customer.legacies.index')">
+                        {{ __('Lihat Legacy') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('customer.prestasi.create')" :active="request()->routeIs('customer.prestasi.create')">
-                        {{ __('Ajukan Prestasi') }}
+                    <x-responsive-nav-link :href="route('customer.legacies.create')" :active="request()->routeIs('customer.legacies.create')">
+                        {{ __('Ajukan Legacy') }}
+                    </x-responsive-nav-link>
+                </div>
+                <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
+                    <div class="px-4">
+                        <div class="font-medium text-base text-gray-800">Rekomendasi</div>
+                    </div>
+                    <x-responsive-nav-link :href="route('customer.recommendations.index')" :active="request()->routeIs('customer.recommendations.index')">
+                        {{ __('Lihat Rekomendasi') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('customer.recommendations.create')" :active="request()->routeIs('customer.recommendations.create')">
+                        {{ __('Ajukan Rekomendasi') }}
                     </x-responsive-nav-link>
                 </div>
             @endif

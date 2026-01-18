@@ -72,7 +72,8 @@
 
             <!-- Desktop Menu -->
             <div class="hidden sm:flex sm:items-center sm:space-x-6">
-                <a href="{{ route('records.index') }}" class="text-gray-600 hover:text-indigo-600">Records</a>
+                <a href="{{ route('records.index') }}" class="text-gray-600 hover:text-indigo-600">Legacy Index</a>
+                <a href="{{ route('recommendations.index') }}" class="text-gray-600 hover:text-indigo-600">Recommendation Index</a>
                 @foreach ($public_pages as $nav_page)
                     <a href="{{ route('pages.show', $nav_page->slug) }}" class="text-gray-600 hover:text-indigo-600">{{ $nav_page->title }}</a>
                 @endforeach
@@ -104,7 +105,8 @@
     <!-- Responsive Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('records.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Records</a>
+            <a href="{{ route('records.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Legacy Index</a>
+            <a href="{{ route('recommendations.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Recommendation Index</a>
             @foreach ($public_pages as $nav_page)
                 <a href="{{ route('pages.show', $nav_page->slug) }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">{{ $nav_page->title }}</a>
             @endforeach

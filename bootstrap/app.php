@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withSchedule(function ($schedule) {
-        $schedule->command('achievements:expire')->daily();
+        $schedule->command('recommendations:expire')->daily();
     })    
     ->withExceptions(function (Exceptions $exceptions) {
         //

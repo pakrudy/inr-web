@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Records - Indonesian Legacy Records</title>
+    <title>Legacy Index - Indonesian Legacy Records</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased bg-gray-50">
@@ -12,8 +12,8 @@
 
     <main class="py-16">
         <div class="container mx-auto px-4">
-            <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-4">Public Records</h1>
-            <p class="text-center text-gray-600 mb-6">Browse and verify achievements that have been officially recorded.</p>
+            <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-4">Legacy Index</h1>
+            <p class="text-center text-gray-600 mb-6">Jelajahi legacy dan pencapaian yang telah tercatat secara resmi.</p>
 
             <!-- Search Form -->
             <div class="mb-14 max-w-lg mx-auto">
@@ -21,64 +21,52 @@
                     <input 
                         type="text" 
                         name="search" 
-                        placeholder="Search by name or title..." 
+                        placeholder="Cari berdasarkan nama atau judul..." 
                         class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
                         value="{{ request('search') }}"
                     >
                     <button type="submit" class="bg-orange-600 text-white px-4 py-2 rounded-r-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Search
+                        Cari
                     </button>
                 </form>
             </div>
             
             @if($records->isEmpty())
-                <p class="text-center text-gray-500">Tidak ada record yang tersedia untuk ditampilkan.</p>
+                <p class="text-center text-gray-500">Tidak ada legacy yang tersedia untuk ditampilkan.</p>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach ($records as $record)
-                        <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 flex p-5 space-x-6 items-center">
-                            <!-- Photo (Thumbnail) -->
-                            <div class="flex-shrink-0">
-                                @if ($record->foto_sertifikat)
-                                    <a href="{{ asset('storage/' . $record->foto_sertifikat) }}" data-fslightbox>
-                                        <img src="{{ asset('storage/' . $record->foto_sertifikat) }}" alt="Foto Sertifikat" class="h-34 w-24 object-cover rounded-lg shadow-sm hover:opacity-90 transition-opacity">
-                                    </a>
+                        <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden flex">
+                            <!-- Left: Image -->
+                            <a href="{{ route('records.show', $record->id) }}" class="block w-1/3 flex-shrink-0">
+                                @if ($record->photo)
+                                    <img src="{{ asset('storage/' . $record->photo) }}" alt="Foto Legacy" class="h-full w-full object-cover">
                                 @else
-                                    <div class="h-32 w-24 flex items-center justify-center text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-                                        <svg class="w-8 h-8 opacity-20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
+                                    <div class="h-full w-full flex items-center justify-center bg-gray-100 text-gray-300">
+                                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
                                     </div>
                                 @endif
-                            </div>
-
-                            <!-- Details -->
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center mb-1">
-                                    <h3 class="text-lg font-bold truncate {{ $record->validitas === 'valid' ? 'text-gray-900' : 'text-gray-500' }}" title="{{ $record->judul_prestasi }}">
-                                        <a href="{{ route('records.show', $record->prestasi_id) }}" class="hover:text-orange-700 transition-colors">
-                                            {{ $record->judul_prestasi }}
-                                        </a>
-                                    </h3>
-                                    @if ($record->validitas === 'valid')
-                                        <svg class="ml-1 w-5 h-5 flex-shrink-0 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                            </a>
+                            <!-- Right: Text -->
+                            <div class="p-5 flex flex-col justify-center w-2/3">
+                                @if ($record->is_indexed)
+                                    <div class="flex items-center text-blue-500 mb-2">
+                                        <svg class="w-5 h-5 flex-shrink-0 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
-                                    @endif
-                                </div>
-                                @if ($record->status_rekomendasi === 'Diterima')
-                                    <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-12 mt-1 mb-2">
-                                @endif
-                                <p class="text-orange-900 font-semibold text-lg truncate">{{ $record->user->nama_lengkap ?? $record->user->name }}</p>
-                                @if ($record->user->kategori == 'Lembaga')
-                                    <p class="mb-4"><span class="px-2 py-1 bg-orange-400 text-[12px] text-white uppercase tracking-wider">{{ $record->user->kategori }}</span></p>
-                                @else
-                                    <p class="text-gray-700 text-sm mb-3 italic">{{ $record->user->jabatan_terkini ?? 'Jabatan tidak tersedia' }}</p>
-                                @endif
-                                
-                                @if($record->nomor_sertifikat_prestasi)
-                                    <div class="inline-block px-2 py-1 bg-gray-100 rounded text-[15px] text-gray-500 font-mono">
-                                        No: {{ $record->nomor_sertifikat_prestasi }}
+                                        <span class="text-xs font-semibold uppercase">Verified</span>
                                     </div>
                                 @endif
+                                <h3 class="text-lg font-bold text-gray-900" title="{{ $record->title }}">
+                                    <a href="{{ route('records.show', $record->id) }}" class="hover:text-orange-700 transition-colors">
+                                        {{ $record->title }}
+                                    </a>
+                                </h3>
+                                <p class="text-gray-700 font-semibold text-md mt-1">{{ $record->user->name }}</p>
+                                @if ($record->user->kategori !== 'Lembaga' && $record->user->jabatan_terkini)
+                                    <p class="text-sm text-gray-500 mt-0.5">{{ $record->user->jabatan_terkini }}</p>
+                                @endif
+                                <p class="text-sm text-gray-500 mt-2">{{ Str::limit($record->description, 120) }}</p>
                             </div>
                         </div>
                     @endforeach
@@ -92,7 +80,7 @@
     </main>
 
     <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
-        <p>&copy; 2026 INR Team. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} INR Team. All rights reserved.</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/fslightbox@latest/index.js"></script>
 </body>

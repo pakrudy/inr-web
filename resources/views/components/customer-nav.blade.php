@@ -37,9 +37,32 @@
                          style="display: none;"
                          @click="open = false">
                         <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
-                            <a href="{{ route('customer.prestasi.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Tampilkan</a>
-                            <a href="{{ route('customer.prestasi.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ajukan</a>
-                            <a href="{{ route('customer.prestasi.rekomendasi.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ajukan Rekomendasi</a>
+                            <a href="{{ route('customer.legacies.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lihat Legacy</a>
+                            <a href="{{ route('customer.legacies.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ajukan Legacy</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                    <button @click="open = !open" class="inline-flex items-center text-gray-600 hover:text-indigo-600">
+                        <span>Rekomendasi</span>
+                        <svg class="ms-1 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute z-50 mt-2 w-48 rounded-md shadow-lg origin-top-right right-0"
+                         style="display: none;"
+                         @click="open = false">
+                        <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
+                            <a href="{{ route('customer.recommendations.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lihat Rekomendasi</a>
+                            <a href="{{ route('customer.recommendations.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ajukan Rekomendasi</a>
                         </div>
                     </div>
                 </div>
@@ -86,9 +109,13 @@
                 
                 <div class="border-t border-gray-200"></div>
 
-                <a href="{{ route('customer.prestasi.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Tampilkan Legacy</a>
-                <a href="{{ route('customer.prestasi.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Legacy</a>
-                <a href="{{ route('customer.prestasi.rekomendasi.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Rekomendasi</a>
+                <a href="{{ route('customer.legacies.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Lihat Legacy</a>
+                <a href="{{ route('customer.legacies.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Legacy</a>
+                
+                <div class="border-t border-gray-200"></div>
+
+                <a href="{{ route('customer.recommendations.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Lihat Rekomendasi</a>
+                <a href="{{ route('customer.recommendations.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Rekomendasi</a>
                 
                 <div class="border-t border-gray-200"></div>
 

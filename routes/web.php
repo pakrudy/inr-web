@@ -5,11 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PublicLegacyController;
+use App\Http\Controllers\PublicRecommendationController;
 use App\Http\Controllers\CustomerProfileController;
-use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\LegacyController;
+use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\AchievementController;
+use App\Http\Controllers\Admin\LegacyController as AdminLegacyController;
+use App\Http\Controllers\Admin\RecommendationController as AdminRecommendationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Models\Post;
@@ -22,25 +26,28 @@ Route::get('/', function () {
 // Route untuk halaman News
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 
-// Route untuk halaman Records
-Route::get('/records', [App\Http\Controllers\RecordsController::class, 'index'])->name('records.index');
-Route::get('/records/{id}', [App\Http\Controllers\RecordsController::class, 'show'])->name('records.show');
+// Route untuk halaman Records (Public Legacies)
+Route::get('/records', [PublicLegacyController::class, 'index'])->name('records.index');
+Route::get('/records/{legacy}', [PublicLegacyController::class, 'show'])->name('records.show');
+
+// Route untuk halaman Public Recommendations
+Route::get('/recommendations', [PublicRecommendationController::class, 'index'])->name('recommendations.index');
+Route::get('/recommendations/{recommendation}', [PublicRecommendationController::class, 'show'])->name('recommendations.show');
 
 // Customer Routes
-Route::middleware(['auth', 'verified'])->prefix('customer')->name('customer.')->group(function () {
+Route::middleware(['auth', 'verified', 'role:pelanggan'])->prefix('customer')->name('customer.')->group(function () {
     Route::get('/profile', [CustomerProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [CustomerProfileController::class, 'update'])->name('profile.update');
-    Route::get('/prestasi/create', [PrestasiController::class, 'create'])->name('prestasi.create');
-    Route::post('/prestasi', [PrestasiController::class, 'store'])->name('prestasi.store');
-    Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
-    Route::get('/prestasi/{prestasi}', [PrestasiController::class, 'show'])->name('prestasi.show');
-    Route::get('/prestasi/rekomendasi/create', [PrestasiController::class, 'createRekomendasi'])->name('prestasi.rekomendasi.create');
-    Route::post('/prestasi/rekomendasi', [PrestasiController::class, 'storeRekomendasi'])->name('prestasi.rekomendasi.store');
-    // todo: add more routes for prestasi management later (index, edit, update, destroy)
     
-    // Payment Routes
-    Route::get('/prestasi/{prestasi}/payment', [TransactionController::class, 'create'])->name('prestasi.payment.create');
-    Route::post('/prestasi/{prestasi}/payment', [TransactionController::class, 'store'])->name('prestasi.payment.store');
+    // Legacy Routes
+    Route::resource('legacies', LegacyController::class);
+    Route::get('legacies/{legacy}/payment', [TransactionController::class, 'create'])->name('legacies.payment.create');
+    Route::post('legacies/{legacy}/payment', [TransactionController::class, 'store'])->name('legacies.payment.store');
+
+    // Recommendation Routes
+    Route::resource('recommendations', RecommendationController::class);
+    Route::get('recommendations/{recommendation}/payment', [TransactionController::class, 'create'])->name('recommendations.payment.create');
+    Route::post('recommendations/{recommendation}/payment', [TransactionController::class, 'store'])->name('recommendations.payment.store');
 });
 
 
@@ -52,7 +59,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::resource('/admin/customers', CustomerController::class)->only(['index', 'show'])->names('admin.customers');
-        Route::resource('/admin/achievements', AchievementController::class)->only(['index', 'show', 'edit', 'update'])->names('admin.achievements');
+        Route::resource('/admin/legacies', AdminLegacyController::class)->names('admin.legacies');
+        Route::resource('/admin/recommendations', AdminRecommendationController::class)->names('admin.recommendations');
         
         // Transaction Management
         Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');
