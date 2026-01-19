@@ -29,6 +29,9 @@
                                             {{ __('Status') }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ __('Terindeks') }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             {{ __('Kadaluarsa Pada') }}
                                         </th>
                                         <th scope="col" class="relative px-6 py-3">
@@ -43,14 +46,22 @@
                                                 {{ $recommendation->place_name }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                @if ($recommendation->status === 'pending' && $recommendation->has_pending_transaction)
-                                                    {{ __('Waiting Admin Approval') }}
+                                                @if (($recommendation->status === 'pending' && $recommendation->has_pending_initial_payment) || ($recommendation->status === 'expired' && $recommendation->has_pending_renewal_payment))
+                                                    <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                                 @else
                                                     {{ ucfirst($recommendation->status) }}
                                                 @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 @if ($recommendation->is_indexed)
-                                                    <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                        {{ __('Terindeks') }}
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                        {{ __('Ya') }}
+                                                    </span>
+                                                @elseif ($recommendation->has_pending_upgrade_payment)
+                                                    <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
+                                                @else
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                        {{ __('Tidak') }}
                                                     </span>
                                                 @endif
                                             </td>
@@ -59,11 +70,15 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <a href="{{ route('customer.recommendations.show', $recommendation) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Lihat') }}</a>
-                                                @if (!$recommendation->has_pending_transaction)
-                                                    @if ($recommendation->status === 'pending' || ($recommendation->status === 'active' && !$recommendation->is_indexed) || $recommendation->status === 'expired')
-                                                        <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-green-600 hover:text-green-900">{{ $recommendation->status === 'pending' ? __('Bayar') : ($recommendation->status === 'expired' ? __('Perpanjang') : __('Upgrade')) }}</a>
-                                                    @endif
+
+                                                @if ($recommendation->status === 'pending' && !$recommendation->has_pending_initial_payment)
+                                                    <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-green-600 hover:text-green-900">{{ __('Bayar') }}</a>
+                                                @elseif ($recommendation->status === 'active' && !$recommendation->is_indexed && !$recommendation->has_pending_upgrade_payment)
+                                                    <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
+                                                @elseif ($recommendation->status === 'expired' && !$recommendation->has_pending_renewal_payment)
+                                                     <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-orange-600 hover:text-orange-900">{{ __('Perpanjang') }}</a>
                                                 @endif
+                                                
                                                 <a href="{{ route('customer.recommendations.edit', $recommendation) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
                                             </td>
                                         </tr>

@@ -14,13 +14,13 @@ class RecommendationController extends Controller
      */
     public function index()
     {
-        $recommendations = Auth::user()->recommendations()->with(['transactions' => function ($query) {
-            $query->where('status', 'pending')
-                  ->whereIn('transaction_type', ['initial', 'upgrade', 'renewal']);
-        }])->latest()->get();
+        $recommendations = Auth::user()->recommendations()->with('transactions')->latest()->get();
 
         foreach ($recommendations as $recommendation) {
-            $recommendation->has_pending_transaction = $recommendation->transactions->isNotEmpty();
+            $pendingTransactions = $recommendation->transactions->where('status', 'pending');
+            $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+            $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+            $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
         }
 
         return view('customer.recommendations.index', compact('recommendations'));
@@ -64,14 +64,12 @@ class RecommendationController extends Controller
             abort(403);
         }
 
-        // Eager load pending transactions for this specific recommendation
-        $recommendation->load(['transactions' => function ($query) {
-            $query->where('status', 'pending')
-                  ->whereIn('transaction_type', ['initial', 'upgrade', 'renewal']);
-        }]);
+        $recommendation->load('transactions');
 
-        // Add the has_pending_transaction flag
-        $recommendation->has_pending_transaction = $recommendation->transactions->isNotEmpty();
+        $pendingTransactions = $recommendation->transactions->where('status', 'pending');
+        $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+        $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+        $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
 
         return view('customer.recommendations.show', compact('recommendation'));
     }

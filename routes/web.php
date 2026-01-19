@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\LegacyController as AdminLegacyController;
 use App\Http\Controllers\Admin\RecommendationController as AdminRecommendationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
+use App\Http\Controllers\NotificationController;
 use App\Models\Post;
 
 Route::get('/', function () {
@@ -74,6 +75,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Notification Route
+    Route::get('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('notifications.read');
 });
 
 Route::get('/dashboard', function () {
@@ -85,7 +89,8 @@ Route::get('/dashboard', function () {
         return view('dashboard');
     }
     if ($user->role === 'pelanggan') {
-        return view('customer.dashboard');
+        $notifications = $user->unreadNotifications;
+        return view('customer.dashboard', compact('notifications'));
     }
 
     return redirect('/');

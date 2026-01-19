@@ -15,13 +15,12 @@ class LegacyController extends Controller
      */
     public function index()
     {
-        $legacies = Auth::user()->legacies()->with(['transactions' => function ($query) {
-            $query->where('status', 'pending')
-                  ->whereIn('transaction_type', ['initial', 'upgrade']); // Consider relevant payment types
-        }])->latest()->get();
+        $legacies = Auth::user()->legacies()->with('transactions')->latest()->get();
 
         foreach ($legacies as $legacy) {
-            $legacy->has_pending_transaction = $legacy->transactions->isNotEmpty();
+            $pendingTransactions = $legacy->transactions->where('status', 'pending');
+            $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+            $legacy->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
         }
 
         return view('customer.legacies.index', compact('legacies'));
@@ -64,14 +63,11 @@ class LegacyController extends Controller
             abort(403);
         }
 
-        // Eager load pending transactions for this specific legacy
-        $legacy->load(['transactions' => function ($query) {
-            $query->where('status', 'pending')
-                  ->whereIn('transaction_type', ['initial', 'upgrade']);
-        }]);
+        $legacy->load('transactions');
 
-        // Add the has_pending_transaction flag
-        $legacy->has_pending_transaction = $legacy->transactions->isNotEmpty();
+        $pendingTransactions = $legacy->transactions->where('status', 'pending');
+        $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+        $legacy->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
 
         return view('customer.legacies.show', compact('legacy'));
     }

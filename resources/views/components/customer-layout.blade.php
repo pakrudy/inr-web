@@ -19,7 +19,7 @@
         <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 flex flex-col">
             <x-customer-nav />
 
             <!-- Page Heading -->
@@ -41,9 +41,13 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-grow">
                 {{ $slot }}
             </main>
+
+            <footer class="bg-white mt-8 py-4 text-center text-sm text-gray-500 border-t">
+                <p>&copy; {{ date('Y') }} {{ config('app.name', 'Indonesian Legacy Records') }}. All Rights Reserved.</p>
+            </footer>
         </div>
         <script>
             tinymce.init({

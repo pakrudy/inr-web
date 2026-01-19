@@ -10,11 +10,7 @@
 
             <!-- Desktop Menu -->
             <div class="hidden sm:flex sm:items-center sm:space-x-6">
-                {{-- Public page links can be kept if desired, or removed. For now, I'll keep them. --}}
-                @foreach ($public_pages as $nav_page)
-                    <a href="{{ route('pages.show', $nav_page->slug) }}" class="text-gray-600 hover:text-indigo-600">{{ $nav_page->title }}</a>
-                @endforeach
-                <a href="{{ route('news.index') }}" class="text-gray-600 hover:text-indigo-600">Berita</a>
+                <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-indigo-600">Beranda</a>
                 
                 {{-- Customer-specific links --}}
                 <a href="{{ route('customer.profile.edit') }}" class="text-gray-600 hover:text-indigo-600">Edit Profil</a>
@@ -94,10 +90,7 @@
     <!-- Responsive Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @foreach ($public_pages as $nav_page)
-                <a href="{{ route('pages.show', $nav_page->slug) }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">{{ $nav_page->title }}</a>
-            @endforeach
-            <a href="{{ route('news.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Berita</a>
+            <a href="{{ route('dashboard') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Beranda</a>
         </div>
         <div class="pt-4 pb-3 border-t border-gray-200">
             <div class="px-4">
@@ -108,12 +101,16 @@
                 <a href="{{ route('customer.profile.edit') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Edit Profil</a>
                 
                 <div class="border-t border-gray-200"></div>
-
+                <div class="px-4 mt-3">
+                    <div class="font-medium text-base text-gray-800">Legacy</div>
+                </div>
                 <a href="{{ route('customer.legacies.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Lihat Legacy</a>
                 <a href="{{ route('customer.legacies.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Legacy</a>
                 
                 <div class="border-t border-gray-200"></div>
-
+                <div class="px-4 mt-3">
+                    <div class="font-medium text-base text-gray-800">Rekomendasi</div>
+                </div>
                 <a href="{{ route('customer.recommendations.index') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Lihat Rekomendasi</a>
                 <a href="{{ route('customer.recommendations.create') }}" class="block ps-3 pe-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300">Ajukan Rekomendasi</a>
                 

@@ -12,9 +12,28 @@ class LegacyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $legacies = Legacy::with('user')->latest()->paginate(15);
+        $query = Legacy::with('user', 'transactions');
+
+        if ($request->filled('search')) {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'like', $searchTerm)
+                  ->orWhereHas('user', function ($userQuery) use ($searchTerm) {
+                      $userQuery->where('name', 'like', $searchTerm);
+                  });
+            });
+        }
+
+        $legacies = $query->latest()->paginate(15)->appends($request->only('search'));
+
+        foreach ($legacies as $legacy) {
+            $pendingTransactions = $legacy->transactions->where('status', 'pending');
+            $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+            $legacy->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+        }
+
         return view('admin.legacies.index', compact('legacies'));
     }
 
@@ -23,6 +42,12 @@ class LegacyController extends Controller
      */
     public function show(Legacy $legacy)
     {
+        $legacy->load('user', 'transactions');
+
+        $pendingTransactions = $legacy->transactions->where('status', 'pending');
+        $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+        $legacy->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+
         return view('admin.legacies.show', compact('legacy'));
     }
 

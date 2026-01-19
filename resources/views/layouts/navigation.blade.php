@@ -36,7 +36,12 @@
                         {{ __('Rekomendasi') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
-                        {{ __('Konfirmasi Pembayaran') }}
+                        <div class="flex items-center">
+                            <span>{{ __('Konfirmasi Pembayaran') }}</span>
+                            @if(isset($pendingTransactionCount) && $pendingTransactionCount > 0)
+                                <span class="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ $pendingTransactionCount }}</span>
+                            @endif
+                        </div>
                     </x-nav-link>
                     @endif
 
@@ -156,7 +161,12 @@
                 {{ __('Rekomendasi') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
-                {{ __('Konfirmasi Pembayaran') }}
+                <div class="flex items-center justify-between">
+                    <span>{{ __('Konfirmasi Pembayaran') }}</span>
+                    @if(isset($pendingTransactionCount) && $pendingTransactionCount > 0)
+                        <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ $pendingTransactionCount }}</span>
+                    @endif
+                </div>
             </x-responsive-nav-link>
             @endif
 

@@ -43,8 +43,8 @@
                                                 {{ $legacy->title }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                @if ($legacy->status === 'pending' && $legacy->has_pending_transaction)
-                                                    {{ __('Waiting Admin Approval') }}
+                                                @if ($legacy->status === 'pending' && $legacy->has_pending_initial_payment)
+                                                    <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                                 @else
                                                     {{ ucfirst($legacy->status) }}
                                                 @endif
@@ -54,6 +54,8 @@
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                                         {{ __('Ya') }}
                                                     </span>
+                                                @elseif ($legacy->has_pending_upgrade_payment)
+                                                     <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                                 @else
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                         {{ __('Tidak') }}
@@ -62,11 +64,13 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <a href="{{ route('customer.legacies.show', $legacy) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Lihat') }}</a>
-                                                @if (!$legacy->has_pending_transaction)
-                                                    @if ($legacy->status === 'pending' || ($legacy->status === 'active' && !$legacy->is_indexed))
-                                                        <a href="{{ route('customer.legacies.payment.create', $legacy) }}" class="ml-3 text-green-600 hover:text-green-900">{{ $legacy->status === 'pending' ? __('Bayar') : __('Upgrade') }}</a>
-                                                    @endif
+                                                
+                                                @if ($legacy->status === 'pending' && !$legacy->has_pending_initial_payment)
+                                                    <a href="{{ route('customer.legacies.payment.create', $legacy) }}" class="ml-3 text-green-600 hover:text-green-900">{{ __('Bayar') }}</a>
+                                                @elseif ($legacy->status === 'active' && !$legacy->is_indexed && !$legacy->has_pending_upgrade_payment)
+                                                    <a href="{{ route('customer.legacies.payment.create', $legacy) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
                                                 @endif
+
                                                 <a href="{{ route('customer.legacies.edit', $legacy) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
                                             </td>
                                         </tr>

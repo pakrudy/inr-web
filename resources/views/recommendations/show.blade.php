@@ -54,10 +54,10 @@
                     </div>
 
                     <!-- Right Column: Details -->
-                    <div class="lg:col-span-3 p-8 lg:p-12 flex flex-col justify-center">
-                        <div class="mb-6">
+                    <div class="lg:col-span-3 px-8 pb-10 pt-7 lg:px-12 lg:pt5 lg:pb-12 flex flex-col">
+                        <div class="mb-5">
                             @if ($recommendation->is_indexed)
-                                <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-14 mb-2">
+                                <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-[5rem] mb-2">
                             @endif
                             
                             <h1 class="text-3xl md:text-3xl font-extrabold text-gray-900 mb-2 leading-tight">
@@ -68,12 +68,12 @@
                         </div>
                         
                         @if($recommendation->description)
-                            <div class="prose max-w-none text-gray-700 text-base leading-relaxed mb-8">
+                            <div class="prose max-w-none text-gray-700 text-base leading-relaxed mb-2">
                                 {!! Str::markdown($recommendation->description) !!}
                             </div>
                         @endif
 
-                        <div class="border-t border-gray-100 pt-8 mt-4">
+                        <div class="border-t border-gray-100 pt-4 mt-1">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Direkomendasikan Oleh</h3>
                             <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
@@ -86,7 +86,7 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <h4 class="text-lg font-bold text-orange-800">{{ $recommendation->user->name }}</h4>
+                                    <h4 class="text-lg font-bold text-orange-800">{{ $recommendation->user->nama_lengkap }}</h4>
                                     <p class="text-gray-700 font-medium">{{ $recommendation->user->jabatan_terkini ?? '-' }}</p>
                                 </div>
                             </div>

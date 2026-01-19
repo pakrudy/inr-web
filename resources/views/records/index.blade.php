@@ -38,11 +38,11 @@
                     @foreach ($records as $record)
                         <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden flex">
                             <!-- Left: Image -->
-                            <a href="{{ route('records.show', $record->id) }}" class="block w-1/3 flex-shrink-0">
+                            <a href="{{ route('records.show', $record->id) }}" class="block w-1/4 flex-shrink-0 bg-gray-100 ">
                                 @if ($record->photo)
-                                    <img src="{{ asset('storage/' . $record->photo) }}" alt="Foto Legacy" class="h-full w-full object-cover">
+                                    <img src="{{ asset('storage/' . $record->photo) }}" alt="Foto Legacy" class="p-4 h-48 w-38 items-center justify-center">
                                 @else
-                                    <div class="h-full w-full flex items-center justify-center bg-gray-100 text-gray-300">
+                                    <div class="p-4 h-48 w-38 flex items-center justify-center bg-gray-100 text-gray-300">
                                         <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
                                     </div>
                                 @endif
@@ -54,7 +54,7 @@
                                         <svg class="w-5 h-5 flex-shrink-0 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
-                                        <span class="text-xs font-semibold uppercase">Verified</span>
+                                        <span class="text-xs font-bold uppercase">Verified</span>
                                     </div>
                                 @endif
                                 <h3 class="text-lg font-bold text-gray-900" title="{{ $record->title }}">
@@ -62,7 +62,7 @@
                                         {{ $record->title }}
                                     </a>
                                 </h3>
-                                <p class="text-gray-700 font-semibold text-md mt-1">{{ $record->user->name }}</p>
+                                <p class="text-orange-700 font-semibold text-md mt-3">{{ $record->user->nama_lengkap }}</p>
                                 @if ($record->user->kategori !== 'Lembaga' && $record->user->jabatan_terkini)
                                     <p class="text-sm text-gray-500 mt-0.5">{{ $record->user->jabatan_terkini }}</p>
                                 @endif

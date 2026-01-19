@@ -94,7 +94,7 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <h4 class="text-xl font-bold text-orange-800">{{ $record->user->name }}</h4>
+                                    <h4 class="text-xl font-bold text-orange-800">{{ $record->user->nama_lengkap }}</h4>
                                     @if ($record->user->kategori == 'Lembaga')
                                         <p class="mb-2 mt-1"><span class="px-2 py-1 bg-orange-400 text-[12px] text-white uppercase tracking-wider">{{ $record->user->kategori }}</span></p>
                                     @else

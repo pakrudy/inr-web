@@ -40,7 +40,7 @@
                             <select name="status" id="status" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
                                 <option value="pending" @selected(old('status', $recommendation->status) === 'pending')>Pending</option>
                                 <option value="active" @selected(old('status', $recommendation->status) === 'active')>Active</option>
-                                <option value="expired" @selected(old('status', 'expired') === 'expired')>Expired</option>
+                                <option value="expired" @selected(old('status', $recommendation->status) === 'expired')>Expired</option>
                             </select>
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
                         </div>

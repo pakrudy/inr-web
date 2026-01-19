@@ -12,9 +12,30 @@ class RecommendationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $recommendations = Recommendation::with('user')->latest()->paginate(15);
+        $query = Recommendation::with('user', 'transactions');
+
+        if ($request->filled('search')) {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('place_name', 'like', $searchTerm)
+                  ->orWhere('address', 'like', $searchTerm)
+                  ->orWhereHas('user', function ($userQuery) use ($searchTerm) {
+                      $userQuery->where('name', 'like', $searchTerm);
+                  });
+            });
+        }
+        
+        $recommendations = $query->latest()->paginate(15)->appends($request->only('search'));
+
+        foreach ($recommendations as $recommendation) {
+            $pendingTransactions = $recommendation->transactions->where('status', 'pending');
+            $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+            $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+            $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
+        }
+
         return view('admin.recommendations.index', compact('recommendations'));
     }
 
@@ -23,6 +44,13 @@ class RecommendationController extends Controller
      */
     public function show(Recommendation $recommendation)
     {
+        $recommendation->load('user', 'transactions');
+
+        $pendingTransactions = $recommendation->transactions->where('status', 'pending');
+        $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
+        $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+        $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
+
         return view('admin.recommendations.show', compact('recommendation'));
     }
 

@@ -58,44 +58,95 @@
                 </div>
             </div>
 
-            <!-- Achievements Section -->
+            <!-- Legacies Section -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Daftar Prestasi yang Diajukan</h3>
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Daftar Legacy yang Diajukan</h3>
                  <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul Prestasi</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Pengajuan</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Validitas</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terindeks</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($customer->prestasi as $achievement)
+                            @forelse ($customer->legacies as $legacy)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $achievement->judul_prestasi }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $achievement->created_at->format('d M Y') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $achievement->status_prestasi }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $legacy->title }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $legacy->created_at->format('d M Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ 
+                                        ($legacy->status === 'pending' && $legacy->has_pending_initial_payment) 
+                                            ? __('Waiting Approval') 
+                                            : ucfirst($legacy->status) 
+                                    }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if ($achievement->validitas == 'valid')
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                {{ $achievement->validitas }}
-                                            </span>
+                                        @if ($legacy->is_indexed)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Ya</span>
+                                        @elseif ($legacy->has_pending_upgrade_payment)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Waiting Approval</span>
                                         @else
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                {{ $achievement->validitas }}
-                                            </span>
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <a href="{{ route('admin.achievements.show', $achievement) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="{{ route('admin.legacies.show', $legacy) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">Pelanggan ini belum mengajukan prestasi.</td>
+                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">Pelanggan ini belum mengajukan legacy.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Daftar Rekomendasi yang Diajukan</h3>
+                 <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Tempat</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terindeks</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kadaluarsa</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse ($customer->recommendations as $recommendation)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $recommendation->place_name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $recommendation->created_at->format('d M Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ 
+                                        (($recommendation->status === 'pending' && $recommendation->has_pending_initial_payment) || ($recommendation->status === 'expired' && $recommendation->has_pending_renewal_payment)) 
+                                            ? __('Waiting Approval') 
+                                            : ucfirst($recommendation->status) 
+                                    }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($recommendation->is_indexed)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Ya</span>
+                                        @elseif ($recommendation->has_pending_upgrade_payment)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Waiting Approval</span>
+                                        @else
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y') : '-' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <a href="{{ route('admin.recommendations.show', $recommendation) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">Pelanggan ini belum mengajukan rekomendasi.</td>
                                 </tr>
                             @endforelse
                         </tbody>

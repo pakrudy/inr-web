@@ -52,7 +52,7 @@
                                         {{ $recommendation->place_name }}
                                     </a>
                                     @if ($recommendation->is_indexed)
-                                        <span class="ml-2 flex-shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        <span class="ml-2 flex-shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-600 text-white">
                                             Recommended
                                         </span>
                                     @endif

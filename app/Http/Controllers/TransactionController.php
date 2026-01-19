@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Legacy;
 use App\Models\Recommendation;
+use App\Models\User;
+use App\Notifications\NewPendingTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class TransactionController extends Controller
 {
@@ -22,12 +25,13 @@ class TransactionController extends Controller
             abort(403);
         }
 
-        // Business logic for when payments are allowed or not
+        // Business logic for when payments are not allowed
+        if ($paymentType === 'renewal' && $model instanceof Recommendation && $model->expires_at > now()->addDays(7)) {
+            return redirect()->route('customer.recommendations.index')->with('error', 'This recommendation is not yet eligible for renewal.');
+        }
+
         if ($model instanceof Legacy && $model->status === 'active' && $model->is_indexed) {
             return redirect()->route('customer.legacies.index')->with('error', 'This legacy is already active and indexed.');
-        }
-        if ($model instanceof Recommendation && $model->status === 'active' && !$model->is_indexed && $model->expires_at > now()->addDays(7)) {
-             return redirect()->route('customer.recommendations.index')->with('error', 'This recommendation is already active and not yet eligible for renewal.');
         }
 
         // Check if a payment for the determined type is already pending
@@ -64,20 +68,25 @@ class TransactionController extends Controller
             ->exists();
 
         if ($pendingTransactionExists) {
-            return back()->with('error', 'You already have a pending payment for this item.');
+            $routeName = ($model instanceof Legacy) ? 'customer.legacies.payment.create' : 'customer.recommendations.payment.create';
+            return redirect()->route($routeName, $model)->with('error', 'Anda sudah memiliki permintaan pembayaran yang tertunda untuk item ini.');
         }
         
         // Determine amount and notes
         list($amount, $notes) = $this->getPaymentDetails($model, $paymentType);
 
         // Create the transaction
-        $model->transactions()->create([
+        $transaction = $model->transactions()->create([
             'user_id' => Auth::id(),
             'amount' => $amount,
             'status' => 'pending',
             'transaction_type' => $paymentType,
             'notes' => $notes,
         ]);
+
+        // Notify admins
+        $admins = User::where('role', 'admin')->get();
+        Notification::send($admins, new NewPendingTransaction($transaction));
 
         $routeName = ($model instanceof Legacy) ? 'customer.legacies.show' : 'customer.recommendations.show';
 

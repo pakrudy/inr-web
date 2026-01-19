@@ -29,15 +29,29 @@ class ExpireRecommendations extends Command
     {
         $this->info('Checking for expired recommendations...');
 
-        $expiredCount = Recommendation::where('status', 'active')
-            ->where('expires_at', '<', Carbon::now())
-            ->update(['status' => 'expired']);
+        // Find recommendations that are active and whose expiration date is today or in the past.
+        $expiredRecommendations = Recommendation::with('user')
+            ->where('status', 'active')
+            ->whereDate('expires_at', '<=', now())
+            ->get();
 
-        if ($expiredCount > 0) {
-            $this->info("Successfully marked {$expiredCount} recommendation(s) as expired.");
-        } else {
+        if ($expiredRecommendations->isEmpty()) {
             $this->info('No recommendations to expire.');
+            return 0;
         }
+
+        $this->info("Found {$expiredRecommendations->count()} recommendation(s) to expire...");
+
+        foreach ($expiredRecommendations as $recommendation) {
+            $recommendation->status = 'expired';
+            $recommendation->save();
+
+            // Notify the user
+            $recommendation->user->notify(new \App\Notifications\RecommendationExpired($recommendation));
+            $this->line('  - Expired and notified for: ' . $recommendation->place_name);
+        }
+
+        $this->info("Process complete. Successfully marked {$expiredRecommendations->count()} recommendation(s) as expired and notified users.");
 
         return 0;
     }

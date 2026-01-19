@@ -13,6 +13,24 @@
                 </div>
             </div>
 
+            <!-- Notifications Section -->
+            @if(isset($notifications) && $notifications->isNotEmpty())
+                <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-700 p-4 rounded-lg shadow-sm mb-6" role="alert">
+                    <p class="font-bold mb-2">Notifikasi Baru</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        @foreach ($notifications as $notification)
+                            <li>
+                                <a href="{{ route('notifications.read', $notification) }}" class="hover:underline">
+                                    {{ $notification->data['message'] }}
+                                </a>
+                                <span class="text-xs text-gray-500 ml-2">({{ $notification->created_at->diffForHumans() }})</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
             <!-- My Legacies Section -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 text-gray-900">
