@@ -83,6 +83,10 @@ class RecommendationController extends Controller
             abort(403);
         }
 
+        if ($recommendation->status !== 'pending') {
+            return redirect()->route('customer.recommendations.show', $recommendation)->with('error', 'Rekomendasi yang sudah aktif tidak dapat diedit.');
+        }
+
         return view('customer.recommendations.edit', compact('recommendation'));
     }
 
@@ -93,6 +97,10 @@ class RecommendationController extends Controller
     {
         if (Auth::id() !== $recommendation->user_id) {
             abort(403);
+        }
+
+        if ($recommendation->status !== 'pending') {
+            return redirect()->route('customer.recommendations.show', $recommendation)->with('error', 'Rekomendasi yang sudah aktif tidak dapat diedit.');
         }
 
         $validated = $request->validate([

@@ -42,12 +42,7 @@ class LegacyController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->file('photo')->store('legacies', 'public');
-        }
 
         Auth::user()->legacies()->create($validated);
 
@@ -81,6 +76,10 @@ class LegacyController extends Controller
             abort(403);
         }
 
+        if ($legacy->status !== 'pending') {
+            return redirect()->route('customer.legacies.show', $legacy)->with('error', 'Legacy yang sudah aktif tidak dapat diedit.');
+        }
+
         return view('customer.legacies.edit', compact('legacy'));
     }
 
@@ -93,19 +92,14 @@ class LegacyController extends Controller
             abort(403);
         }
 
+        if ($legacy->status !== 'pending') {
+            return redirect()->route('customer.legacies.show', $legacy)->with('error', 'Legacy yang sudah aktif tidak dapat diedit.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        if ($request->hasFile('photo')) {
-            // Delete old photo if it exists
-            if ($legacy->photo) {
-                Storage::disk('public')->delete($legacy->photo);
-            }
-            $validated['photo'] = $request->file('photo')->store('legacies', 'public');
-        }
 
         $legacy->update($validated);
 

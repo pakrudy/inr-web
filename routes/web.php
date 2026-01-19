@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\LegacyController as AdminLegacyController;
 use App\Http\Controllers\Admin\RecommendationController as AdminRecommendationController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\NotificationController;
@@ -62,6 +63,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/admin/customers', CustomerController::class)->only(['index', 'show'])->names('admin.customers');
         Route::resource('/admin/legacies', AdminLegacyController::class)->names('admin.legacies');
         Route::resource('/admin/recommendations', AdminRecommendationController::class)->names('admin.recommendations');
+        
+        // Settings Routes
+        Route::get('/admin/settings', [AdminSettingController::class, 'index'])->name('admin.settings.index');
+        Route::post('/admin/settings', [AdminSettingController::class, 'store'])->name('admin.settings.store');
         
         // Transaction Management
         Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');

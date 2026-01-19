@@ -79,7 +79,9 @@
                                                      <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-orange-600 hover:text-orange-900">{{ __('Perpanjang') }}</a>
                                                 @endif
                                                 
+                                                @if ($recommendation->status === 'pending' && !$recommendation->has_pending_initial_payment)
                                                 <a href="{{ route('customer.recommendations.edit', $recommendation) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

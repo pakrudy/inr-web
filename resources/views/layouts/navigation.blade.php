@@ -35,6 +35,9 @@
                     <x-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
                         {{ __('Rekomendasi') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.settings.index')" :active="request()->routeIs('admin.settings.*')">
+                        {{ __('Pengaturan') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
                         <div class="flex items-center">
                             <span>{{ __('Pembayaran') }}</span>
@@ -159,6 +162,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
                 {{ __('Rekomendasi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.settings.index')" :active="request()->routeIs('admin.settings.*')">
+                {{ __('Pengaturan') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
                 <div class="flex items-center justify-between">

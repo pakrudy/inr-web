@@ -79,9 +79,9 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse ($customer->legacies as $legacy)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $legacy->title }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $legacy->created_at->format('d M Y') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ 
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $legacy->title }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $legacy->created_at->format('d M Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ 
                                         ($legacy->status === 'pending' && $legacy->has_pending_initial_payment) 
                                             ? __('Waiting Approval') 
                                             : ucfirst($legacy->status) 
@@ -127,9 +127,9 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse ($customer->recommendations as $recommendation)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $recommendation->place_name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $recommendation->created_at->format('d M Y') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ 
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $recommendation->place_name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $recommendation->created_at->format('d M Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ 
                                         (($recommendation->status === 'pending' && $recommendation->has_pending_initial_payment) || ($recommendation->status === 'expired' && $recommendation->has_pending_renewal_payment)) 
                                             ? __('Waiting Approval') 
                                             : ucfirst($recommendation->status) 
@@ -143,7 +143,7 @@
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y') : '-' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y') : '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="{{ route('admin.recommendations.show', $recommendation) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a>
                                     </td>

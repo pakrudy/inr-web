@@ -27,13 +27,13 @@
                             $amount = 0;
                             $description = '';
                             if ($paymentType === 'initial') {
-                                $amount = 50000;
+                                $amount = $settings['payment.recommendation.initial'] ?? 50000;
                                 $description = 'Pembayaran awal untuk aktivasi Rekomendasi.';
                             } elseif ($paymentType === 'upgrade') {
-                                $amount = 25000;
+                                $amount = $settings['payment.recommendation.upgrade'] ?? 25000;
                                 $description = 'Pembayaran untuk upgrade Rekomendasi menjadi Terindeks (badge "recommended").';
                             } elseif ($paymentType === 'renewal') {
-                                $amount = 25000;
+                                $amount = $settings['payment.recommendation.renewal'] ?? 25000;
                                 $description = 'Pembayaran untuk perpanjangan Rekomendasi selama 1 tahun.';
                             }
                         @endphp

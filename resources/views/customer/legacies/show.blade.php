@@ -11,10 +11,13 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-bold">{{ $legacy->title }}</h3>
-                        <div>
+                        <div class="flex items-center">
+                            @if ($legacy->status === 'pending' && !$legacy->has_pending_initial_payment)
                             <a href="{{ route('customer.legacies.edit', $legacy) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 {{ __('Edit') }}
                             </a>
+                            @endif
+                            
                             @if ($legacy->status === 'pending' && !$legacy->has_pending_initial_payment)
                                 <a href="{{ route('customer.legacies.payment.create', $legacy) }}" class="ml-3 inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                     {{ __('Bayar untuk Aktivasi') }}
@@ -40,8 +43,8 @@
                             <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                 <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Status') }}</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                    @if ($legacy->status === 'pending' && $legacy->has_pending_transaction)
-                                        {{ __('Waiting Admin Approval') }}
+                                    @if ($legacy->status === 'pending' && $legacy->has_pending_initial_payment)
+                                        <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                     @else
                                         {{ ucfirst($legacy->status) }}
                                     @endif

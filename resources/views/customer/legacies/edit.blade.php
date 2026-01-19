@@ -27,20 +27,6 @@
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 
-                        <!-- Photo -->
-                        <div>
-                            <x-input-label for="photo" :value="__('Foto/Sertifikat')" />
-                            @if ($legacy->photo)
-                                <div class="mt-2">
-                                    <img src="{{ asset('storage/' . $legacy->photo) }}" alt="Current Photo" class="max-w-xs h-auto rounded-lg shadow-md">
-                                    <p class="text-sm text-gray-600 mt-1">{{ __('Foto saat ini.') }}</p>
-                                </div>
-                            @endif
-                            <input id="photo" type="file" name="photo" class="block mt-1 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
-                            <p class="mt-1 text-sm text-gray-500" id="file_input_help">{{ __('Biarkan kosong jika tidak ingin mengubah. PNG, JPG, JPEG, GIF (MAX. 2MB).') }}</p>
-                            <x-input-error :messages="$errors->get('photo')" class="mt-2" />
-                        </div>
-
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Simpan Perubahan') }}</x-primary-button>
                         </div>

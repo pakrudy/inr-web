@@ -33,10 +33,10 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($customers as $customer)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $customer->nama_lengkap ?? $customer->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $customer->email }}</td>
-                                        <td class="px-6 py-4 max-w-xs truncate">{{ $customer->jabatan_terkini ?? '-' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $customer->kategori }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $customer->nama_lengkap ?? $customer->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $customer->email }}</td>
+                                        <td class="px-6 py-4 max-w-xs truncate text-sm">{{ $customer->jabatan_terkini ?? '-' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $customer->kategori }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <a href="{{ route('admin.customers.show', $customer) }}" class="text-indigo-600 hover:text-indigo-900">Detail</a>
                                         </td>

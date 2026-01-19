@@ -74,7 +74,7 @@
                         @endif
 
                         <div class="border-t border-gray-100 pt-4 mt-1">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Direkomendasikan Oleh</h3>
+                            <h3 class="text-md font-semibold text-gray-900 mb-4">Direkomendasikan Oleh</h3>
                             <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
                                     @if ($recommendation->user->foto_pelanggan)
@@ -87,7 +87,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-lg font-bold text-orange-800">{{ $recommendation->user->nama_lengkap }}</h4>
-                                    <p class="text-gray-700 font-medium">{{ $recommendation->user->jabatan_terkini ?? '-' }}</p>
+                                    <p class="text-gray-700">{{ $recommendation->user->jabatan_terkini ?? '-' }}</p>
                                 </div>
                             </div>
                         </div>

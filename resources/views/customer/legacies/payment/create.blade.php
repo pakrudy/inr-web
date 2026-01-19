@@ -27,10 +27,10 @@
                             $amount = 0;
                             $description = '';
                             if ($paymentType === 'initial') {
-                                $amount = 100000;
+                                $amount = $settings['payment.legacy.initial'] ?? 100000;
                                 $description = 'Pembayaran awal untuk aktivasi Legacy.';
                             } elseif ($paymentType === 'upgrade') {
-                                $amount = 50000;
+                                $amount = $settings['payment.legacy.upgrade'] ?? 50000;
                                 $description = 'Pembayaran untuk upgrade Legacy menjadi Terindeks (centang biru).';
                             }
                         @endphp

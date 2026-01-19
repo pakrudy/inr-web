@@ -71,7 +71,9 @@
                                                     <a href="{{ route('customer.legacies.payment.create', $legacy) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
                                                 @endif
 
+                                                @if ($legacy->status === 'pending' && !$legacy->has_pending_initial_payment)
                                                 <a href="{{ route('customer.legacies.edit', $legacy) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

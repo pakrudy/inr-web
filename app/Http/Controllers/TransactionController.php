@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Legacy;
 use App\Models\Recommendation;
+use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\NewPendingTransaction;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class TransactionController extends Controller
     {
         $model = $this->getTransactionable($request);
         $paymentType = $this->determinePaymentType($model);
+        $settings = Setting::all()->pluck('value', 'key');
 
         // Ensure the user is authorized to pay for this item
         if (Auth::id() !== $model->user_id) {
@@ -46,6 +48,7 @@ class TransactionController extends Controller
             'model' => $model,
             'hasPendingPayment' => $hasPendingPayment,
             'paymentType' => $paymentType,
+            'settings' => $settings,
         ]);
     }
 
@@ -114,18 +117,24 @@ class TransactionController extends Controller
      */
     private function getPaymentDetails($model, string $paymentType): array
     {
+        $settings = Setting::all()->pluck('value', 'key');
         $modelName = $model instanceof Legacy ? 'Legacy' : 'Recommendation';
         $title = $model instanceof Legacy ? $model->title : $model->place_name;
 
+        $amount = 0;
+        $notes = '';
+
         if ($paymentType === 'upgrade') {
-            $amount = $model instanceof Legacy ? 50000.00 : 25000.00;
+            $key = ($model instanceof Legacy) ? 'payment.legacy.upgrade' : 'payment.recommendation.upgrade';
+            $amount = $settings[$key] ?? 0;
             $notes = "Upgrade payment for {$modelName}: {$title}";
         } else { // 'initial' or 'renewal'
-            if ($model instanceof Recommendation && $model->status === 'expired') {
-                $amount = 25000.00; // Renewal price
+            if ($model instanceof Recommendation && ($model->status === 'expired' || $paymentType === 'renewal')) {
+                $amount = $settings['payment.recommendation.renewal'] ?? 0;
                 $notes = "Renewal payment for {$modelName}: {$title}";
             } else {
-                $amount = $model instanceof Legacy ? 100000.00 : 50000.00; // Initial price
+                $key = ($model instanceof Legacy) ? 'payment.legacy.initial' : 'payment.recommendation.initial';
+                $amount = $settings[$key] ?? 0;
                 $notes = "Initial payment for {$modelName}: {$title}";
             }
         }
