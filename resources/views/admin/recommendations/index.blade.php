@@ -35,8 +35,8 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($recommendations as $recommendation)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $recommendation->place_name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $recommendation->user->name }}</td>
+                                        <td class="px-6 py-4 w-[450px] text-sm font-medium text-gray-900">{{ $recommendation->place_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $recommendation->user->nama_lengkap }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             @if ($recommendation->has_pending_initial_payment || $recommendation->has_pending_renewal_payment)
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
@@ -62,7 +62,7 @@
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y') : '-' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap w-[90px] text-sm text-gray-500">{{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y') : '-' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('admin.recommendations.show', $recommendation) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a>
                                             <a href="{{ route('admin.recommendations.edit', $recommendation) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">Edit</a>

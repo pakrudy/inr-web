@@ -12,22 +12,22 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <!--    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
-                    </x-nav-link>
+                    </x-nav-link> -->
 
                     @if(in_array(auth()->user()->role, ['admin', 'editor']))
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
-                        {{ __('Manajemen Berita') }}
+                        {{ __('Berita') }}
                     </x-nav-link>
                     <x-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.*')">
-                        {{ __('Manajemen Halaman') }}
+                        {{ __('Halaman') }}
                     </x-nav-link>
                     @endif
 
                     @if(auth()->user()->role == 'admin')
                     <x-nav-link :href="route('admin.customers.index')" :active="request()->routeIs('admin.customers.*')">
-                        {{ __('Daftar Pelanggan') }}
+                        {{ __('Pelanggan') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.legacies.index')" :active="request()->routeIs('admin.legacies.*')">
                         {{ __('Legacies') }}
@@ -37,7 +37,7 @@
                     </x-nav-link>
                     <x-nav-link :href="route('admin.transactions.index')" :active="request()->routeIs('admin.transactions.*')">
                         <div class="flex items-center">
-                            <span>{{ __('Konfirmasi Pembayaran') }}</span>
+                            <span>{{ __('Pembayaran') }}</span>
                             @if(isset($pendingTransactionCount) && $pendingTransactionCount > 0)
                                 <span class="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{ $pendingTransactionCount }}</span>
                             @endif

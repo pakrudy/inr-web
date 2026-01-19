@@ -21,7 +21,11 @@
                             </div>
                         @endif
                         <p class="mt-4 text-sm font-semibold text-gray-700">{{ $customer->name }}</p>
-                        <p class="text-xs text-gray-500">{{ $customer->role }}</p>
+                        @if ($customer->kategori === 'Individu')
+                        <p class="text-xs bg-gray-500 text-white py-1 px-2">{{ $customer->kategori }}</p>
+                        @else
+                        <p class="text-xs bg-orange-500 text-white py-1 px-2">{{ $customer->kategori }}</p>
+                        @endif
                     </div>
 
                     <!-- Customer Info -->

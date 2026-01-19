@@ -35,7 +35,7 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($legacies as $legacy)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $legacy->title }}</td>
+                                        <td class="px-6 py-4 text-sm w-[450px] font-medium text-gray-900">{{ $legacy->title }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $legacy->user->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             @if ($legacy->has_pending_initial_payment)
@@ -59,7 +59,7 @@
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $legacy->created_at->format('d M Y') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap w-[90px] text-sm text-gray-500">{{ $legacy->created_at->format('d M Y') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('admin.legacies.show', $legacy) }}" class="text-indigo-600 hover:text-indigo-900">Lihat</a>
                                             <a href="{{ route('admin.legacies.edit', $legacy) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">Edit</a>
