@@ -19,7 +19,7 @@ class CustomerController extends Controller
             $searchTerm = '%' . $request->search . '%';
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', $searchTerm)
-                  ->orWhere('email', 'like', $searchTerm)
+                  ->orWhere('email', 'like', 'searchTerm')
                   ->orWhere('nama_lengkap', 'like', $searchTerm);
             });
         }
@@ -54,5 +54,31 @@ class CustomerController extends Controller
         }
 
         return view('admin.customers.show', compact('customer'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(User $customer)
+    {
+        return view('admin.customers.edit', compact('customer'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $customer)
+    {
+        $validated = $request->validate([
+            'nama_lengkap' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $customer->id,
+            'jabatan_terkini' => 'nullable|string|max:255',
+            'kategori' => 'required|string|in:Individu,Lembaga',
+            'biodata' => 'nullable|string',
+        ]);
+
+        $customer->update($validated);
+
+        return redirect()->route('admin.customers.index')->with('success', 'Data pelanggan berhasil diperbarui.');
     }
 }

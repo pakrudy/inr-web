@@ -39,6 +39,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $customer->kategori }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <a href="{{ route('admin.customers.show', $customer) }}" class="text-indigo-600 hover:text-indigo-900">Detail</a>
+                                            <a href="{{ route('admin.customers.edit', $customer) }}" class="ml-4 text-green-600 hover:text-green-900">Edit</a>
                                         </td>
                                     </tr>
                                 @empty

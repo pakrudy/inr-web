@@ -69,7 +69,18 @@ class LegacyController extends Controller
             'description' => 'nullable|string',
             'status' => 'required|in:pending,active',
             'is_indexed' => 'required|boolean',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($request->hasFile('photo')) {
+            // Delete old photo if it exists
+            if ($legacy->photo) {
+                Storage::disk('public')->delete($legacy->photo);
+            }
+            // Store new photo
+            $path = $request->file('photo')->store('legacies', 'public');
+            $validated['photo'] = $path;
+        }
 
         $legacy->update($validated);
 

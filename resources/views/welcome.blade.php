@@ -28,6 +28,101 @@
         </div>
     </header>
 
+    <!-- Section: Latest Records -->
+    <section id="latest-records" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Latest Records</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Kolom Kiri: Legacies -->
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-700 border-l-4 border-yellow-500 pl-4">Legacies</h3>
+                        <a href="{{ route('records.index') }}" class="text-sm text-orange-800 hover:text-orange-500 font-medium flex items-center">
+                            View All
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="space-y-4">
+                        @forelse ($legacies as $legacy)
+                            <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden flex">
+                                <!-- Left: Image -->
+                                <a href="{{ route('records.show', $legacy->id) }}" class="block w-1/4 flex-shrink-0 bg-gray-100 ">
+                                    @if ($legacy->photo)
+                                        <img src="{{ asset('storage/' . $legacy->photo) }}" alt="Foto Legacy" class="p-4 h-48 w-38 object-cover">
+                                    @else
+                                        <div class="p-4 h-48 w-38 flex items-center justify-center bg-gray-100 text-gray-300">
+                                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
+                                        </div>
+                                    @endif
+                                </a>
+                                <!-- Right: Text -->
+                                <div class="p-5 flex flex-col justify-center w-2/3">
+                                    @if ($legacy->is_indexed)
+                                        <div class="flex items-center text-blue-500 mb-2">
+                                            <svg class="w-5 h-5 flex-shrink-0 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="text-xs font-bold uppercase">Verified</span>
+                                        </div>
+                                    @endif
+                                    <h3 class="text-lg font-bold text-gray-900" title="{{ $legacy->title }}">
+                                        <a href="{{ route('records.show', $legacy->id) }}" class="hover:text-orange-700 transition-colors">
+                                            {{ $legacy->title }}
+                                        </a>
+                                    </h3>
+                                    <p class="text-orange-700 font-semibold text-md mt-3">{{ optional($legacy->user)->nama_lengkap }}</p>
+                                    @if (optional($legacy->user)->kategori !== 'Lembaga' && optional($legacy->user)->jabatan_terkini)
+                                        <p class="text-sm text-gray-500 mt-0.5">{{ $legacy->user->jabatan_terkini }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-gray-500">Belum ada legacy yang tercatat.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: Recommendations -->
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-gray-700 border-l-4 border-red-500 pl-4">Recommendations</h3>
+                        <a href="{{ route('recommendations.index') }}" class="text-sm text-orange-800 hover:text-orange-500 font-medium flex items-center">
+                            View All
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        @forelse ($recommendations as $recommendation)
+                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="{{ $recommendation->place_name }}" class="w-full h-40 object-cover">
+                                <div class="p-4">
+                                    <h4 class="text-md font-bold text-gray-800 flex items-center">
+                                        <a href="{{ route('recommendations.show', $recommendation) }}" class="hover:text-orange-800">
+                                            {{ $recommendation->place_name }}
+                                        </a>
+                                        @if ($recommendation->is_indexed)
+                                            <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-10 w-auto ml-2 flex-shrink-0">
+                                        @endif
+                                    </h4>
+                                    <p class="text-sm text-gray-500 mt-1">{{ $recommendation->address }}</p>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-gray-500 md:col-span-2">Belum ada rekomendasi yang tercatat.</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Section: Siapa Layak Punya Legacy -->
     <section class="py-24 bg-white overflow-hidden">
         <div class="container mx-auto px-4">
@@ -111,6 +206,7 @@
         </div>
     </section>
 
+    <!-- News Section 
     <section id="news" class="py-7 mb-12">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-10">Berita Terbaru</h2>
@@ -142,7 +238,7 @@
                 @endforelse
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="py-20 bg-gray-900 text-white">

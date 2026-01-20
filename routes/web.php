@@ -19,10 +19,14 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\NotificationController;
 use App\Models\Post;
+use App\Models\Legacy;
+use App\Models\Recommendation;
 
 Route::get('/', function () {
-    $posts = Post::latest()->take(3)->get(); // Ambil 3 berita terbaru
-    return view('welcome', compact('posts'));
+    $posts = Post::latest()->take(3)->get();
+    $legacies = Legacy::with('user')->where('status', 'active')->latest()->take(3)->get();
+    $recommendations = Recommendation::where('status', 'active')->latest()->take(4)->get();
+    return view('welcome', compact('posts', 'legacies', 'recommendations'));
 });
 
 // Route untuk halaman News
@@ -60,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
     // Khusus Admin (Bisa mengelola User lain)
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-        Route::resource('/admin/customers', CustomerController::class)->only(['index', 'show'])->names('admin.customers');
+        Route::resource('/admin/customers', CustomerController::class)->only(['index', 'show', 'edit', 'update'])->names('admin.customers');
         Route::resource('/admin/legacies', AdminLegacyController::class)->names('admin.legacies');
         Route::resource('/admin/recommendations', AdminRecommendationController::class)->names('admin.recommendations');
         

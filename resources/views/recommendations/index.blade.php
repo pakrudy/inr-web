@@ -47,18 +47,16 @@
                                 @endif
                             </a>
                             <div class="p-5">
-                                <h3 class="text-xl font-bold text-gray-900 truncate flex items-center" title="{{ $recommendation->place_name }}">
+                                <h3 class="text-xl font-bold text-gray-900 flex items-center mb-3" title="{{ $recommendation->place_name }}">
                                     <a href="{{ route('recommendations.show', $recommendation) }}" class="hover:text-orange-700 transition-colors">
                                         {{ $recommendation->place_name }}
                                     </a>
                                     @if ($recommendation->is_indexed)
-                                        <span class="ml-2 flex-shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-600 text-white">
-                                            Recommended
-                                        </span>
+                                        <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-12 w-auto ml-2 flex-shrink-0">
                                     @endif
                                 </h3>
                                 <p class="text-gray-600 text-sm mt-1 truncate"><i class="fas fa-map-marker-alt mr-1"></i>{{ $recommendation->address }}</p>
-                                <p class="text-sm text-gray-500 mt-2">Direkomendasikan oleh: <span class="font-medium text-gray-700">{{ $recommendation->user->name }}</span></p>
+                                <!--<p class="text-sm text-gray-500 mt-2">Direkomendasikan oleh: <span class="font-medium text-gray-700">{{ $recommendation->user->name }}</span></p>-->
                             </div>
                         </div>
                     @endforeach

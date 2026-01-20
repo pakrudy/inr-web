@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form method="POST" action="{{ route('admin.legacies.update', $legacy) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('admin.legacies.update', $legacy) }}" class="space-y-6" enctype="multipart/form-data">
                         @csrf
                         @method('patch')
 
@@ -27,6 +27,19 @@
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 
+                        <!-- Photo -->
+                        <div>
+                            <x-input-label for="photo" :value="__('Foto')" />
+                            @if ($legacy->photo)
+                                <div class="mt-2 mb-2">
+                                    <img src="{{ asset('storage/' . $legacy->photo) }}" alt="Foto Legacy" class="h-40 w-auto rounded-md">
+                                </div>
+                            @endif
+                            <input id="photo" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" type="file" name="photo">
+                            <p class="mt-1 text-sm text-gray-500">Kosongkan jika tidak ingin mengganti foto.</p>
+                            <x-input-error :messages="$errors->get('photo')" class="mt-2" />
+                        </div>
+
                         <!-- Status -->
                         <div>
                             <x-input-label for="status" :value="__('Status')" />
@@ -42,7 +55,7 @@
                             <x-input-label for="is_indexed" :value="__('Terindeks (Centang Biru)')" />
                             <select name="is_indexed" id="is_indexed" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
                                 <option value="1" @selected(old('is_indexed', $legacy->is_indexed))>Ya</option>
-                                <option value="0" @selected(!old('is_indexed', $legacy->is_indexed))>Tidak</option>
+                                <option value="0" @selected(!old('is_indexed', '!' . $legacy->is_indexed))>Tidak</option>
                             </select>
                             <x-input-error :messages="$errors->get('is_indexed')" class="mt-2" />
                         </div>

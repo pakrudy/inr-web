@@ -74,7 +74,18 @@ class RecommendationController extends Controller
             'status' => 'required|in:pending,active,expired',
             'is_indexed' => 'required|boolean',
             'expires_at' => 'nullable|date',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($request->hasFile('photo')) {
+            // Delete old photo if it exists
+            if ($recommendation->photo) {
+                Storage::disk('public')->delete($recommendation->photo);
+            }
+            // Store new photo
+            $path = $request->file('photo')->store('recommendations', 'public');
+            $validated['photo'] = $path;
+        }
 
         $recommendation->update($validated);
 
