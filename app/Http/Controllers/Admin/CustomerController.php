@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
 {
@@ -75,10 +75,22 @@ class CustomerController extends Controller
             'jabatan_terkini' => 'nullable|string|max:255',
             'kategori' => 'required|string|in:Individu,Lembaga',
             'biodata' => 'nullable|string',
+            'nomor_whatsapp' => 'nullable|string|max:20',
+            'foto_pelanggan' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($request->hasFile('foto_pelanggan')) {
+            // Delete old photo if it exists
+            if ($customer->foto_pelanggan) {
+                Storage::disk('public')->delete($customer->foto_pelanggan);
+            }
+            // Store new photo
+            $path = $request->file('foto_pelanggan')->store('foto_pelanggan', 'public');
+            $validated['foto_pelanggan'] = $path;
+        }
 
         $customer->update($validated);
 
         return redirect()->route('admin.customers.index')->with('success', 'Data pelanggan berhasil diperbarui.');
     }
-}
+}    
