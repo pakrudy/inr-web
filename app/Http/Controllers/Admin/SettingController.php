@@ -28,11 +28,18 @@ class SettingController extends Controller
             'payment_recommendation_initial' => 'required|numeric|min:0',
             'payment_recommendation_upgrade' => 'required|numeric|min:0',
             'payment_recommendation_renewal' => 'required|numeric|min:0',
+            'payment_recommendation_renewal_indexed' => 'required|numeric|min:0',
         ]);
 
         foreach ($validated as $key => $value) {
-            // The keys in the form are submitted with underscores, but stored with dots.
-            $dbKey = str_replace('_', '.', $key);
+            $dbKey = '';
+            if ($key === 'payment_recommendation_renewal_indexed') {
+                $dbKey = 'payment.recommendation.renewal_indexed';
+            } else {
+                // The keys in the form are submitted with underscores, but stored with dots.
+                $dbKey = str_replace('_', '.', $key);
+            }
+            
             Setting::updateOrCreate(
                 ['key' => $dbKey],
                 ['value' => $value]

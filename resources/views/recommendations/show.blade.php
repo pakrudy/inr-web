@@ -64,21 +64,21 @@
                                 {{ $recommendation->place_name }}
                             </h1>
                             <p class="text-gray-600 text-lg"><i class="fas fa-map-marker-alt mr-1 text-gray-400"></i>{{ $recommendation->address }}</p>
-                            <p class="text-gray-500 text-sm mt-2">Direkomendasikan hingga {{ $recommendation->expires_at->format('d F Y') }}</p>
+                            <p class="text-gray-500 text-sm mt-2">Dipublikasikan pada {{ $recommendation->published_at->format('d F Y') }}</p>
                         </div>
                         
                         @if($recommendation->description)
-                            <div class="prose max-w-none text-gray-700 text-base leading-relaxed mb-2">
+                            <div class="prose max-w-none text-gray-700 text-base leading-snug mb-2">
                                 {!! Str::markdown($recommendation->description) !!}
                             </div>
                         @endif
 
                         <div class="border-t border-gray-100 pt-4 mt-1">
-                            <h3 class="text-md font-semibold text-gray-900 mb-4">Direkomendasikan Oleh</h3>
+                            <h3 class="text-sm font-semibold text-gray-900 mb-4">Direkomendasikan Oleh</h3>
                             <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
                                     @if ($recommendation->user->foto_pelanggan)
-                                        <img src="{{ asset('storage/' . $recommendation->user->foto_pelanggan) }}" alt="Foto {{ $recommendation->user->name }}" class="w-16 h-16 rounded-full object-cover shadow-md">
+                                        <img src="{{ asset('storage/' . $recommendation->user->foto_pelanggan) }}" alt="Foto {{ $recommendation->user->name }}" class="w-12 h-12 rounded-full object-cover shadow-md">
                                     @else
                                         <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
                                             <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.993A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
@@ -86,8 +86,8 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <h4 class="text-lg font-bold text-orange-800">{{ $recommendation->user->nama_lengkap }}</h4>
-                                    <p class="text-gray-700">{{ $recommendation->user->jabatan_terkini ?? '-' }}</p>
+                                    <h4 class="text-md font-semibold text-orange-800">{{ $recommendation->user->nama_lengkap }}</h4>
+                                    <p class="text-gray-700 text-sm">{{ $recommendation->user->jabatan_terkini ?? '-' }}</p>
                                 </div>
                             </div>
                         </div>

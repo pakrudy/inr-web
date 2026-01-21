@@ -34,6 +34,7 @@ class Recommendation extends Model
     protected $casts = [
         'expires_at' => 'datetime',
         'published_at' => 'datetime',
+        'indexed_expires_at' => 'datetime',
     ];
 
     /**

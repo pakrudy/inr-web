@@ -32,7 +32,7 @@
 
                         <div class="border-t border-gray-200 pt-6">
                             <h4 class="text-md font-semibold text-gray-800 mb-4">Biaya Rekomendasi</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <x-input-label for="payment_recommendation_initial" :value="__('Biaya Awal (Initial)')" />
                                     <x-text-input id="payment_recommendation_initial" class="block mt-1 w-full" type="number" name="payment_recommendation_initial" :value="old('payment_recommendation_initial', $settings['payment.recommendation.initial'] ?? '0')" required />
@@ -44,9 +44,14 @@
                                     <x-input-error :messages="$errors->get('payment_recommendation_upgrade')" class="mt-2" />
                                 </div>
                                 <div>
-                                    <x-input-label for="payment_recommendation_renewal" :value="__('Biaya Perpanjangan (Renewal)')" />
+                                    <x-input-label for="payment_recommendation_renewal" :value="__('Biaya Perpanjangan Aktif (R1)')" />
                                     <x-text-input id="payment_recommendation_renewal" class="block mt-1 w-full" type="number" name="payment_recommendation_renewal" :value="old('payment_recommendation_renewal', $settings['payment.recommendation.renewal'] ?? '0')" required />
                                     <x-input-error :messages="$errors->get('payment_recommendation_renewal')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="payment_recommendation_renewal_indexed" :value="__('Biaya Perpanjangan Terindeks (R2)')" />
+                                    <x-text-input id="payment_recommendation_renewal_indexed" class="block mt-1 w-full" type="number" name="payment_recommendation_renewal_indexed" :value="old('payment_recommendation_renewal_indexed', $settings['payment.recommendation.renewal_indexed'] ?? '0')" required />
+                                    <x-input-error :messages="$errors->get('payment_recommendation_renewal_indexed')" class="mt-2" />
                                 </div>
                             </div>
                         </div>

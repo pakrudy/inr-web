@@ -74,6 +74,7 @@ class RecommendationController extends Controller
             'status' => 'required|in:pending,active,expired',
             'is_indexed' => 'required|boolean',
             'expires_at' => 'nullable|date',
+            'indexed_expires_at' => 'nullable|date',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

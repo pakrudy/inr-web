@@ -55,7 +55,7 @@
                             <x-input-label for="is_indexed" :value="__('Terindeks (Centang Biru)')" />
                             <select name="is_indexed" id="is_indexed" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
                                 <option value="1" @selected(old('is_indexed', $legacy->is_indexed))>Ya</option>
-                                <option value="0" @selected(!old('is_indexed', '!' . $legacy->is_indexed))>Tidak</option>
+                                <option value="0" @selected(!old('is_indexed', $legacy->is_indexed))>Tidak</option>
                             </select>
                             <x-input-error :messages="$errors->get('is_indexed')" class="mt-2" />
                         </div>

@@ -22,7 +22,7 @@ class PublicRecommendationController extends Controller
             });
         }
 
-        $recommendations = $query->latest('published_at')->paginate(12)->appends($request->only('search'));
+        $recommendations = $query->orderBy('is_indexed', 'desc')->orderBy('published_at', 'desc')->paginate(12)->appends($request->only('search'));
 
         return view('recommendations.index', compact('recommendations'));
     }

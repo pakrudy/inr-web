@@ -19,7 +19,8 @@ class TransactionController extends Controller
     public function create(Request $request)
     {
         $model = $this->getTransactionable($request);
-        $paymentType = $this->determinePaymentType($model);
+        // Prioritize type from query param, fallback to auto-detection
+        $paymentType = $request->query('type', $this->determinePaymentType($model));
         $settings = Setting::all()->pluck('value', 'key');
 
         // Ensure the user is authorized to pay for this item
@@ -28,7 +29,7 @@ class TransactionController extends Controller
         }
 
         // Business logic for when payments are not allowed
-        if ($paymentType === 'renewal' && $model instanceof Recommendation && $model->expires_at > now()->addDays(7)) {
+        if ($paymentType === 'renewal_r1' && $model instanceof Recommendation && $model->expires_at > now()->addDays(7)) {
             return redirect()->route('customer.recommendations.index')->with('error', 'This recommendation is not yet eligible for renewal.');
         }
 
@@ -124,19 +125,26 @@ class TransactionController extends Controller
         $amount = 0;
         $notes = '';
 
-        if ($paymentType === 'upgrade') {
-            $key = ($model instanceof Legacy) ? 'payment.legacy.upgrade' : 'payment.recommendation.upgrade';
-            $amount = $settings[$key] ?? 0;
-            $notes = "Upgrade payment for {$modelName}: {$title}";
-        } else { // 'initial' or 'renewal'
-            if ($model instanceof Recommendation && ($model->status === 'expired' || $paymentType === 'renewal')) {
+        switch ($paymentType) {
+            case 'upgrade':
+                $key = ($model instanceof Legacy) ? 'payment.legacy.upgrade' : 'payment.recommendation.upgrade';
+                $amount = $settings[$key] ?? 0;
+                $notes = "Upgrade payment for {$modelName}: {$title}";
+                break;
+            case 'renewal_r1':
                 $amount = $settings['payment.recommendation.renewal'] ?? 0;
-                $notes = "Renewal payment for {$modelName}: {$title}";
-            } else {
+                $notes = "Renewal payment (R1) for {$modelName}: {$title}";
+                break;
+            case 'renewal_r2':
+                $amount = $settings['payment.recommendation.renewal_indexed'] ?? 0; // New setting
+                $notes = "Indexed Renewal payment (R2) for {$modelName}: {$title}";
+                break;
+            case 'initial':
+            default:
                 $key = ($model instanceof Legacy) ? 'payment.legacy.initial' : 'payment.recommendation.initial';
                 $amount = $settings[$key] ?? 0;
                 $notes = "Initial payment for {$modelName}: {$title}";
-            }
+                break;
         }
 
         return [$amount, $notes];
@@ -156,7 +164,7 @@ class TransactionController extends Controller
         }
 
         if ($model instanceof Recommendation && $model->status === 'expired') {
-            return 'renewal';
+            return 'renewal_r1'; // Default to R1 renewal
         }
 
         // Default or fallback case

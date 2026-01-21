@@ -10,9 +10,17 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::latest()->paginate(10); // Ambil semua berita dengan paginasi
+        $query = Post::latest();
+
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where('title', 'like', $searchTerm);
+        }
+
+        $posts = $query->paginate(10)->appends($request->only('search'));
+        
         return view('news.index', compact('posts'));
     }
 }

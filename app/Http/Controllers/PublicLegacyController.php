@@ -21,7 +21,7 @@ class PublicLegacyController extends Controller
             });
         }
 
-        $legacies = $query->latest('published_at')->paginate(12)->appends($request->only('search'));
+        $legacies = $query->orderBy('is_indexed', 'desc')->orderBy('published_at', 'desc')->paginate(12)->appends($request->only('search'));
 
         return view('records.index', ['records' => $legacies]);
     }

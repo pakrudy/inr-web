@@ -55,9 +55,14 @@ class TransactionController extends Controller
                     }
                 } elseif ($transaction->transaction_type === 'upgrade') {
                     $item->is_indexed = true;
-                } elseif ($transaction->transaction_type === 'renewal' && $item instanceof \App\Models\Recommendation) {
-                    $item->expires_at = $item->expires_at ? $item->expires_at->addYear() : now()->addYear();
+                    if ($item instanceof \App\Models\Recommendation) {
+                        $item->indexed_expires_at = now()->addYear();
+                    }
+                } elseif ($transaction->transaction_type === 'renewal_r1' && $item instanceof \App\Models\Recommendation) {
+                    $item->expires_at = $item->expires_at && $item->expires_at->isFuture() ? $item->expires_at->addYear() : now()->addYear();
                     $item->status = 'active'; // Ensure it's active if it was expired
+                } elseif ($transaction->transaction_type === 'renewal_r2' && $item instanceof \App\Models\Recommendation) {
+                    $item->indexed_expires_at = $item->indexed_expires_at && $item->indexed_expires_at->isFuture() ? $item->indexed_expires_at->addYear() : now()->addYear();
                 }
                 
                 $item->save();
@@ -76,9 +81,9 @@ class TransactionController extends Controller
                             $user->notify(new RecommendationApproved($item));
                         } elseif ($transaction->transaction_type === 'upgrade') {
                             $user->notify(new RecommendationUpgraded($item));
-                        } elseif ($transaction->transaction_type === 'renewal') {
-                             // Re-using this notification as it makes the item active again
-                            $user->notify(new RecommendationApproved($item));
+                        } elseif (in_array($transaction->transaction_type, ['renewal_r1', 'renewal_r2'])) {
+                             // Re-using this notification as it makes the item active/indexed again
+                            $user->notify(new RecommendationUpgraded($item));
                         }
                     }
                 }

@@ -77,7 +77,7 @@
                                     </h3>
                                     <p class="text-orange-700 font-semibold text-md mt-3">{{ optional($legacy->user)->nama_lengkap }}</p>
                                     @if (optional($legacy->user)->kategori !== 'Lembaga' && optional($legacy->user)->jabatan_terkini)
-                                        <p class="text-sm text-gray-500 mt-0.5">{{ $legacy->user->jabatan_terkini }}</p>
+                                        <p class="text-sm text-gray-500 mt-1 mb-1">{{ $legacy->user->jabatan_terkini }}</p>
                                     @endif
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                             <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-10 w-auto ml-2 flex-shrink-0">
                                         @endif
                                     </h4>
-                                    <p class="text-sm text-gray-500 mt-1">{{ $recommendation->address }}</p>
+                                    <p class="text-sm text-gray-500 mt-2 mb-1">{{ $recommendation->address }}</p>
                                 </div>
                             </div>
                         @empty

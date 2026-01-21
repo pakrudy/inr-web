@@ -57,7 +57,7 @@
                                         <span class="text-xs font-bold uppercase">Verified</span>
                                     </div>
                                 @endif
-                                <h3 class="text-lg font-bold text-gray-900" title="{{ $record->title }}">
+                                <h3 class="text-lg font-bold text-gray-900 leading-snug" title="{{ $record->title }}">
                                     <a href="{{ route('records.show', $record->id) }}" class="hover:text-orange-700 transition-colors">
                                         {{ $record->title }}
                                     </a>

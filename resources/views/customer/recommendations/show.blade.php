@@ -78,6 +78,12 @@
                                 <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Kadaluarsa Pada') }}</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y, H:i') : '-' }}</dd>
                             </div>
+                            @if ($recommendation->indexed_expires_at)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Kadaluarsa Terindeks Pada') }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $recommendation->indexed_expires_at->format('d M Y, H:i') }}</dd>
+                            </div>
+                            @endif
                             @if ($recommendation->photo)
                                 <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Foto Tempat') }}</dt>

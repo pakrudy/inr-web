@@ -32,7 +32,7 @@
                                             {{ __('Terindeks') }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ __('Kadaluarsa Pada') }}
+                                            {{ __('Masa Aktif') }}
                                         </th>
                                         <th scope="col" class="relative px-6 py-3">
                                             <span class="sr-only">{{ __('Aksi') }}</span>
@@ -66,21 +66,40 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y') : '-' }}
+                                                <div>
+                                                    <span class="font-semibold">Aktif (R1):</span> {{ $recommendation->expires_at ? $recommendation->expires_at->format('d M Y') : '-' }}
+                                                </div>
+                                                <div>
+                                                    <span class="font-semibold">Indeks (R2):</span> {{ $recommendation->indexed_expires_at ? $recommendation->indexed_expires_at->format('d M Y') : '-' }}
+                                                </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <a href="{{ route('customer.recommendations.show', $recommendation) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Lihat') }}</a>
 
+                                                {{-- Bayar (Initial) --}}
                                                 @if ($recommendation->status === 'pending' && !$recommendation->has_pending_initial_payment)
                                                     <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-green-600 hover:text-green-900">{{ __('Bayar') }}</a>
+                                                    <a href="{{ route('customer.recommendations.edit', $recommendation) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                                
+                                                {{-- Upgrade --}}
                                                 @elseif ($recommendation->status === 'active' && !$recommendation->is_indexed && !$recommendation->has_pending_upgrade_payment)
-                                                    <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
+                                                    <a href="{{ route('customer.recommendations.payment.create', ['recommendation' => $recommendation, 'type' => 'upgrade']) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
+                                                
+                                                {{-- Perpanjang R1 (jika sudah expired) --}}
                                                 @elseif ($recommendation->status === 'expired' && !$recommendation->has_pending_renewal_payment)
-                                                     <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-orange-600 hover:text-orange-900">{{ __('Perpanjang') }}</a>
+                                                     <a href="{{ route('customer.recommendations.payment.create', ['recommendation' => $recommendation, 'type' => 'renewal_r1']) }}" class="ml-3 text-orange-600 hover:text-orange-900">{{ __('Perpanjang Aktif (R1)') }}</a>
                                                 @endif
                                                 
-                                                @if ($recommendation->status === 'pending' && !$recommendation->has_pending_initial_payment)
-                                                <a href="{{ route('customer.recommendations.edit', $recommendation) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                                @if ($recommendation->status === 'active')
+                                                    {{-- Perpanjang R1 (jika akan expired) --}}
+                                                    @if ($recommendation->expires_at && $recommendation->expires_at->isPast() || now()->diffInDays($recommendation->expires_at, false) <= 30)
+                                                        <a href="{{ route('customer.recommendations.payment.create', ['recommendation' => $recommendation, 'type' => 'renewal_r1']) }}" class="ml-3 text-orange-600 hover:text-orange-900">{{ __('Perpanjang Aktif (R1)') }}</a>
+                                                    @endif
+
+                                                    {{-- Perpanjang R2 (jika akan expired) --}}
+                                                    @if ($recommendation->is_indexed && $recommendation->indexed_expires_at && ($recommendation->indexed_expires_at->isPast() || now()->diffInDays($recommendation->indexed_expires_at, false) <= 30))
+                                                        <a href="{{ route('customer.recommendations.payment.create', ['recommendation' => $recommendation, 'type' => 'renewal_r2']) }}" class="ml-3 text-purple-600 hover:text-purple-900">{{ __('Perpanjang Indeks (R2)') }}</a>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>

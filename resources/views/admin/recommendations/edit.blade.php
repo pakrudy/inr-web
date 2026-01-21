@@ -75,6 +75,13 @@
                             <x-input-error :messages="$errors->get('expires_at')" class="mt-2" />
                         </div>
 
+                        <!-- Indexed Expires At -->
+                        <div>
+                            <x-input-label for="indexed_expires_at" :value="__('Kadaluarsa Terindeks Pada')" />
+                            <x-text-input id="indexed_expires_at" class="block mt-1 w-full" type="date" name="indexed_expires_at" :value="old('indexed_expires_at', $recommendation->indexed_expires_at ? \Carbon\Carbon::parse($recommendation->indexed_expires_at)->format('Y-m-d') : '')" />
+                            <x-input-error :messages="$errors->get('indexed_expires_at')" class="mt-2" />
+                        </div>
+
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Simpan Perubahan') }}</x-primary-button>
                             <a href="{{ route('admin.recommendations.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Batal') }}</a>
