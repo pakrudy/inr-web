@@ -24,7 +24,6 @@ class SettingController extends Controller
     {
         $validated = $request->validate([
             'payment_legacy_initial' => 'required|numeric|min:0',
-            'payment_legacy_upgrade' => 'required|numeric|min:0',
             'payment_recommendation_initial' => 'required|numeric|min:0',
             'payment_recommendation_upgrade' => 'required|numeric|min:0',
             'payment_recommendation_renewal' => 'required|numeric|min:0',

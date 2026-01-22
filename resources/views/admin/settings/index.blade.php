@@ -22,11 +22,6 @@
                                     <x-text-input id="payment_legacy_initial" class="block mt-1 w-full" type="number" name="payment_legacy_initial" :value="old('payment_legacy_initial', $settings['payment.legacy.initial'] ?? '0')" required />
                                     <x-input-error :messages="$errors->get('payment_legacy_initial')" class="mt-2" />
                                 </div>
-                                <div>
-                                    <x-input-label for="payment_legacy_upgrade" :value="__('Biaya Upgrade')" />
-                                    <x-text-input id="payment_legacy_upgrade" class="block mt-1 w-full" type="number" name="payment_legacy_upgrade" :value="old('payment_legacy_upgrade', $settings['payment.legacy.upgrade'] ?? '0')" required />
-                                    <x-input-error :messages="$errors->get('payment_legacy_upgrade')" class="mt-2" />
-                                </div>
                             </div>
                         </div>
 
