@@ -54,8 +54,15 @@ class TransactionController extends Controller
                         $item->expires_at = now()->addYear();
                     }
                 } elseif ($transaction->transaction_type === 'upgrade') {
-                    $item->is_indexed = true;
-                    if ($item instanceof \App\Models\Recommendation) {
+                    if ($item instanceof \App\Models\Legacy) {
+                        $application = $item->upgradeApplications()->where('status', 'payment_pending')->first();
+                        if ($application) {
+                            // The upgrade itself makes the legacy indexed.
+                            $item->is_indexed = true;
+                            $application->update(['status' => 'completed']);
+                        }
+                    } elseif ($item instanceof \App\Models\Recommendation) {
+                        $item->is_indexed = true;
                         $item->indexed_expires_at = now()->addYear();
                     }
                 } elseif ($transaction->transaction_type === 'renewal_r1' && $item instanceof \App\Models\Recommendation) {

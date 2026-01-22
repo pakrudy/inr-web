@@ -28,6 +28,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengguna</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Terindeks</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status Upgrade</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
                                 </tr>
@@ -51,12 +52,22 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             @if ($legacy->is_indexed)
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Ya</span>
-                                            @elseif ($legacy->has_pending_upgrade_payment)
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-                                                    Waiting Approval
-                                                </span>
                                             @else
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            @if($legacy->latestUpgradeApplication)
+                                                <span class="font-semibold">{{ $legacy->latestUpgradeApplication->package?->name }}:</span>
+                                                @if($legacy->latestUpgradeApplication->status === 'payment_pending')
+                                                    <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
+                                                @elseif($legacy->latestUpgradeApplication->status === 'completed')
+                                                    <span class="font-semibold text-green-800">{{ __('Aktif') }}</span>
+                                                @else
+                                                    <span>{{ ucfirst($legacy->latestUpgradeApplication->status) }}</span>
+                                                @endif
+                                            @else
+                                                <span>-</span>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap w-[90px] text-sm text-gray-500">{{ $legacy->created_at->format('d M Y') }}</td>
@@ -67,7 +78,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada legacy yang ditemukan.</td>
+                                        <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada legacy yang ditemukan.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

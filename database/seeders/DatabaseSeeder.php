@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PageSeeder::class,
             SettingSeeder::class,
+            UpgradePackageSeeder::class,
         ]);
     }
 }

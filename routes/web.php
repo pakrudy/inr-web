@@ -50,6 +50,11 @@ Route::middleware(['auth', 'verified', 'role:pelanggan'])->prefix('customer')->n
     Route::get('legacies/{legacy}/payment', [TransactionController::class, 'create'])->name('legacies.payment.create');
     Route::post('legacies/{legacy}/payment', [TransactionController::class, 'store'])->name('legacies.payment.store');
 
+    // Legacy Upgrade Application Routes
+    Route::get('legacies/{legacy}/upgrade', [\App\Http\Controllers\Customer\LegacyUpgradeApplicationController::class, 'selectPackage'])->name('legacies.upgrade.select');
+    Route::get('legacies/{legacy}/upgrade/{package_slug}/apply', [\App\Http\Controllers\Customer\LegacyUpgradeApplicationController::class, 'showApplicationForm'])->name('legacies.upgrade.apply');
+    Route::post('legacies/{legacy}/upgrade/{package_slug}/apply', [\App\Http\Controllers\Customer\LegacyUpgradeApplicationController::class, 'storeApplication']);
+
     // Recommendation Routes
     Route::resource('recommendations', RecommendationController::class);
     Route::get('recommendations/{recommendation}/payment', [TransactionController::class, 'create'])->name('recommendations.payment.create');
@@ -75,6 +80,13 @@ Route::middleware(['auth'])->group(function () {
         // Transaction Management
         Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');
         Route::patch('/admin/transactions/{transaction}', [AdminTransactionController::class, 'confirm'])->name('admin.transactions.confirm');
+        Route::resource('/admin/upgrade-packages', \App\Http\Controllers\Admin\UpgradePackageController::class)->names('admin.upgrade-packages');
+        
+        // Legacy Upgrade Applications
+        Route::get('/admin/legacy-upgrades', [\App\Http\Controllers\Admin\LegacyUpgradeApplicationController::class, 'index'])->name('admin.legacy-upgrades.index');
+        Route::get('/admin/legacy-upgrades/{application}', [\App\Http\Controllers\Admin\LegacyUpgradeApplicationController::class, 'show'])->name('admin.legacy-upgrades.show');
+        Route::post('/admin/legacy-upgrades/{application}/approve', [\App\Http\Controllers\Admin\LegacyUpgradeApplicationController::class, 'approve'])->name('admin.legacy-upgrades.approve');
+        Route::post('/admin/legacy-upgrades/{application}/reject', [\App\Http\Controllers\Admin\LegacyUpgradeApplicationController::class, 'reject'])->name('admin.legacy-upgrades.reject');
     });
 
     // Editor & Admin bisa mengelola Berita dan Halaman

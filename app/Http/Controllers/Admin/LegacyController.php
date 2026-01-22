@@ -14,7 +14,7 @@ class LegacyController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Legacy::with('user', 'transactions');
+        $query = Legacy::with('user', 'transactions', 'upgradeApplications.package');
 
         if ($request->filled('search')) {
             $searchTerm = '%' . $request->search . '%';
@@ -31,7 +31,9 @@ class LegacyController extends Controller
         foreach ($legacies as $legacy) {
             $pendingTransactions = $legacy->transactions->where('status', 'pending');
             $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
-            $legacy->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+            
+            // Get the latest upgrade application to check its status
+            $legacy->latestUpgradeApplication = $legacy->upgradeApplications->sortByDesc('created_at')->first();
         }
 
         return view('admin.legacies.index', compact('legacies'));
@@ -42,11 +44,13 @@ class LegacyController extends Controller
      */
     public function show(Legacy $legacy)
     {
-        $legacy->load('user', 'transactions');
+        $legacy->load('user', 'transactions', 'upgradeApplications.package');
 
         $pendingTransactions = $legacy->transactions->where('status', 'pending');
         $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
-        $legacy->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
+
+        // Get the latest upgrade application to check its status
+        $legacy->latestUpgradeApplication = $legacy->upgradeApplications->sortByDesc('created_at')->first();
 
         return view('admin.legacies.show', compact('legacy'));
     }

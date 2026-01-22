@@ -32,6 +32,12 @@
                     <x-nav-link :href="route('admin.legacies.index')" :active="request()->routeIs('admin.legacies.*')">
                         {{ __('Legacies') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.upgrade-packages.index')" :active="request()->routeIs('admin.upgrade-packages.*')">
+                        {{ __('Paket Upgrade') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.legacy-upgrades.index')" :active="request()->routeIs('admin.legacy-upgrades.*')">
+                        {{ __('Pengajuan Upgrade') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
                         {{ __('Rekomendasi') }}
                     </x-nav-link>

@@ -29,9 +29,9 @@
                             if ($paymentType === 'initial') {
                                 $amount = $settings['payment.legacy.initial'] ?? 100000;
                                 $description = 'Pembayaran awal untuk aktivasi Legacy.';
-                            } elseif ($paymentType === 'upgrade') {
-                                $amount = $settings['payment.legacy.upgrade'] ?? 50000;
-                                $description = 'Pembayaran untuk upgrade Legacy menjadi Terindeks (centang biru).';
+                            } elseif ($paymentType === 'upgrade' && isset($application)) {
+                                $amount = $application->package->price;
+                                $description = 'Pembayaran untuk upgrade ke Paket ' . $application->package->name;
                             }
                         @endphp
 

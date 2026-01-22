@@ -48,4 +48,12 @@ class Legacy extends Model
     {
         return $this->morphMany(Transaction::class, 'transactionable');
     }
+
+    /**
+     * Get all of the legacy's upgrade applications.
+     */
+    public function upgradeApplications()
+    {
+        return $this->hasMany(LegacyUpgradeApplication::class);
+    }
 }

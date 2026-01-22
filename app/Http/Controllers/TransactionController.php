@@ -22,13 +22,21 @@ class TransactionController extends Controller
         // Prioritize type from query param, fallback to auto-detection
         $paymentType = $request->query('type', $this->determinePaymentType($model));
         $settings = Setting::all()->pluck('value', 'key');
+        $application = null;
 
         // Ensure the user is authorized to pay for this item
         if (Auth::id() !== $model->user_id) {
             abort(403);
         }
 
-        // Business logic for when payments are not allowed
+        // --- Business logic for specific payment types ---
+        if ($paymentType === 'upgrade' && $model instanceof Legacy) {
+            $application = $model->upgradeApplications()->with('package')->where('status', 'awaiting_payment')->first();
+            if (!$application) {
+                return redirect()->route('customer.legacies.index')->with('error', 'No approved upgrade application found awaiting payment.');
+            }
+        }
+        
         if ($paymentType === 'renewal_r1' && $model instanceof Recommendation && $model->expires_at > now()->addDays(7)) {
             return redirect()->route('customer.recommendations.index')->with('error', 'This recommendation is not yet eligible for renewal.');
         }
@@ -50,6 +58,7 @@ class TransactionController extends Controller
             'hasPendingPayment' => $hasPendingPayment,
             'paymentType' => $paymentType,
             'settings' => $settings,
+            'application' => $application, // Pass the application to the view
         ]);
     }
 
@@ -87,6 +96,14 @@ class TransactionController extends Controller
             'transaction_type' => $paymentType,
             'notes' => $notes,
         ]);
+
+        // If this was an upgrade payment, update the application status
+        if ($paymentType === 'upgrade' && $model instanceof Legacy) {
+            $application = $model->upgradeApplications()->where('status', 'awaiting_payment')->first();
+            if ($application) {
+                $application->update(['status' => 'payment_pending']);
+            }
+        }
 
         // Notify admins
         $admins = User::where('role', 'admin')->get();
@@ -127,9 +144,15 @@ class TransactionController extends Controller
 
         switch ($paymentType) {
             case 'upgrade':
-                $key = ($model instanceof Legacy) ? 'payment.legacy.upgrade' : 'payment.recommendation.upgrade';
-                $amount = $settings[$key] ?? 0;
-                $notes = "Upgrade payment for {$modelName}: {$title}";
+                if ($model instanceof Legacy) {
+                    $application = $model->upgradeApplications()->with('package')->where('status', 'awaiting_payment')->firstOrFail();
+                    $amount = $application->package->price;
+                    $notes = "Upgrade payment for Legacy '{$title}' to package '{$application->package->name}'";
+                } else {
+                    $key = 'payment.recommendation.upgrade';
+                    $amount = $settings[$key] ?? 0;
+                    $notes = "Upgrade payment for {$modelName}: {$title}";
+                }
                 break;
             case 'renewal_r1':
                 $amount = $settings['payment.recommendation.renewal'] ?? 0;
