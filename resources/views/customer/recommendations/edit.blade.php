@@ -13,6 +13,18 @@
                         @csrf
                         @method('patch')
 
+                        <!-- Recommendation Category -->
+                        <div>
+                            <x-input-label for="recommendation_category_id" :value="__('Kategori Rekomendasi')" />
+                            <select id="recommendation_category_id" name="recommendation_category_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                                <option value="">{{ __('-- Pilih Kategori --') }}</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('recommendation_category_id', $recommendation->recommendation_category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('recommendation_category_id')" class="mt-2" />
+                        </div>
+
                         <!-- Place Name -->
                         <div>
                             <x-input-label for="place_name" :value="__('Nama Tempat')" />
@@ -25,6 +37,14 @@
                             <x-input-label for="address" :value="__('Alamat')" />
                             <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address', $recommendation->address)" />
                             <x-input-error :messages="$errors->get('address')" class="mt-2" />
+                        </div>
+
+                        <!-- Map Embed Code -->
+                        <div>
+                            <x-input-label for="map_embed_code" :value="__('Kode Embed Peta Google')" />
+                            <textarea id="map_embed_code" name="map_embed_code" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">{{ old('map_embed_code', $recommendation->map_embed_code) }}</textarea>
+                            <p class="mt-1 text-sm text-gray-500">{{ __('Salin kode dari Google Maps (Share > Embed a map).') }}</p>
+                            <x-input-error :messages="$errors->get('map_embed_code')" class="mt-2" />
                         </div>
 
                         <!-- Description -->
@@ -46,6 +66,34 @@
                             <input id="photo" type="file" name="photo" class="block mt-1 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
                             <p class="mt-1 text-sm text-gray-500" id="file_input_help">{{ __('Biarkan kosong jika tidak ingin mengubah. PNG, JPG, JPEG, GIF (MAX. 2MB).') }}</p>
                             <x-input-error :messages="$errors->get('photo')" class="mt-2" />
+                        </div>
+
+                        <!-- Photo 2 -->
+                        <div>
+                            <x-input-label for="photo_2" :value="__('Foto Tempat 2 (Opsional)')" />
+                            @if ($recommendation->photo_2)
+                                <div class="mt-2">
+                                    <img src="{{ asset('storage/' . $recommendation->photo_2) }}" alt="Current Photo 2" class="max-w-xs h-auto rounded-lg shadow-md">
+                                    <p class="text-sm text-gray-600 mt-1">{{ __('Foto saat ini.') }}</p>
+                                </div>
+                            @endif
+                            <input id="photo_2" type="file" name="photo_2" class="block mt-1 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+                            <p class="mt-1 text-sm text-gray-500" id="file_input_help">{{ __('Biarkan kosong jika tidak ingin mengubah. PNG, JPG, JPEG, GIF (MAX. 2MB).') }}</p>
+                            <x-input-error :messages="$errors->get('photo_2')" class="mt-2" />
+                        </div>
+
+                        <!-- Photo 3 -->
+                        <div>
+                            <x-input-label for="photo_3" :value="__('Foto Tempat 3 (Opsional)')" />
+                            @if ($recommendation->photo_3)
+                                <div class="mt-2">
+                                    <img src="{{ asset('storage/' . $recommendation->photo_3) }}" alt="Current Photo 3" class="max-w-xs h-auto rounded-lg shadow-md">
+                                    <p class="text-sm text-gray-600 mt-1">{{ __('Foto saat ini.') }}</p>
+                                </div>
+                            @endif
+                            <input id="photo_3" type="file" name="photo_3" class="block mt-1 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+                            <p class="mt-1 text-sm text-gray-500" id="file_input_help">{{ __('Biarkan kosong jika tidak ingin mengubah. PNG, JPG, JPEG, GIF (MAX. 2MB).') }}</p>
+                            <x-input-error :messages="$errors->get('photo_3')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center gap-4">

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $recommendation->place_name }} - Recommendation Index</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased bg-gray-50">
@@ -39,13 +40,26 @@
 
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                 <div class="grid grid-cols-1 lg:grid-cols-5">
-                    <!-- Left Column: Photo -->
-                    <div class="lg:col-span-2 bg-gray-100 p-8 flex items-top justify-center relative group">
-                         @if ($recommendation->photo)
-                            <a href="{{ asset('storage/' . $recommendation->photo) }}" data-fslightbox>
-                                <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="{{ $recommendation->place_name }}" class="max-h-[500px] w-auto shadow-lg rounded-lg transform group-hover:scale-105 transition duration-500">
-                            </a>
-                        @else
+                    <!-- Left Column: Photos -->
+                    <div class="lg:col-span-2 bg-gray-100 p-8 flex flex-col gap-4 items-center justify-center relative group">
+                        <div class="grid grid-cols-1 gap-4">
+                            @if ($recommendation->photo)
+                                <a href="{{ asset('storage/' . $recommendation->photo) }}" data-fslightbox>
+                                    <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="{{ $recommendation->place_name }}" class="max-h-[500px] w-auto shadow-lg rounded-lg transform group-hover:scale-105 transition duration-500">
+                                </a>
+                            @endif
+                            @if ($recommendation->photo_2)
+                                <a href="{{ asset('storage/' . $recommendation->photo_2) }}" data-fslightbox>
+                                    <img src="{{ asset('storage/' . $recommendation->photo_2) }}" alt="{{ $recommendation->place_name }} - Photo 2" class="max-h-[500px] w-auto shadow-lg rounded-lg transform group-hover:scale-105 transition duration-500">
+                                </a>
+                            @endif
+                            @if ($recommendation->photo_3)
+                                <a href="{{ asset('storage/' . $recommendation->photo_3) }}" data-fslightbox>
+                                    <img src="{{ asset('storage/' . $recommendation->photo_3) }}" alt="{{ $recommendation->place_name }} - Photo 3" class="max-h-[500px] w-auto shadow-lg rounded-lg transform group-hover:scale-105 transition duration-500">
+                                </a>
+                            @endif
+                        </div>
+                        @if (!$recommendation->photo && !$recommendation->photo_2 && !$recommendation->photo_3)
                             <div class="h-64 w-full flex flex-col items-center justify-center text-gray-300 border-2 border-dashed border-gray-200 rounded-lg">
                                 <svg class="w-16 h-16 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                 <span>No Photo Available</span>
@@ -64,6 +78,7 @@
                                 {{ $recommendation->place_name }}
                             </h1>
                             <p class="text-gray-600 text-lg"><i class="fas fa-map-marker-alt mr-1 text-gray-400"></i>{{ $recommendation->address }}</p>
+                            <p class="text-gray-600 text-lg mt-1"><i class="fas fa-tag mr-1 text-gray-400"></i>{{ $recommendation->recommendationCategory->name ?? '-' }}</p>
                             <p class="text-gray-500 text-sm mt-2">Dipublikasikan pada {{ $recommendation->published_at->format('d F Y') }}</p>
                         </div>
                         
@@ -71,6 +86,15 @@
                             <div class="prose max-w-none text-gray-700 text-base leading-snug mb-2">
                                 {!! Str::markdown($recommendation->description) !!}
                             </div>
+                        @endif
+
+                        @if ($recommendation->map_embed_code)
+                        <div class="border-t border-gray-100 pt-4 mt-4">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-4">Lokasi Peta</h3>
+                            <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
+                                {!! $recommendation->map_embed_code !!}
+                            </div>
+                        </div>
                         @endif
 
                         <div class="border-t border-gray-100 pt-4 mt-1">

@@ -16,6 +16,7 @@ class Legacy extends Model
      */
     protected $fillable = [
         'user_id',
+        'category_id',
         'title',
         'description',
         'photo',
@@ -39,6 +40,14 @@ class Legacy extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the category that the legacy belongs to.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**

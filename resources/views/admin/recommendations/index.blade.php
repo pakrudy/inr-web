@@ -24,11 +24,45 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Tempat</th>
+                                    @php
+                                        $columns = [
+                                            'place_name' => 'Nama Tempat',
+                                            'status' => 'Status',
+                                            'is_indexed' => 'Terindeks',
+                                            'expires_at' => 'Kadaluarsa',
+                                        ];
+                                    @endphp
+                                    {{-- Sortable Columns First --}}
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <a href="{{ route('admin.recommendations.index', ['sort_by' => 'place_name', 'sort_direction' => $sortBy == 'place_name' && $sortDirection == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="flex items-center">
+                                            {{ $columns['place_name'] }}
+                                            @if ($sortBy == 'place_name')
+                                                @if ($sortDirection == 'asc')
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                                @else
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                                @endif
+                                            @endif
+                                        </a>
+                                    </th>
+                                    {{-- Static Columns --}}
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengguna</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Terindeks</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kadaluarsa</th>
+                                    {{-- Remaining Sortable Columns --}}
+                                    @foreach (['status', 'is_indexed', 'expires_at'] as $column)
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <a href="{{ route('admin.recommendations.index', ['sort_by' => $column, 'sort_direction' => $sortBy == $column && $sortDirection == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="flex items-center">
+                                            {{ $columns[$column] }}
+                                            @if ($sortBy == $column)
+                                                @if ($sortDirection == 'asc')
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                                @else
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                                @endif
+                                            @endif
+                                        </a>
+                                    </th>
+                                    @endforeach
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
                                 </tr>
                             </thead>
@@ -36,6 +70,7 @@
                                 @forelse ($recommendations as $recommendation)
                                     <tr>
                                         <td class="px-6 py-4 w-[450px] text-sm font-medium text-gray-900">{{ $recommendation->place_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $recommendation->recommendationCategory->name ?? '-' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $recommendation->user->nama_lengkap }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             @if ($recommendation->has_pending_initial_payment || $recommendation->has_pending_renewal_payment)

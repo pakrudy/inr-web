@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             SettingSeeder::class,
             UpgradePackageSeeder::class,
+            CategorySeeder::class,
+            RecommendationCategorySeeder::class,
+            PostSeeder::class,
+            LegacySeeder::class,
+            RecommendationSeeder::class,
         ]);
     }
 }

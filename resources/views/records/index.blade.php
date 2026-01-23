@@ -62,6 +62,7 @@
                                         {{ $record->title }}
                                     </a>
                                 </h3>
+                                <p class="text-sm text-gray-500 mt-1">{{ $record->category?->name ?? '-' }}</p>
                                 <p class="text-orange-700 font-semibold text-md mt-3">{{ $record->user->nama_lengkap }}</p>
                                 @if ($record->user->kategori !== 'Lembaga' && $record->user->jabatan_terkini)
                                     <p class="text-sm text-gray-500 mt-0.5">{{ $record->user->jabatan_terkini }}</p>

@@ -9,7 +9,7 @@ class PublicLegacyController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Legacy::with('user')->where('status', 'active');
+        $query = Legacy::with('user', 'category')->where('status', 'active');
 
         if ($request->has('search') && $request->search != '') {
             $searchTerm = '%' . $request->search . '%';
@@ -32,6 +32,7 @@ class PublicLegacyController extends Controller
         if ($legacy->status !== 'active') {
             abort(404);
         }
+        $legacy->load('category');
 
         return view('records.show', ['record' => $legacy]);
     }

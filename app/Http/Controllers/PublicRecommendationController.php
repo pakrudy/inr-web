@@ -9,7 +9,7 @@ class PublicRecommendationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Recommendation::with('user')->where('status', 'active');
+        $query = Recommendation::with('user', 'recommendationCategory')->where('status', 'active');
 
         if ($request->has('search') && $request->search != '') {
             $searchTerm = '%' . $request->search . '%';
@@ -33,6 +33,8 @@ class PublicRecommendationController extends Controller
         if ($recommendation->status !== 'active') {
             abort(404);
         }
+
+        $recommendation->load('user', 'recommendationCategory');
 
         return view('recommendations.show', compact('recommendation'));
     }

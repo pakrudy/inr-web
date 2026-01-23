@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recommendation;
+use App\Models\RecommendationCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +32,8 @@ class RecommendationController extends Controller
      */
     public function create()
     {
-        return view('customer.recommendations.create');
+        $categories = RecommendationCategory::all();
+        return view('customer.recommendations.create', compact('categories'));
     }
 
     /**
@@ -40,14 +42,26 @@ class RecommendationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'recommendation_category_id' => 'required|exists:recommendation_categories,id',
             'place_name' => 'required|string|max:255',
             'address' => 'nullable|string|max:255',
+            'map_embed_code' => 'nullable|string',
             'description' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('recommendations', 'public');
+        }
+
+        if ($request->hasFile('photo_2')) {
+            $validated['photo_2'] = $request->file('photo_2')->store('recommendations', 'public');
+        }
+
+        if ($request->hasFile('photo_3')) {
+            $validated['photo_3'] = $request->file('photo_3')->store('recommendations', 'public');
         }
 
         Auth::user()->recommendations()->create($validated);
@@ -87,7 +101,8 @@ class RecommendationController extends Controller
             return redirect()->route('customer.recommendations.show', $recommendation)->with('error', 'Rekomendasi yang sudah aktif tidak dapat diedit.');
         }
 
-        return view('customer.recommendations.edit', compact('recommendation'));
+        $categories = RecommendationCategory::all();
+        return view('customer.recommendations.edit', compact('recommendation', 'categories'));
     }
 
     /**
@@ -104,10 +119,14 @@ class RecommendationController extends Controller
         }
 
         $validated = $request->validate([
+            'recommendation_category_id' => 'required|exists:recommendation_categories,id',
             'place_name' => 'required|string|max:255',
             'address' => 'nullable|string|max:255',
+            'map_embed_code' => 'nullable|string',
             'description' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -116,6 +135,22 @@ class RecommendationController extends Controller
                 Storage::disk('public')->delete($recommendation->photo);
             }
             $validated['photo'] = $request->file('photo')->store('recommendations', 'public');
+        }
+
+        if ($request->hasFile('photo_2')) {
+            // Delete old photo if it exists
+            if ($recommendation->photo_2) {
+                Storage::disk('public')->delete($recommendation->photo_2);
+            }
+            $validated['photo_2'] = $request->file('photo_2')->store('recommendations', 'public');
+        }
+
+        if ($request->hasFile('photo_3')) {
+            // Delete old photo if it exists
+            if ($recommendation->photo_3) {
+                Storage::disk('public')->delete($recommendation->photo_3);
+            }
+            $validated['photo_3'] = $request->file('photo_3')->store('recommendations', 'public');
         }
 
         $recommendation->update($validated);
@@ -135,6 +170,12 @@ class RecommendationController extends Controller
         // Delete photo if it exists
         if ($recommendation->photo) {
             Storage::disk('public')->delete($recommendation->photo);
+        }
+        if ($recommendation->photo_2) {
+            Storage::disk('public')->delete($recommendation->photo_2);
+        }
+        if ($recommendation->photo_3) {
+            Storage::disk('public')->delete($recommendation->photo_3);
         }
 
         $recommendation->delete();

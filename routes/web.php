@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\LegacyController as AdminLegacyController;
 use App\Http\Controllers\Admin\RecommendationController as AdminRecommendationController;
+use App\Http\Controllers\Admin\RecommendationCategoryController as AdminRecommendationCategoryController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
@@ -72,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/admin/customers', CustomerController::class)->only(['index', 'show', 'edit', 'update'])->names('admin.customers');
         Route::resource('/admin/legacies', AdminLegacyController::class)->names('admin.legacies');
         Route::resource('/admin/recommendations', AdminRecommendationController::class)->names('admin.recommendations');
+        Route::resource('/admin/recommendation-categories', AdminRecommendationCategoryController::class)->names('admin.recommendation-categories');
         
         // Settings Routes
         Route::get('/admin/settings', [AdminSettingController::class, 'index'])->name('admin.settings.index');
@@ -81,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions.index');
         Route::patch('/admin/transactions/{transaction}', [AdminTransactionController::class, 'confirm'])->name('admin.transactions.confirm');
         Route::resource('/admin/upgrade-packages', \App\Http\Controllers\Admin\UpgradePackageController::class)->names('admin.upgrade-packages');
+        Route::resource('/admin/categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
         
         // Legacy Upgrade Applications
         Route::get('/admin/legacy-upgrades', [\App\Http\Controllers\Admin\LegacyUpgradeApplicationController::class, 'index'])->name('admin.legacy-upgrades.index');

@@ -16,7 +16,7 @@
         
         <div class="container mx-auto px-4 text-center relative z-10">
             <h3 class="text-xl font-bold text-yellow-500 mb-4 uppercase tracking-widest">Selamat Datang di</h3>
-            <h1 class="text-4xl font-extrabold text-white mb-6 shadow-sm">Indonesia Legacy Records</h1>
+            <h1 class="text-4xl font-extrabold text-white mb-6 shadow-sm">Indonesian Records</h1>
             <p class="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
                 Kesuksesan dalam hidup, prestasi, kinerja, dan performa adalah fondasi dari legacy yang kita bangun. Legacy ini tidak hanya penting dalam konteks pribadi, tetapi juga bagi lembaga. Jejak yang kita tinggalkan memberikan dampak yang bertahan lama dan bisa diingat serta dilanjutkan oleh generasi berikutnya.
             </p>
@@ -101,7 +101,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         @forelse ($recommendations as $recommendation)
                             <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                                <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="{{ $recommendation->place_name }}" class="w-full h-40 object-cover">
+                                <a href="{{ route('recommendations.show', $recommendation) }}">
+                                    @if ($recommendation->photo)
+                                        <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="Foto Tempat" class="w-full h-40 object-cover">
+                                    @else
+                                        <div class="h-40 w-full flex items-center justify-center bg-gray-100 text-gray-300">
+                                            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20"><path d="M4.055 11.238a.75.75 0 01.2-1.043l7.5-6.25a.75.75 0 01.99 1.125l-7.5 6.25a.75.75 0 01-1.19-.082zM10 12.5a.75.75 0 000-1.5h.75a.75.75 0 000-1.5H10a2.25 2.25 0 00-2.25 2.25V13a.75.75 0 00.75.75h2.25a.75.75 0 000-1.5H11.5v-2.128a.75.75 0 00-1.5 0V11.5h-.75a.75.75 0 00-.75.75V13a2.25 2.25 0 002.25 2.25h.75a.75.75 0 000-1.5H10z"/></svg>
+                                        </div>
+                                    @endif
+                                </a>
                                 <div class="p-4">
                                     <h4 class="text-md font-bold text-gray-800 flex items-center">
                                         <a href="{{ route('recommendations.show', $recommendation) }}" class="hover:text-orange-800">

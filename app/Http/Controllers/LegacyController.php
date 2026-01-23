@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Legacy;
+use App\Models\Category; // Import Category model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -15,7 +16,7 @@ class LegacyController extends Controller
      */
     public function index()
     {
-        $legacies = Auth::user()->legacies()->with(['transactions', 'upgradeApplications'])->latest()->get();
+        $legacies = Auth::user()->legacies()->with(['transactions', 'upgradeApplications', 'category'])->latest()->get();
 
         foreach ($legacies as $legacy) {
             $pendingTransactions = $legacy->transactions->where('status', 'pending');
@@ -33,7 +34,8 @@ class LegacyController extends Controller
      */
     public function create()
     {
-        return view('customer.legacies.create');
+        $categories = Category::all(); // Fetch all categories
+        return view('customer.legacies.create', compact('categories'));
     }
 
     /**
@@ -44,6 +46,7 @@ class LegacyController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id', // Add category_id validation
         ]);
 
         Auth::user()->legacies()->create($validated);
@@ -60,7 +63,7 @@ class LegacyController extends Controller
             abort(403);
         }
 
-        $legacy->load('transactions');
+        $legacy->load('transactions', 'category');
 
         $pendingTransactions = $legacy->transactions->where('status', 'pending');
         $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
@@ -84,7 +87,8 @@ class LegacyController extends Controller
             return redirect()->route('customer.legacies.show', $legacy)->with('error', 'Legacy yang sudah aktif tidak dapat diedit.');
         }
 
-        return view('customer.legacies.edit', compact('legacy'));
+        $categories = Category::all(); // Fetch all categories
+        return view('customer.legacies.edit', compact('legacy', 'categories'));
     }
 
     /**
@@ -103,6 +107,7 @@ class LegacyController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id', // Add category_id validation
         ]);
 
         $legacy->update($validated);

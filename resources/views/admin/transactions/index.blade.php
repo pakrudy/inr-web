@@ -39,7 +39,7 @@
                                             {{ $transaction->created_at->format('d M Y H:i') }}
                                         </td>   
                                         <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                            {{ $transaction->user->name ?? 'N/A' }}
+                                            {{ $transaction->user->nama_lengkap ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4 w-96 text-sm text-gray-500">
                                             {{ $transaction->notes }}

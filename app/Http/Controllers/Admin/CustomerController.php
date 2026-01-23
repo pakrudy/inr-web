@@ -15,18 +15,33 @@ class CustomerController extends Controller
     {
         $query = User::where('role', 'pelanggan');
 
+        // Search logic
         if ($request->filled('search')) {
             $searchTerm = '%' . $request->search . '%';
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', $searchTerm)
-                  ->orWhere('email', 'like', 'searchTerm')
+                  ->orWhere('email', 'like', $searchTerm) // Corrected this line
                   ->orWhere('nama_lengkap', 'like', $searchTerm);
             });
         }
 
-        $customers = $query->latest()->paginate(15)->appends($request->only('search'));
+        // Sorting logic
+        $sortableColumns = ['nama_lengkap', 'email', 'jabatan_terkini', 'kategori'];
+        $sortBy = $request->query('sort_by', 'created_at');
+        $sortDirection = $request->query('sort_direction', 'desc');
+
+        if (!in_array($sortBy, $sortableColumns)) {
+            $sortBy = 'created_at';
+        }
+        if (!in_array(strtolower($sortDirection), ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+
+        $query->orderBy($sortBy, $sortDirection);
+
+        $customers = $query->paginate(15)->appends($request->query());
         
-        return view('admin.customers.index', compact('customers'));
+        return view('admin.customers.index', compact('customers', 'sortBy', 'sortDirection'));
     }
 
     /**

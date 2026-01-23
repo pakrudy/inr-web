@@ -20,6 +20,19 @@
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
+                        <!-- Category -->
+                        <div>
+                            <x-input-label for="category_id" :value="__('Kategori')" />
+                            <select id="category_id" name="category_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id', $legacy->category_id) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
+                        </div>
+
                         <!-- Description -->
                         <div>
                             <x-input-label for="description" :value="__('Deskripsi')" />

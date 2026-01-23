@@ -29,18 +29,40 @@
                     <x-nav-link :href="route('admin.customers.index')" :active="request()->routeIs('admin.customers.*')">
                         {{ __('Pelanggan') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.legacies.index')" :active="request()->routeIs('admin.legacies.*')">
-                        {{ __('Legacies') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.upgrade-packages.index')" :active="request()->routeIs('admin.upgrade-packages.*')">
-                        {{ __('Paket Upgrade') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.legacy-upgrades.index')" :active="request()->routeIs('admin.legacy-upgrades.*')">
-                        {{ __('Pengajuan Upgrade') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
-                        {{ __('Rekomendasi') }}
-                    </x-nav-link>
+                    
+                    <!-- Legacy Dropdown -->
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.legacies.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.upgrade-packages.*') || request()->routeIs('admin.legacy-upgrades.*') ? 'border-indigo-400' : 'border-transparent' }} text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    <div>{{ __('Legacies') }}</div>
+                                    <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('admin.legacies.index')">{{ __('Semua Legacy') }}</x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.categories.index')">{{ __('Kategori Legacy') }}</x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.upgrade-packages.index')">{{ __('Paket Upgrade') }}</x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.legacy-upgrades.index')">{{ __('Pengajuan Upgrade') }}</x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+                    <!-- Recommendation Dropdown -->
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.recommendations.*') || request()->routeIs('admin.recommendation-categories.*') ? 'border-indigo-400' : 'border-transparent' }} text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    <div>{{ __('Rekomendasi') }}</div>
+                                    <div class="ms-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('admin.recommendations.index')">{{ __('Semua Rekomendasi') }}</x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.recommendation-categories.index')">{{ __('Kategori Rekomendasi') }}</x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                     <x-nav-link :href="route('admin.settings.index')" :active="request()->routeIs('admin.settings.*')">
                         {{ __('Pengaturan') }}
                     </x-nav-link>
@@ -163,12 +185,38 @@
             <x-responsive-nav-link :href="route('admin.customers.index')" :active="request()->routeIs('admin.customers.*')">
                 {{ __('Daftar Pelanggan') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.legacies.index')" :active="request()->routeIs('admin.legacies.*')">
-                {{ __('Legacies') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
-                {{ __('Rekomendasi') }}
-            </x-responsive-nav-link>
+
+            <!-- Responsive Legacy Dropdown -->
+            <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800">{{ __('Legacies') }}</div>
+                </div>
+                <x-responsive-nav-link :href="route('admin.legacies.index')" :active="request()->routeIs('admin.legacies.*')">
+                    {{ __('Semua Legacy') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
+                    {{ __('Kategori Legacy') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.upgrade-packages.index')" :active="request()->routeIs('admin.upgrade-packages.*')">
+                    {{ __('Paket Upgrade') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.legacy-upgrades.index')" :active="request()->routeIs('admin.legacy-upgrades.*')">
+                    {{ __('Pengajuan Upgrade') }}
+                </x-responsive-nav-link>
+            </div>
+
+            <!-- Responsive Recommendation Dropdown -->
+            <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800">{{ __('Rekomendasi') }}</div>
+                </div>
+                <x-responsive-nav-link :href="route('admin.recommendations.index')" :active="request()->routeIs('admin.recommendations.*')">
+                    {{ __('Semua Rekomendasi') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.recommendation-categories.index')" :active="request()->routeIs('admin.recommendation-categories.*')">
+                    {{ __('Kategori Rekomendasi') }}
+                </x-responsive-nav-link>
+            </div>
             <x-responsive-nav-link :href="route('admin.settings.index')" :active="request()->routeIs('admin.settings.*')">
                 {{ __('Pengaturan') }}
             </x-responsive-nav-link>

@@ -34,6 +34,10 @@
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $recommendation->place_name }}</dd>
                             </div>
                             <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Kategori</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $recommendation->recommendationCategory->name ?? '-' }}</dd>
+                            </div>
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                 <dt class="text-sm font-medium leading-6 text-gray-900">Alamat</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $recommendation->address ?? '-' }}</dd>
                             </div>
@@ -41,6 +45,16 @@
                                 <dt class="text-sm font-medium leading-6 text-gray-900">Deskripsi</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $recommendation->description ?? '-' }}</dd>
                             </div>
+                            @if ($recommendation->map_embed_code)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Peta Lokasi</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                    <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
+                                        {!! $recommendation->map_embed_code !!}
+                                    </div>
+                                </dd>
+                            </div>
+                            @endif
                             <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                 <dt class="text-sm font-medium leading-6 text-gray-900">Status</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ ucfirst($recommendation->status) }}</dd>
@@ -69,11 +83,21 @@
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $recommendation->indexed_expires_at->format('d M Y, H:i') }}</dd>
                             </div>
                             @endif
-                            @if ($recommendation->photo)
+                            @if ($recommendation->photo || $recommendation->photo_2 || $recommendation->photo_3)
                                 <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Foto</dt>
+                                    <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Foto') }}</dt>
                                     <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                        <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="Foto Rekomendasi" class="max-w-xs h-auto rounded-lg shadow-md">
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                            @if ($recommendation->photo)
+                                                <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="Foto Rekomendasi 1" class="w-full h-auto rounded-lg shadow-md">
+                                            @endif
+                                            @if ($recommendation->photo_2)
+                                                <img src="{{ asset('storage/' . $recommendation->photo_2) }}" alt="Foto Rekomendasi 2" class="w-full h-auto rounded-lg shadow-md">
+                                            @endif
+                                            @if ($recommendation->photo_3)
+                                                <img src="{{ asset('storage/' . $recommendation->photo_3) }}" alt="Foto Rekomendasi 3" class="w-full h-auto rounded-lg shadow-md">
+                                            @endif
+                                        </div>
                                     </dd>
                                 </div>
                             @endif

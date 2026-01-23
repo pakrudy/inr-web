@@ -10,6 +10,8 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-semibold mb-4">Daftar Semua Legacy</h3>
+
                     <!-- Search Form -->
                     <div class="mb-6">
                         <form action="{{ route('admin.legacies.index') }}" method="GET">
@@ -19,25 +21,84 @@
                             </div>
                         </form>
                     </div>
-                    <h3 class="text-lg font-semibold mb-4">Daftar Semua Legacy</h3>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Judul</th>
+                                    @php
+                                        $columns = [
+                                            'title' => 'Judul',
+                                            'status' => 'Status',
+                                            'is_indexed' => 'Terindeks',
+                                            'created_at' => 'Tanggal', // 'Tanggal' is now the last sortable column
+                                        ];
+                                        // Total columns including static ones and action
+                                        $totalColumns = count($columns) + 3; // + Pengguna, Kategori, Status Upgrade + Aksi
+                                    @endphp
+                                    {{-- Sortable Columns --}}
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <a href="{{ route('admin.legacies.index', ['sort_by' => 'title', 'sort_direction' => $sortBy == 'title' && $sortDirection == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="flex items-center">
+                                            {{ __('Judul') }}
+                                            @if ($sortBy == 'title')
+                                                @if ($sortDirection == 'asc')
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                                @else
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                                @endif
+                                            @endif
+                                        </a>
+                                    </th>
+                                    {{-- Non-sortable (for now) columns --}}
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengguna</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Terindeks</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
+
+                                    {{-- Sortable Columns (Status, Terindeks, Tanggal) --}}
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <a href="{{ route('admin.legacies.index', ['sort_by' => 'status', 'sort_direction' => $sortBy == 'status' && $sortDirection == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="flex items-center">
+                                            {{ __('Status') }}
+                                            @if ($sortBy == 'status')
+                                                @if ($sortDirection == 'asc')
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                                @else
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                                @endif
+                                            @endif
+                                        </a>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <a href="{{ route('admin.legacies.index', ['sort_by' => 'is_indexed', 'sort_direction' => $sortBy == 'is_indexed' && $sortDirection == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="flex items-center">
+                                            {{ __('Terindeks') }}
+                                            @if ($sortBy == 'is_indexed')
+                                                @if ($sortDirection == 'asc')
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                                @else
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                                @endif
+                                            @endif
+                                        </a>
+                                    </th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status Upgrade</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <a href="{{ route('admin.legacies.index', ['sort_by' => 'created_at', 'sort_direction' => $sortBy == 'created_at' && $sortDirection == 'asc' ? 'desc' : 'asc', 'search' => request('search')]) }}" class="flex items-center">
+                                            {{ __('Tanggal') }}
+                                            @if ($sortBy == 'created_at')
+                                                @if ($sortDirection == 'asc')
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                                @else
+                                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                                @endif
+                                            @endif
+                                        </a>
+                                    </th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($legacies as $legacy)
                                     <tr>
-                                        <td class="px-6 py-4 text-sm w-[450px] font-medium text-gray-900">{{ $legacy->title }}</td>
+                                        <td class="px-6 py-4 text-sm w-[350px] font-medium text-gray-900">{{ $legacy->title }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $legacy->user->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500">{{ $legacy->category?->name ?? '-' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             @if ($legacy->has_pending_initial_payment)
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
@@ -56,7 +117,7 @@
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-6 py-4 whitespace-nowrap w-[70px] text-sm text-gray-500">
                                             @if($legacy->latestUpgradeApplication)
                                                 <span class="font-semibold">{{ $legacy->latestUpgradeApplication->package?->name }}:</span>
                                                 @if($legacy->latestUpgradeApplication->status === 'payment_pending')
@@ -78,7 +139,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada legacy yang ditemukan.</td>
+                                        <td colspan="{{ $totalColumns }}" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada legacy yang ditemukan.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

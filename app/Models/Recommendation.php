@@ -16,10 +16,14 @@ class Recommendation extends Model
      */
     protected $fillable = [
         'user_id',
+        'recommendation_category_id',
         'place_name',
         'address',
+        'map_embed_code',
         'description',
         'photo',
+        'photo_2',
+        'photo_3',
         'status',
         'is_indexed',
         'published_at',
@@ -43,6 +47,14 @@ class Recommendation extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the category that the recommendation belongs to.
+     */
+    public function recommendationCategory()
+    {
+        return $this->belongsTo(RecommendationCategory::class);
     }
 
     /**

@@ -41,4 +41,24 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the user is a customer.
+     */
+    public function customer(): static
+    {
+        return $this->state(function (array $attributes) {
+            $fullName = fake()->name();
+            return [
+                'name' => $fullName,
+                'nama_lengkap' => $fullName,
+                'role' => 'pelanggan',
+                'jenis_kelamin' => fake()->randomElement(['Laki-laki', 'Perempuan']),
+                'biodata' => fake()->paragraph(),
+                'nomor_whatsapp' => fake()->unique()->phoneNumber(),
+                'jabatan_terkini' => fake()->jobTitle(),
+                'kategori' => fake()->randomElement(['Individu', 'Lembaga']),
+            ];
+        });
+    }
 }

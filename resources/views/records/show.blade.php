@@ -72,6 +72,7 @@
                             @if ($record->published_at)
                                 <p class="text-gray-500 text-sm">Dipublikasikan pada {{ $record->published_at->format('d F Y') }}</p>
                             @endif
+                            <p class="text-gray-500 text-sm mt-1">Kategori: {{ $record->category?->name ?? '-' }}</p>
                         </div>
                         
                         @if($record->description)
