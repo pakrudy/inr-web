@@ -89,7 +89,11 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             @if ($recommendation->is_indexed)
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Ya</span>
-                                            @elseif ($recommendation->has_pending_upgrade_payment)
+                                            @elseif ($recommendation->is_awaiting_upgrade_payment)
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    Waiting Payment
+                                                </span>
+                                            @elseif ($recommendation->has_pending_upgrade_process)
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
                                                     Waiting Approval
                                                 </span>

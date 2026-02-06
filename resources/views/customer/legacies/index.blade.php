@@ -74,7 +74,11 @@
                                                     @if($legacy->latestUpgradeApplication->status === 'payment_pending')
                                                         <span class="font-semibold text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                                     @elseif($legacy->latestUpgradeApplication->status === 'completed')
-                                                        <span class="font-semibold text-green-800">{{ $legacy->latestUpgradeApplication->package?->name }}: {{ __('Aktif') }}</span>
+                                                        @if ($legacy->is_indexed)
+                                                            <span class="font-semibold text-green-800">{{ $legacy->latestUpgradeApplication->package?->name }}: {{ __('Aktif') }}</span>
+                                                        @else
+                                                            <span class="font-semibold text-red-800">{{ $legacy->latestUpgradeApplication->package?->name }}: {{ __('Kadaluarsa') }}</span>
+                                                        @endif
                                                     @else
                                                         <span class="font-semibold">{{ __('Upgrade Status:') }}</span>
                                                         <span>{{ ucfirst($legacy->latestUpgradeApplication->status) }}</span>
@@ -92,9 +96,14 @@
 
                                                 {{-- Logic for Upgrade Button --}}
                                                 @if ($legacy->status === 'active' && !$legacy->is_indexed)
-                                                    @if (!$legacy->latestUpgradeApplication || $legacy->latestUpgradeApplication->status === 'rejected')
+                                                    @php
+                                                        $latestApp = $legacy->latestUpgradeApplication;
+                                                    @endphp
+                                                    
+                                                    {{-- Show Upgrade button if: No application ever, OR the last one was rejected, OR the last one was completed (but has now expired) --}}
+                                                    @if (!$latestApp || $latestApp->status === 'rejected' || $latestApp->status === 'completed')
                                                         <a href="{{ route('customer.legacies.upgrade.select', $legacy) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
-                                                    @elseif ($legacy->latestUpgradeApplication->status === 'awaiting_payment')
+                                                    @elseif ($latestApp->status === 'awaiting_payment')
                                                         <a href="{{ route('customer.legacies.payment.create', ['legacy' => $legacy, 'type' => 'upgrade']) }}" class="ml-3 text-green-600 hover:text-green-900">{{ __('Bayar Upgrade') }}</a>
                                                     @endif
                                                 @endif

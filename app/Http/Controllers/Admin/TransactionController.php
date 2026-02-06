@@ -8,6 +8,7 @@ use App\Notifications\LegacyApproved;
 use App\Notifications\LegacyUpgraded;
 use App\Notifications\RecommendationApproved;
 use App\Notifications\RecommendationUpgraded;
+use App\Notifications\RecommendationRenewed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -59,11 +60,19 @@ class TransactionController extends Controller
                         if ($application) {
                             // The upgrade itself makes the legacy indexed.
                             $item->is_indexed = true;
+                            $item->indexed_at = now();
+                            $item->indexed_expires_at = now()->addYear();
                             $application->update(['status' => 'completed']);
                         }
-                    } elseif ($item instanceof \App\Models\Recommendation) {
-                        $item->is_indexed = true;
-                        $item->indexed_expires_at = now()->addYear();
+                    }
+                    elseif ($item instanceof \App\Models\Recommendation) {
+                        $application = $item->upgradeApplications()->where('status', 'payment_pending')->first();
+                        if ($application) {
+                            $item->is_indexed = true;
+                            $item->indexed_at = now();
+                            $item->indexed_expires_at = now()->addYear();
+                            $application->update(['status' => 'completed']);
+                        }
                     }
                 } elseif ($transaction->transaction_type === 'renewal_r1' && $item instanceof \App\Models\Recommendation) {
                     $item->expires_at = $item->expires_at && $item->expires_at->isFuture() ? $item->expires_at->addYear() : now()->addYear();
@@ -88,9 +97,9 @@ class TransactionController extends Controller
                             $user->notify(new RecommendationApproved($item));
                         } elseif ($transaction->transaction_type === 'upgrade') {
                             $user->notify(new RecommendationUpgraded($item));
-                        } elseif (in_array($transaction->transaction_type, ['renewal_r1', 'renewal_r2'])) {
-                             // Re-using this notification as it makes the item active/indexed again
-                            $user->notify(new RecommendationUpgraded($item));
+                        }
+                        elseif (in_array($transaction->transaction_type, ['renewal_r1', 'renewal_r2'])) {
+                            $user->notify(new RecommendationRenewed($item)); // Use new notification
                         }
                     }
                 }

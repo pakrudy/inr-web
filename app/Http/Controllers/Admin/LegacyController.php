@@ -102,6 +102,7 @@ class LegacyController extends Controller
      */
     public function edit(Legacy $legacy)
     {
+        $legacy->load('upgradeApplications.package'); // Eager load upgrade applications and their packages
         $categories = Category::all(); // Fetch all categories
         return view('admin.legacies.edit', compact('legacy', 'categories'));
     }
@@ -118,6 +119,8 @@ class LegacyController extends Controller
             'description' => 'nullable|string',
             'status' => 'required|in:pending,active',
             'is_indexed' => 'nullable|boolean',
+            'indexed_at' => 'nullable|date',
+            'indexed_expires_at' => 'nullable|date',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

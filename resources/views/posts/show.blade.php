@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $post->title }} - Indonesian Legacy Records</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="antialiased bg-gray-50">
+@extends('layouts.public')
 
-    <x-public-nav />
+@php
+    $title = $post->title . ' - ' . config('app.name');
+@endphp
 
+@section('content')
     <main class="py-16">
         <div class="container mx-auto px-4">
             <article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
@@ -37,10 +32,4 @@
             </article>
         </div>
     </main>
-
-    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
-        <p>&copy; 2026 INR Team. All rights reserved.</p>
-    </footer>
-
-</body>
-</html>
+@endsection

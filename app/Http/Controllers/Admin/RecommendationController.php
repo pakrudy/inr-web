@@ -15,7 +15,7 @@ class RecommendationController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Recommendation::with('user', 'transactions', 'recommendationCategory');
+        $query = Recommendation::with('user', 'transactions', 'recommendationCategory', 'upgradeApplications');
 
         if ($request->filled('search')) {
             $searchTerm = '%' . $request->search . '%';
@@ -47,8 +47,11 @@ class RecommendationController extends Controller
         foreach ($recommendations as $recommendation) {
             $pendingTransactions = $recommendation->transactions->where('status', 'pending');
             $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
-            $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
-            $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
+            
+            $recommendation->has_pending_upgrade_process = $recommendation->upgradeApplications()->whereIn('status', ['pending', 'awaiting_payment', 'payment_pending'])->exists();
+            $recommendation->is_awaiting_upgrade_payment = $recommendation->upgradeApplications()->where('status', 'awaiting_payment')->exists();
+
+            $recommendation->has_pending_renewal_payment = $pendingTransactions->whereIn('transaction_type', ['renewal_r1', 'renewal_r2'])->isNotEmpty();
         }
 
         return view('admin.recommendations.index', compact('recommendations', 'sortBy', 'sortDirection'));
@@ -59,12 +62,15 @@ class RecommendationController extends Controller
      */
     public function show(Recommendation $recommendation)
     {
-        $recommendation->load('user', 'transactions');
+        $recommendation->load('user', 'transactions', 'upgradeApplications');
 
         $pendingTransactions = $recommendation->transactions->where('status', 'pending');
         $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
-        $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
-        $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
+
+        $recommendation->has_pending_upgrade_process = $recommendation->upgradeApplications()->whereIn('status', ['pending', 'awaiting_payment', 'payment_pending'])->exists();
+        $recommendation->is_awaiting_upgrade_payment = $recommendation->upgradeApplications()->where('status', 'awaiting_payment')->exists();
+
+        $recommendation->has_pending_renewal_payment = $pendingTransactions->whereIn('transaction_type', ['renewal_r1', 'renewal_r2'])->isNotEmpty();
 
         return view('admin.recommendations.show', compact('recommendation'));
     }

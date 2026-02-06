@@ -57,7 +57,7 @@ class ExpireRecommendations extends Command
         $this->info('Checking for expired indexed recommendations (R2)...');
 
         // Find recommendations that are indexed and whose indexed expiration date is today or in the past.
-        $expiredIndexed = Recommendation::where('is_indexed', true)
+        $expiredIndexed = Recommendation::with('user')->where('is_indexed', true)
             ->whereDate('indexed_expires_at', '<=', now())
             ->get();
 
@@ -71,7 +71,13 @@ class ExpireRecommendations extends Command
         foreach ($expiredIndexed as $recommendation) {
             $recommendation->is_indexed = false;
             $recommendation->save();
-            $this->line('  - De-indexed: ' . $recommendation->place_name);
+            
+            if ($recommendation->user) {
+                $recommendation->user->notify(new \App\Notifications\IndexedRecommendationStatusExpired($recommendation));
+                $this->line('  - De-indexed and notified user for: ' . $recommendation->place_name);
+            } else {
+                $this->line('  - De-indexed: ' . $recommendation->place_name);
+            }
         }
 
         $this->info("Process complete. Successfully de-indexed {$expiredIndexed->count()} recommendation(s).");

@@ -11,9 +11,25 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-2xl font-bold">{{ $legacy->title }}</h3>
-                        <a href="{{ route('customer.legacies.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                            {{ __('Kembali') }}
-                        </a>
+                        <div class="flex items-center">
+                            {{-- Logic for Upgrade Button --}}
+                            @if ($legacy->status === 'active' && !$legacy->is_indexed)
+                                @php
+                                    $latestApp = $legacy->latestUpgradeApplication;
+                                @endphp
+                                
+                                {{-- Show Upgrade button if: No application ever, OR the last one was rejected, OR the last one was completed (but has now expired) --}}
+                                @if (!$latestApp || $latestApp->status === 'rejected' || $latestApp->status === 'completed')
+                                    <a href="{{ route('customer.legacies.upgrade.select', $legacy) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">{{ __('Upgrade') }}</a>
+                                @elseif ($latestApp->status === 'awaiting_payment')
+                                    <a href="{{ route('customer.legacies.payment.create', ['legacy' => $legacy, 'type' => 'upgrade']) }}" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700">{{ __('Bayar Upgrade') }}</a>
+                                @endif
+                            @endif
+
+                            <a href="{{ route('customer.legacies.index') }}" class="ml-3 inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                {{ __('Kembali') }}
+                            </a>
+                        </div>
                     </div>
 
                     <div class="border-t border-gray-200 pt-6">
@@ -47,7 +63,11 @@
                                         @if($legacy->latestUpgradeApplication->status === 'payment_pending')
                                             <span class="font-semibold text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                         @elseif($legacy->latestUpgradeApplication->status === 'completed')
-                                            <span class="font-semibold text-green-800">{{ $legacy->latestUpgradeApplication->package?->name }}: {{ __('Aktif') }}</span>
+                                            @if ($legacy->is_indexed)
+                                                <span class="font-semibold text-green-800">{{ $legacy->latestUpgradeApplication->package?->name }}: {{ __('Aktif') }}</span>
+                                            @else
+                                                <span class="font-semibold text-red-800">{{ $legacy->latestUpgradeApplication->package?->name }}: {{ __('Kadaluarsa') }}</span>
+                                            @endif
                                         @else
                                             <span>{{ ucfirst($legacy->latestUpgradeApplication->status) }}</span>
                                         @endif
@@ -66,6 +86,35 @@
                                     @endif
                                 </dd>
                             </div>
+
+                            @if ($legacy->indexed_at)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Terindeks Aktif Sejak') }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $legacy->indexed_at->format('d M Y, H:i') }}</dd>
+                            </div>
+                            @endif
+
+                            @if ($legacy->indexed_expires_at)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Kadaluarsa Terindeks Pada') }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $legacy->indexed_expires_at->format('d M Y, H:i') }}</dd>
+                            </div>
+                            @endif
+
+                            @if ($legacy->latestUpgradeApplication && $legacy->latestUpgradeApplication->package)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Paket Upgrade Terpilih') }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $legacy->latestUpgradeApplication->package->name }}</dd>
+                            </div>
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Harga Paket Upgrade') }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Rp {{ number_format($legacy->latestUpgradeApplication->package->price, 0, ',', '.') }}</dd>
+                            </div>
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Status Aplikasi Upgrade') }}</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ ucfirst(str_replace('_', ' ', $legacy->latestUpgradeApplication->status)) }}</dd>
+                            </div>
+                            @endif
                             <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                 <dt class="text-sm font-medium leading-6 text-gray-900">{{ __('Diajukan Pada') }}</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $legacy->created_at->format('d M Y, H:i') }}</dd>

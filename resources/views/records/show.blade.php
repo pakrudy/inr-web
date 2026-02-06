@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $record->title }} - Indonesian Legacy Records</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="antialiased bg-gray-50">
+@extends('layouts.public')
 
-    <x-public-nav />
+@php
+    $title = $record->title . ' - ' . config('app.name');
+@endphp
 
+@section('content')
     <main class="py-16">
         <div class="container mx-auto px-4">
             <!-- Breadcrumb -->
@@ -69,10 +64,10 @@
                             <h1 class="text-3xl md:text-3xl font-extrabold text-gray-900 mb-2 leading-tight">
                                 {{ $record->title }}
                             </h1>
+                            <p class="text-orange-800 text-md mt-1 mb-2"><i class="fas fa-tag mr-1"></i>Kategori: {{ $record->category?->name ?? '-' }}</p>
                             @if ($record->published_at)
-                                <p class="text-gray-500 text-sm">Dipublikasikan pada {{ $record->published_at->format('d F Y') }}</p>
+                                <p class="text-gray-500 text-md"><i class="fas fa-calendar mr-1"></i>Dipublikasikan pada {{ $record->published_at->format('d F Y') }}</p>
                             @endif
-                            <p class="text-gray-500 text-sm mt-1">Kategori: {{ $record->category?->name ?? '-' }}</p>
                         </div>
                         
                         @if($record->description)
@@ -102,7 +97,7 @@
                                         <p class="text-gray-800 font-medium mb-2">{{ $record->user->jabatan_terkini ?? '-' }}</p>
                                     @endif
                                     @if($record->user->biodata)
-                                        <p class="text-gray-600 text-sm leading-relaxed mt-2">
+                                        <p class="text-gray-600 text-sm leading-relaxed mt-3">
                                             {{ Str::limit($record->user->biodata, 150) }}
                                         </p>
                                     @endif
@@ -115,10 +110,5 @@
             </div>
         </div>
     </main>
-
-    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
-        <p>&copy; {{ date('Y') }} INR Team. All rights reserved.</p>
-    </footer>
     <script src="https://cdn.jsdelivr.net/npm/fslightbox@latest/index.js"></script>
-</body>
-</html>
+@endsection

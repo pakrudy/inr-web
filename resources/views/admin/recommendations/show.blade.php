@@ -64,7 +64,10 @@
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                                     @if ($recommendation->is_indexed)
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Ya</span>
-                                    @else
+                                    @elseif ($recommendation->is_awaiting_upgrade_payment)
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Waiting Payment</span>
+                                            @elseif ($recommendation->has_pending_upgrade_process)
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Waiting Approval</span>                                    @else
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Tidak</span>
                                     @endif
                                 </dd>

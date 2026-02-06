@@ -34,19 +34,9 @@
                                     <x-input-error :messages="$errors->get('payment_recommendation_initial')" class="mt-2" />
                                 </div>
                                 <div>
-                                    <x-input-label for="payment_recommendation_upgrade" :value="__('Biaya Upgrade')" />
-                                    <x-text-input id="payment_recommendation_upgrade" class="block mt-1 w-full" type="number" name="payment_recommendation_upgrade" :value="old('payment_recommendation_upgrade', $settings['payment.recommendation.upgrade'] ?? '0')" required />
-                                    <x-input-error :messages="$errors->get('payment_recommendation_upgrade')" class="mt-2" />
-                                </div>
-                                <div>
                                     <x-input-label for="payment_recommendation_renewal" :value="__('Biaya Perpanjangan Aktif (R1)')" />
                                     <x-text-input id="payment_recommendation_renewal" class="block mt-1 w-full" type="number" name="payment_recommendation_renewal" :value="old('payment_recommendation_renewal', $settings['payment.recommendation.renewal'] ?? '0')" required />
                                     <x-input-error :messages="$errors->get('payment_recommendation_renewal')" class="mt-2" />
-                                </div>
-                                <div>
-                                    <x-input-label for="payment_recommendation_renewal_indexed" :value="__('Biaya Perpanjangan Terindeks (R2)')" />
-                                    <x-text-input id="payment_recommendation_renewal_indexed" class="block mt-1 w-full" type="number" name="payment_recommendation_renewal_indexed" :value="old('payment_recommendation_renewal_indexed', $settings['payment.recommendation.renewal_indexed'] ?? '0')" required />
-                                    <x-input-error :messages="$errors->get('payment_recommendation_renewal_indexed')" class="mt-2" />
                                 </div>
                             </div>
                         </div>

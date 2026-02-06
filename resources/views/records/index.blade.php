@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Legacy Index - Indonesian Legacy Records</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="antialiased bg-gray-50">
+@extends('layouts.public')
 
-    <x-public-nav />
+@php
+    $title = 'Legacy Index - ' . config('app.name');
+@endphp
 
+@section('content')
     <main class="py-16">
         <div class="container mx-auto px-4">
             <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-4">Legacy Index</h1>
@@ -62,12 +57,12 @@
                                         {{ $record->title }}
                                     </a>
                                 </h3>
-                                <p class="text-sm text-gray-500 mt-1">{{ $record->category?->name ?? '-' }}</p>
+                                <p class="text-sm text-gray-500 mt-1"><i class="fas fa-tag mr-1"></i>{{ $record->category?->name ?? '-' }}</p>
                                 <p class="text-orange-700 font-semibold text-md mt-3">{{ $record->user->nama_lengkap }}</p>
                                 @if ($record->user->kategori !== 'Lembaga' && $record->user->jabatan_terkini)
                                     <p class="text-sm text-gray-500 mt-0.5">{{ $record->user->jabatan_terkini }}</p>
                                 @endif
-                                <p class="text-sm text-gray-500 mt-2">{{ Str::limit($record->description, 120) }}</p>
+<!--                                <p class="text-sm text-gray-500 mt-2">{{ Str::limit($record->description, 120) }}</p>-->
                             </div>
                         </div>
                     @endforeach
@@ -79,10 +74,4 @@
             @endif
         </div>
     </main>
-
-    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
-        <p>&copy; {{ date('Y') }} INR Team. All rights reserved.</p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/fslightbox@latest/index.js"></script>
-</body>
-</html>
+@endsection

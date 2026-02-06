@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             SettingSeeder::class,
             UpgradePackageSeeder::class,
+            RecommendationUpgradePackageSeeder::class,
             CategorySeeder::class,
             RecommendationCategorySeeder::class,
             PostSeeder::class,

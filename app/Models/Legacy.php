@@ -23,6 +23,8 @@ class Legacy extends Model
         'status',
         'is_indexed',
         'published_at',
+        'indexed_at',
+        'indexed_expires_at',
     ];
 
     /**
@@ -32,6 +34,8 @@ class Legacy extends Model
      */
     protected $casts = [
         'published_at' => 'datetime',
+        'indexed_at' => 'datetime',
+        'indexed_expires_at' => 'datetime',
     ];
 
     /**

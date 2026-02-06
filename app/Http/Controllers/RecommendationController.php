@@ -15,13 +15,16 @@ class RecommendationController extends Controller
      */
     public function index()
     {
-        $recommendations = Auth::user()->recommendations()->with('transactions')->latest()->get();
+        $recommendations = Auth::user()->recommendations()->with(['transactions', 'upgradeApplications'])->latest()->get();
 
         foreach ($recommendations as $recommendation) {
             $pendingTransactions = $recommendation->transactions->where('status', 'pending');
             $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
-            $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
-            $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
+            
+            $recommendation->has_pending_upgrade_process = $recommendation->upgradeApplications()->whereIn('status', ['pending', 'awaiting_payment', 'payment_pending'])->exists();
+            $recommendation->is_awaiting_upgrade_payment = $recommendation->upgradeApplications()->where('status', 'awaiting_payment')->exists();
+
+            $recommendation->has_pending_renewal_payment = $pendingTransactions->whereIn('transaction_type', ['renewal_r1', 'renewal_r2'])->isNotEmpty();
         }
 
         return view('customer.recommendations.index', compact('recommendations'));
@@ -44,10 +47,10 @@ class RecommendationController extends Controller
         $validated = $request->validate([
             'recommendation_category_id' => 'required|exists:recommendation_categories,id',
             'place_name' => 'required|string|max:255',
-            'address' => 'nullable|string|max:255',
+            'address' => 'required|string|max:255',
             'map_embed_code' => 'nullable|string',
-            'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'required|string',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'photo_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'photo_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -66,7 +69,7 @@ class RecommendationController extends Controller
 
         Auth::user()->recommendations()->create($validated);
 
-        return redirect()->route('customer.recommendations.index')->with('success', 'Rekomendasi berhasil diajukan.');
+        return redirect()->route('customer.recommendations.index')->with('success', 'Rekomendasi berhasil diajukan. Selanjutnya, silakan melakukan pembayaran melalui link "Bayar" di sebelah kanan data rekomendasi anda.');
     }
 
     /**
@@ -78,12 +81,15 @@ class RecommendationController extends Controller
             abort(403);
         }
 
-        $recommendation->load('transactions');
+        $recommendation->load(['transactions', 'upgradeApplications']);
 
         $pendingTransactions = $recommendation->transactions->where('status', 'pending');
         $recommendation->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();
-        $recommendation->has_pending_upgrade_payment = $pendingTransactions->where('transaction_type', 'upgrade')->isNotEmpty();
-        $recommendation->has_pending_renewal_payment = $pendingTransactions->where('transaction_type', 'renewal')->isNotEmpty();
+        
+        $recommendation->has_pending_upgrade_process = $recommendation->upgradeApplications()->whereIn('status', ['pending', 'awaiting_payment', 'payment_pending'])->exists();
+        $recommendation->is_awaiting_upgrade_payment = $recommendation->upgradeApplications()->where('status', 'awaiting_payment')->exists();
+
+        $recommendation->has_pending_renewal_payment = $pendingTransactions->whereIn('transaction_type', ['renewal_r1', 'renewal_r2'])->isNotEmpty();
 
         return view('customer.recommendations.show', compact('recommendation'));
     }
@@ -121,10 +127,10 @@ class RecommendationController extends Controller
         $validated = $request->validate([
             'recommendation_category_id' => 'required|exists:recommendation_categories,id',
             'place_name' => 'required|string|max:255',
-            'address' => 'nullable|string|max:255',
+            'address' => 'required|string|max:255',
             'map_embed_code' => 'nullable|string',
-            'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'required|string',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'photo_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'photo_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

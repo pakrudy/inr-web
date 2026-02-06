@@ -35,7 +35,7 @@
                         <!-- Address -->
                         <div>
                             <x-input-label for="address" :value="__('Alamat')" />
-                            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address', $recommendation->address)" />
+                            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address', $recommendation->address)" required />
                             <x-input-error :messages="$errors->get('address')" class="mt-2" />
                         </div>
 
@@ -50,7 +50,7 @@
                         <!-- Description -->
                         <div>
                             <x-input-label for="description" :value="__('Deskripsi/Alasan Rekomendasi')" />
-                            <textarea id="description" name="description" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">{{ old('description', $recommendation->description) }}</textarea>
+                            <textarea id="description" name="description" rows="5" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>{{ old('description', $recommendation->description) }}</textarea>
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 
@@ -60,10 +60,10 @@
                             @if ($recommendation->photo)
                                 <div class="mt-2">
                                     <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="Current Photo" class="max-w-xs h-auto rounded-lg shadow-md">
-                                    <p class="text-sm text-gray-600 mt-1">{{ __('Foto saat ini.') }}</p>
+                                    <p class="text-sm text-gray-600 mt-1">{{ __('Foto saat ini. Upload ulang jika ingin mengubah atau jika tidak ingin kehilangan foto ini.') }}</p>
                                 </div>
                             @endif
-                            <input id="photo" type="file" name="photo" class="block mt-1 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+                            <input id="photo" type="file" name="photo" class="block mt-1 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" required />
                             <p class="mt-1 text-sm text-gray-500" id="file_input_help">{{ __('Biarkan kosong jika tidak ingin mengubah. PNG, JPG, JPEG, GIF (MAX. 2MB).') }}</p>
                             <x-input-error :messages="$errors->get('photo')" class="mt-2" />
                         </div>

@@ -63,7 +63,7 @@ class LegacyController extends Controller
             abort(403);
         }
 
-        $legacy->load('transactions', 'category');
+        $legacy->load('transactions', 'category', 'upgradeApplications.package');
 
         $pendingTransactions = $legacy->transactions->where('status', 'pending');
         $legacy->has_pending_initial_payment = $pendingTransactions->where('transaction_type', 'initial')->isNotEmpty();

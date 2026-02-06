@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Recommendation Index - Indonesian Legacy Records</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="antialiased bg-gray-50">
+@extends('layouts.public')
 
-    <x-public-nav />
+@php
+    $title = 'Recommendation Index - ' . config('app.name');
+@endphp
 
+@section('content')
     <main class="py-16">
         <div class="container mx-auto px-4">
             <h1 class="text-4xl font-extrabold text-center text-gray-900 mb-4">Recommendation Index</h1>
@@ -37,7 +31,7 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     @foreach ($recommendations as $recommendation)
-                        <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                        <div class="pb-2 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden">
                             <a href="{{ route('recommendations.show', $recommendation) }}">
                                 @if ($recommendation->photo)
                                     <img src="{{ asset('storage/' . $recommendation->photo) }}" alt="Foto Tempat" class="h-56 w-full object-cover">
@@ -57,7 +51,7 @@
                                     @endif
                                 </h3>
                                 <p class="text-gray-600 text-sm mt-1 truncate"><i class="fas fa-map-marker-alt mr-1"></i>{{ $recommendation->address }}</p>
-                                <p class="text-gray-600 text-sm mt-1 truncate"><i class="fas fa-tag mr-1"></i>{{ $recommendation->recommendationCategory->name ?? '-' }}</p>
+                                <p class="text-orange-800 text-sm mt-1 truncate"><i class="fas fa-tag mr-1"></i>{{ $recommendation->recommendationCategory->name ?? '-' }}</p>
                                 <!--<p class="text-sm text-gray-500 mt-2">Direkomendasikan oleh: <span class="font-medium text-gray-700">{{ $recommendation->user->name }}</span></p>-->
                             </div>
                         </div>
@@ -70,9 +64,4 @@
             @endif
         </div>
     </main>
-
-    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
-        <p>&copy; {{ date('Y') }} INR Team. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+@endsection

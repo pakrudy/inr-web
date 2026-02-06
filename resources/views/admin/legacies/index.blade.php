@@ -123,7 +123,11 @@
                                                 @if($legacy->latestUpgradeApplication->status === 'payment_pending')
                                                     <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                                 @elseif($legacy->latestUpgradeApplication->status === 'completed')
-                                                    <span class="font-semibold text-green-800">{{ __('Aktif') }}</span>
+                                                    @if ($legacy->is_indexed)
+                                                        <span class="font-semibold text-green-800">{{ __('Aktif') }}</span>
+                                                    @else
+                                                        <span class="font-semibold text-red-800">{{ __('Kadaluarsa') }}</span>
+                                                    @endif
                                                 @else
                                                     <span>{{ ucfirst($legacy->latestUpgradeApplication->status) }}</span>
                                                 @endif

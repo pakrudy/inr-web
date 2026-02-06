@@ -28,6 +28,8 @@ class Recommendation extends Model
         'is_indexed',
         'published_at',
         'expires_at',
+        'indexed_at',
+        'indexed_expires_at',
     ];
 
     /**
@@ -38,6 +40,7 @@ class Recommendation extends Model
     protected $casts = [
         'expires_at' => 'datetime',
         'published_at' => 'datetime',
+        'indexed_at' => 'datetime',
         'indexed_expires_at' => 'datetime',
     ];
 
@@ -63,5 +66,13 @@ class Recommendation extends Model
     public function transactions()
     {
         return $this->morphMany(Transaction::class, 'transactionable');
+    }
+
+    /**
+     * Get all of the recommendation's upgrade applications.
+     */
+    public function upgradeApplications()
+    {
+        return $this->hasMany(RecommendationUpgradeApplication::class);
     }
 }

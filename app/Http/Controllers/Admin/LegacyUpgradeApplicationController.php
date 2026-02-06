@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\LegacyUpgradeApplication;
 use App\Notifications\UpgradeApplicationApproved;
+use App\Notifications\UpgradeApplicationRejected;
 use Illuminate\Http\Request;
 
 class LegacyUpgradeApplicationController extends Controller
@@ -39,7 +40,8 @@ class LegacyUpgradeApplicationController extends Controller
     {
         $application->update(['status' => 'rejected']);
 
-        // TODO: Add notification to user
+        // Notify the user of the rejection
+        $application->user->notify(new UpgradeApplicationRejected($application));
 
         return redirect()->back()->with('success', 'Application has been rejected.');
     }

@@ -63,8 +63,10 @@
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                                         {{ __('Ya') }}
                                                     </span>
-                                                @elseif ($recommendation->has_pending_upgrade_payment)
-                                                    <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
+                                                @elseif ($recommendation->is_awaiting_upgrade_payment)
+                                                    <span class="text-blue-800">{{ __('Waiting Payment') }}</span>
+                                                @elseif ($recommendation->has_pending_upgrade_process)
+                                                    <span class="text-yellow-800">{{ __('Waiting Approval') }}</span>
                                                 @else
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                                         {{ __('Tidak') }}
@@ -87,9 +89,13 @@
                                                     <a href="{{ route('customer.recommendations.payment.create', $recommendation) }}" class="ml-3 text-green-600 hover:text-green-900">{{ __('Bayar') }}</a>
                                                     <a href="{{ route('customer.recommendations.edit', $recommendation) }}" class="ml-3 text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
                                                 
-                                                {{-- Upgrade --}}
-                                                @elseif ($recommendation->status === 'active' && !$recommendation->is_indexed && !$recommendation->has_pending_upgrade_payment)
-                                                    <a href="{{ route('customer.recommendations.payment.create', ['recommendation' => $recommendation, 'type' => 'upgrade']) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
+                                                {{-- Bayar Upgrade --}}
+                                                @elseif ($recommendation->is_awaiting_upgrade_payment)
+                                                    <a href="{{ route('customer.recommendations.payment.create', ['recommendation' => $recommendation, 'type' => 'upgrade']) }}" class="ml-3 text-green-600 hover:text-green-900">{{ __('Bayar Upgrade') }}</a>
+
+                                                {{-- Ajukan Upgrade --}}
+                                                @elseif ($recommendation->status === 'active' && !$recommendation->is_indexed && !$recommendation->has_pending_upgrade_process)
+                                                    <a href="{{ route('customer.recommendations.upgrade.select', $recommendation) }}" class="ml-3 text-blue-600 hover:text-blue-900">{{ __('Upgrade') }}</a>
                                                 
                                                 {{-- Perpanjang R1 (jika sudah expired) --}}
                                                 @elseif ($recommendation->status === 'expired' && !$recommendation->has_pending_renewal_payment)
@@ -98,7 +104,7 @@
                                                 
                                                 @if ($recommendation->status === 'active')
                                                     {{-- Perpanjang R1 (jika akan expired) --}}
-                                                    @if ($recommendation->expires_at && $recommendation->expires_at->isPast() || now()->diffInDays($recommendation->expires_at, false) <= 30)
+                                                    @if ($recommendation->expires_at && ($recommendation->expires_at->isPast() || now()->diffInDays($recommendation->expires_at, false) <= 30))
                                                         <a href="{{ route('customer.recommendations.payment.create', ['recommendation' => $recommendation, 'type' => 'renewal_r1']) }}" class="ml-3 text-orange-600 hover:text-orange-900">{{ __('Perpanjang Aktif (R1)') }}</a>
                                                     @endif
 

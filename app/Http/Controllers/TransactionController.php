@@ -35,6 +35,11 @@ class TransactionController extends Controller
             if (!$application) {
                 return redirect()->route('customer.legacies.index')->with('error', 'No approved upgrade application found awaiting payment.');
             }
+        } elseif ($paymentType === 'upgrade' && $model instanceof Recommendation) {
+            $application = $model->upgradeApplications()->with('package')->where('status', 'awaiting_payment')->first();
+            if (!$application) {
+                return redirect()->route('customer.recommendations.index')->with('error', 'No approved upgrade application found awaiting payment.');
+            }
         }
         
         if ($paymentType === 'renewal_r1' && $model instanceof Recommendation && $model->expires_at > now()->addDays(7)) {
@@ -97,11 +102,24 @@ class TransactionController extends Controller
             'notes' => $notes,
         ]);
 
+        // If this is a renewal, update the recommendation's status to pending_renewal
+        if (in_array($paymentType, ['renewal_r1', 'renewal_r2']) && $model instanceof Recommendation) {
+            $model->status = 'pending_renewal';
+            $model->save();
+        }
+
         // If this was an upgrade payment, update the application status
-        if ($paymentType === 'upgrade' && $model instanceof Legacy) {
-            $application = $model->upgradeApplications()->where('status', 'awaiting_payment')->first();
-            if ($application) {
-                $application->update(['status' => 'payment_pending']);
+        if ($paymentType === 'upgrade') {
+            if ($model instanceof Legacy) {
+                $application = $model->upgradeApplications()->where('status', 'awaiting_payment')->first();
+                if ($application) {
+                    $application->update(['status' => 'payment_pending']);
+                }
+            } elseif ($model instanceof Recommendation) {
+                $application = $model->upgradeApplications()->where('status', 'awaiting_payment')->first();
+                if ($application) {
+                    $application->update(['status' => 'payment_pending']);
+                }
             }
         }
 
@@ -148,10 +166,10 @@ class TransactionController extends Controller
                     $application = $model->upgradeApplications()->with('package')->where('status', 'awaiting_payment')->firstOrFail();
                     $amount = $application->package->price;
                     $notes = "Upgrade payment for Legacy '{$title}' to package '{$application->package->name}'";
-                } else {
-                    $key = 'payment.recommendation.upgrade';
-                    $amount = $settings[$key] ?? 0;
-                    $notes = "Upgrade payment for {$modelName}: {$title}";
+                } elseif ($model instanceof Recommendation) {
+                    $application = $model->upgradeApplications()->with('package')->where('status', 'awaiting_payment')->firstOrFail();
+                    $amount = $application->package->price;
+                    $notes = "Upgrade payment for Recommendation '{$title}' to package '{$application->package->name}'";
                 }
                 break;
             case 'renewal_r1':

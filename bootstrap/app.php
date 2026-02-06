@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(function ($schedule) {
         $schedule->command('recommendations:expire')->daily();
+        $schedule->command('legacies:expire-indexed')->daily();
     })    
     ->withExceptions(function (Exceptions $exceptions) {
         //

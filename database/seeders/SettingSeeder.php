@@ -15,11 +15,8 @@ class SettingSeeder extends Seeder
     {
         $settings = [
             ['key' => 'payment.legacy.initial', 'value' => '100000'],
-            ['key' => 'payment.legacy.upgrade', 'value' => '50000'],
             ['key' => 'payment.recommendation.initial', 'value' => '50000'],
-            ['key' => 'payment.recommendation.upgrade', 'value' => '25000'],
-            ['key' => 'payment.recommendation.renewal', 'value' => '25000'],
-            ['key' => 'payment.recommendation.renewal_indexed', 'value' => '25000'],
+            ['key' => 'payment.recommendation.renewal', 'value' => '65000'],
         ];
 
         foreach ($settings as $setting) {

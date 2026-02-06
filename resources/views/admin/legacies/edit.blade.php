@@ -76,6 +76,68 @@
                             <x-input-error :messages="$errors->get('is_indexed')" class="mt-2" />
                         </div>
 
+                        <!-- Indexed Dates Input -->
+                        <div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-2 mt-6">Manajemen Status Terindeks</h3>
+                            <div class="border p-4 rounded-md bg-gray-50 space-y-3">
+                                <!-- Indexed At -->
+                                <div>
+                                    <x-input-label for="indexed_at" :value="__('Terindeks Aktif Sejak')" />
+                                    <x-text-input 
+                                        id="indexed_at" 
+                                        name="indexed_at" 
+                                        type="datetime-local" 
+                                        class="mt-1 block w-full" 
+                                        :value="old('indexed_at', $legacy->indexed_at ? $legacy->indexed_at->format('Y-m-d\TH:i') : '')"
+                                    />
+                                    <x-input-error :messages="$errors->get('indexed_at')" class="mt-2" />
+                                </div>
+                                <!-- Indexed Expires At -->
+                                <div>
+                                    <x-input-label for="indexed_expires_at" :value="__('Kadaluarsa Status Terindeks')" />
+                                    <x-text-input 
+                                        id="indexed_expires_at" 
+                                        name="indexed_expires_at" 
+                                        type="datetime-local" 
+                                        class="mt-1 block w-full" 
+                                        :value="old('indexed_expires_at', $legacy->indexed_expires_at ? $legacy->indexed_expires_at->format('Y-m-d\TH:i') : '')"
+                                    />
+                                    <x-input-error :messages="$errors->get('indexed_expires_at')" class="mt-2" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upgrade Package Information -->
+                        <div>
+                            <h3 class="font-semibold text-lg text-gray-800 mb-2 mt-6">Informasi Upgrade</h3>
+                            <div class="border p-4 rounded-md bg-gray-50 space-y-3">
+                                @php
+                                    // Find the latest completed or pending upgrade application
+                                    $latestUpgradeApplication = $legacy->upgradeApplications
+                                                                    ->whereIn('status', ['payment_pending', 'completed', 'awaiting_payment'])
+                                                                    ->sortByDesc('created_at')
+                                                                    ->first();
+                                @endphp
+
+                                @if ($latestUpgradeApplication && $latestUpgradeApplication->package)
+                                    <div class="flex items-center">
+                                        <x-input-label :value="__('Paket Upgrade Terpilih')" class="w-1/3" />
+                                        <p class="text-gray-700 mt-1 sm:mt-0">{{ $latestUpgradeApplication->package->name }}</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <x-input-label :value="__('Harga Paket')" class="w-1/3" />
+                                        <p class="text-gray-700 mt-1 sm:mt-0">Rp {{ number_format($latestUpgradeApplication->package->price, 0, ',', '.') }}</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <x-input-label :value="__('Status Aplikasi Upgrade')" class="w-1/3" />
+                                        <p class="text-gray-700 mt-1 sm:mt-0">{{ ucfirst(str_replace('_', ' ', $latestUpgradeApplication->status)) }}</p>
+                                    </div>
+                                @else
+                                    <p class="text-gray-700">Tidak ada aplikasi upgrade yang sedang berlangsung atau selesai.</p>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Simpan Perubahan') }}</x-primary-button>
                             <a href="{{ route('admin.legacies.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Batal') }}</a>

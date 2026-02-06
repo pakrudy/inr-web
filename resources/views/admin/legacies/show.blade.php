@@ -55,6 +55,42 @@
                                     @endif
                                 </dd>
                             </div>
+                            
+                            @if ($legacy->indexed_at)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Terindeks Aktif Sejak</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $legacy->indexed_at->format('d M Y, H:i') }}</dd>
+                            </div>
+                            @endif
+
+                            @if ($legacy->indexed_expires_at)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Kadaluarsa Terindeks Pada</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $legacy->indexed_expires_at->format('d M Y, H:i') }}</dd>
+                            </div>
+                            @endif
+                            
+                            @php
+                                $latestUpgradeApplication = $legacy->upgradeApplications
+                                                                ->whereIn('status', ['payment_pending', 'completed', 'awaiting_payment'])
+                                                                ->sortByDesc('created_at')
+                                                                ->first();
+                            @endphp
+
+                            @if ($latestUpgradeApplication && $latestUpgradeApplication->package)
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Paket Upgrade Terpilih</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $latestUpgradeApplication->package->name }}</dd>
+                            </div>
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Harga Paket Upgrade</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Rp {{ number_format($latestUpgradeApplication->package->price, 0, ',', '.') }}</dd>
+                            </div>
+                            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Status Aplikasi Upgrade</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ ucfirst(str_replace('_', ' ', $latestUpgradeApplication->status)) }}</dd>
+                            </div>
+                            @endif
                             <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                 <dt class="text-sm font-medium leading-6 text-gray-900">Status Upgrade</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
@@ -63,7 +99,11 @@
                                         @if($legacy->latestUpgradeApplication->status === 'payment_pending')
                                             <span class="text-yellow-800">{{ __('Waiting Admin Approval') }}</span>
                                         @elseif($legacy->latestUpgradeApplication->status === 'completed')
-                                            <span class="font-semibold text-green-800">{{ __('Aktif') }}</span>
+                                            @if ($legacy->is_indexed)
+                                                <span class="font-semibold text-green-800">{{ __('Aktif') }}</span>
+                                            @else
+                                                <span class="font-semibold text-red-800">{{ __('Kadaluarsa') }}</span>
+                                            @endif
                                         @else
                                             <span>{{ ucfirst($legacy->latestUpgradeApplication->status) }}</span>
                                         @endif

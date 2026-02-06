@@ -29,12 +29,15 @@
                             if ($paymentType === 'initial') {
                                 $amount = $settings['payment.recommendation.initial'] ?? 50000;
                                 $description = 'Pembayaran awal untuk aktivasi Rekomendasi.';
-                            } elseif ($paymentType === 'upgrade') {
-                                $amount = $settings['payment.recommendation.upgrade'] ?? 25000;
-                                $description = 'Pembayaran untuk upgrade Rekomendasi menjadi Terindeks (badge "recommended").';
-                            } elseif ($paymentType === 'renewal') {
-                                $amount = $settings['payment.recommendation.renewal'] ?? 25000;
-                                $description = 'Pembayaran untuk perpanjangan Rekomendasi selama 1 tahun.';
+                            } elseif ($paymentType === 'upgrade' && isset($application)) {
+                                $amount = $application->package->price;
+                                $description = "Pembayaran untuk upgrade Rekomendasi ke {$application->package->name}.";
+                            } elseif ($paymentType === 'renewal_r1') {
+                                $amount = $settings['payment.recommendation.renewal'] ?? 65000;
+                                $description = 'Pembayaran untuk perpanjangan masa aktif Rekomendasi (R1) selama 1 tahun.';
+                            } elseif ($paymentType === 'renewal_r2') {
+                                $amount = $settings['payment.recommendation.renewal_indexed'] ?? 0;
+                                $description = 'Pembayaran untuk perpanjangan masa aktif Rekomendasi Terindeks (R2) selama 1 tahun.';
                             }
                         @endphp
 

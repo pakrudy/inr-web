@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $recommendation->place_name }} - Recommendation Index</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="antialiased bg-gray-50">
+@extends('layouts.public')
 
-    <x-public-nav />
+@php
+    $title = $recommendation->place_name . ' - ' . config('app.name');
+@endphp
 
+@section('content')
     <main class="py-16">
         <div class="container mx-auto px-4">
             <!-- Breadcrumb -->
@@ -21,7 +15,7 @@
                     </li>
                     <li>
                         <div class="flex items-center">
-                            <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <svg class="w-1 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                             </svg>
                             <a href="{{ route('recommendations.index') }}" class="hover:text-gray-900 ml-1 md:ml-2">Recommendation Index</a>
@@ -29,7 +23,7 @@
                     </li>
                     <li aria-current="page">
                         <div class="flex items-center">
-                            <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <svg class="w-1 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                             </svg>
                             <span class="ml-1 md:ml-2 text-gray-700 font-medium truncate max-w-xs">{{ $recommendation->place_name }}</span>
@@ -41,7 +35,7 @@
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                 <div class="grid grid-cols-1 lg:grid-cols-5">
                     <!-- Left Column: Photos -->
-                    <div class="lg:col-span-2 bg-gray-100 p-8 flex flex-col gap-4 items-center justify-center relative group">
+                    <div class="lg:col-span-2 bg-gray-100 p-8 flex flex-col gap-4 items-center justify-top relative group">
                         <div class="grid grid-cols-1 gap-4">
                             @if ($recommendation->photo)
                                 <a href="{{ asset('storage/' . $recommendation->photo) }}" data-fslightbox>
@@ -61,7 +55,7 @@
                         </div>
                         @if (!$recommendation->photo && !$recommendation->photo_2 && !$recommendation->photo_3)
                             <div class="h-64 w-full flex flex-col items-center justify-center text-gray-300 border-2 border-dashed border-gray-200 rounded-lg">
-                                <svg class="w-16 h-16 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <svg class="w-16 h-16 mb-2" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                 <span>No Photo Available</span>
                             </div>
                         @endif
@@ -71,19 +65,19 @@
                     <div class="lg:col-span-3 px-8 pb-10 pt-7 lg:px-12 lg:pt5 lg:pb-12 flex flex-col">
                         <div class="mb-5">
                             @if ($recommendation->is_indexed)
-                                <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-[5rem] mb-2">
+                                <img src="{{ asset('storage/recomended_mini.jpg') }}" alt="Recommended" class="h-[5rem] mb-2 kekirilagi">
                             @endif
                             
                             <h1 class="text-3xl md:text-3xl font-extrabold text-gray-900 mb-2 leading-tight">
                                 {{ $recommendation->place_name }}
                             </h1>
                             <p class="text-gray-600 text-lg"><i class="fas fa-map-marker-alt mr-1 text-gray-400"></i>{{ $recommendation->address }}</p>
-                            <p class="text-gray-600 text-lg mt-1"><i class="fas fa-tag mr-1 text-gray-400"></i>{{ $recommendation->recommendationCategory->name ?? '-' }}</p>
-                            <p class="text-gray-500 text-sm mt-2">Dipublikasikan pada {{ $recommendation->published_at->format('d F Y') }}</p>
+                            <p class="text-lg mt-1 text-orange-700"><i class="fas fa-tag mr-1"></i>Kategori: {{ $recommendation->recommendationCategory->name ?? '-' }}</p>
+                            <p class="text-gray-500 text-sm mt-2"><i class="fas fa-calendar mr-1"></i> Dipublikasikan pada {{ $recommendation->published_at->format('d F Y') }}</p>
                         </div>
                         
                         @if($recommendation->description)
-                            <div class="prose max-w-none text-gray-700 text-base leading-snug mb-2">
+                            <div class="prose max-w-none text-gray-700 text-base leading-relaxed mb-2">
                                 {!! Str::markdown($recommendation->description) !!}
                             </div>
                         @endif
@@ -121,10 +115,5 @@
             </div>
         </div>
     </main>
-
-    <footer class="bg-gray-800 text-white py-6 mt-12 text-center">
-        <p>&copy; {{ date('Y') }} INR Team. All rights reserved.</p>
-    </footer>
     <script src="https://cdn.jsdelivr.net/npm/fslightbox@latest/index.js"></script>
-</body>
-</html>
+@endsection
